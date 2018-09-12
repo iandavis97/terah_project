@@ -1,0 +1,241 @@
+fileFormatVersion: 2
+guid: a530a30f31f41bf4e89212c7e90c244b
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Bett_Decke
+    100004: Bett_Decke_2
+    100006: Bett_Rahmen
+    100008: Bett_Rahmen_2
+    100010: Bett_Rahmen_3
+    100012: Bett_Rahmen_4
+    100014: Bett_Rahmen_5
+    100016: Enden
+    100018: Fuss_Ende
+    100020: Kissen
+    100022: Kissen_2
+    100024: Kopf_Ende
+    100026: Matraze
+    100028: Pfosten
+    100030: Pfosten_2
+    100032: Pfosten_3
+    100034: Pfosten_4
+    100036: Pfosten_5
+    100038: Pfosten_Fuss
+    100040: Pfosten_Fuss_2
+    100042: Pfosten_Fuss_3
+    100044: Pfosten_Fuss_4
+    100046: Pfosten_Kappe
+    100048: Pfosten_Kappe_2
+    100050: Pfosten_Kappe_3
+    100052: Pfosten_Kappe_4
+    100054: Stange
+    100056: Stange_2
+    100058: Stangen
+    400000: //RootNode
+    400002: Bett_Decke
+    400004: Bett_Decke_2
+    400006: Bett_Rahmen
+    400008: Bett_Rahmen_2
+    400010: Bett_Rahmen_3
+    400012: Bett_Rahmen_4
+    400014: Bett_Rahmen_5
+    400016: Enden
+    400018: Fuss_Ende
+    400020: Kissen
+    400022: Kissen_2
+    400024: Kopf_Ende
+    400026: Matraze
+    400028: Pfosten
+    400030: Pfosten_2
+    400032: Pfosten_3
+    400034: Pfosten_4
+    400036: Pfosten_5
+    400038: Pfosten_Fuss
+    400040: Pfosten_Fuss_2
+    400042: Pfosten_Fuss_3
+    400044: Pfosten_Fuss_4
+    400046: Pfosten_Kappe
+    400048: Pfosten_Kappe_2
+    400050: Pfosten_Kappe_3
+    400052: Pfosten_Kappe_4
+    400054: Stange
+    400056: Stange_2
+    400058: Stangen
+    2100000: No Name
+    2100002: 104-Stoff-Innen
+    2100004: 103-Stoff-Innen
+    2100006: 104-Stoff-Innen.2
+    2300000: Bett_Decke_2
+    2300002: Bett_Rahmen_2
+    2300004: Bett_Rahmen_3
+    2300006: Bett_Rahmen_4
+    2300008: Bett_Rahmen_5
+    2300010: Fuss_Ende
+    2300012: Kissen_2
+    2300014: Kopf_Ende
+    2300016: Matraze
+    2300018: Pfosten_2
+    2300020: Pfosten_3
+    2300022: Pfosten_4
+    2300024: Pfosten_5
+    2300026: Pfosten_Fuss
+    2300028: Pfosten_Fuss_2
+    2300030: Pfosten_Fuss_3
+    2300032: Pfosten_Fuss_4
+    2300034: Pfosten_Kappe
+    2300036: Pfosten_Kappe_2
+    2300038: Pfosten_Kappe_3
+    2300040: Pfosten_Kappe_4
+    2300042: Stange
+    2300044: Stange_2
+    3300000: Bett_Decke_2
+    3300002: Bett_Rahmen_2
+    3300004: Bett_Rahmen_3
+    3300006: Bett_Rahmen_4
+    3300008: Bett_Rahmen_5
+    3300010: Fuss_Ende
+    3300012: Kissen_2
+    3300014: Kopf_Ende
+    3300016: Matraze
+    3300018: Pfosten_2
+    3300020: Pfosten_3
+    3300022: Pfosten_4
+    3300024: Pfosten_5
+    3300026: Pfosten_Fuss
+    3300028: Pfosten_Fuss_2
+    3300030: Pfosten_Fuss_3
+    3300032: Pfosten_Fuss_4
+    3300034: Pfosten_Kappe
+    3300036: Pfosten_Kappe_2
+    3300038: Pfosten_Kappe_3
+    3300040: Pfosten_Kappe_4
+    3300042: Stange
+    3300044: Stange_2
+    4300000: Pfosten_2
+    4300002: Pfosten_Kappe
+    4300004: Pfosten_Fuss
+    4300006: Pfosten_3
+    4300008: Pfosten_Kappe_2
+    4300010: Pfosten_Fuss_2
+    4300012: Pfosten_4
+    4300014: Pfosten_Kappe_3
+    4300016: Pfosten_Fuss_3
+    4300018: Pfosten_5
+    4300020: Pfosten_Kappe_4
+    4300022: Pfosten_Fuss_4
+    4300024: Stange
+    4300026: Stange_2
+    4300028: Kopf_Ende
+    4300030: Fuss_Ende
+    4300032: Bett_Rahmen_2
+    4300034: Bett_Rahmen_3
+    4300036: Bett_Rahmen_4
+    4300038: Bett_Rahmen_5
+    4300040: Matraze
+    4300042: Kissen_2
+    4300044: Bett_Decke_2
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 103-Stoff-Innen
+    second: {fileID: 2100000, guid: 1c7b8b9d886a6384e90c4781cb07bbb9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 104-Stoff-Innen
+    second: {fileID: 2100000, guid: 764d7d76574c7a14ea64788f89d1aeea, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 104-Stoff-Innen.2
+    second: {fileID: 2100000, guid: 08a92330dad6e894c9974442f9e4aeb6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: No Name
+    second: {fileID: 2100000, guid: e81eb04f306295944945baaca903258a, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 2.5
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

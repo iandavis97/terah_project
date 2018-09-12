@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -137269416, guid: 7aed481bc8d8bee448bf2ae245d7762c, type: 3}
+  m_Name: Schematic - Enemy
+  m_EditorClassIdentifier: 
+  time: 5/25/2018 8:53:13 PM
+  version: 1.11.0
+  data:
+    name: schematic
+    xmlData: "<schematic maxNodes=\"100\" startIndex=\"0\" stopIndex=\"-1\" endIndex=\"-1\"
+      nodeLayer=\"0\" >\n\t<_bool limitNodes=\"False\" blockPlayer=\"False\" blockCamera=\"False\"
+      clearBlocks=\"False\" mainCamera=\"True\" cameraTag=\"False\" clearActors=\"True\"
+      clearPrefabs=\"True\" clearVariables=\"False\" clearSelectedData=\"False\" useUnityTimeScale=\"True\"
+      useMakinomTimeScale=\"True\" initVarsEachRun=\"False\" destroyPrefabs=\"False\"
+      useEndSlots=\"False\" overrideNodeName=\"False\" />\n\t<_floatarrays>\n\t\t<nodePosition
+      38 38 />\n\t</_floatarrays>\n\t<_string>\n\t\t<cameraName><![CDATA[]]></cameraName>\n\t\t<nodeName><![CDATA[]]></nodeName>\n\t</_string>\n\t<_stringarrays>\n\t\t<layer>\n\t\t\t<0><![CDATA[Base
+      Layer]]></0>\n\t\t</layer>\n\t</_stringarrays>\n\t<initialVariables>\n\t\t<_subarrays>\n\t\t\t<variable>\n\t\t\t</variable>\n\t\t</_subarrays>\n\t</initialVariables>\n\t<_subarrays>\n\t\t<machineStartVariable>\n\t\t</machineStartVariable>\n\t\t<actor>\n\t\t</actor>\n\t\t<prefab>\n\t\t</prefab>\n\t\t<audioClip>\n\t\t</audioClip>\n\t\t<audioMixer>\n\t\t</audioMixer>\n\t\t<audioMixerGroup>\n\t\t</audioMixerGroup>\n\t\t<sprite>\n\t\t</sprite>\n\t\t<texture>\n\t\t</texture>\n\t\t<material>\n\t\t</material>\n\t\t<physicMaterial>\n\t\t</physicMaterial>\n\t\t<physicsMaterial2D>\n\t\t</physicsMaterial2D>\n\t\t<node>\n\t\t\t<0
+      next=\"-1\" nodeLayer=\"0\" >\n\t\t\t\t<_bool active=\"True\" executeOnStop=\"False\"
+      overrideNodeName=\"False\" />\n\t\t\t\t<_floatarrays>\n\t\t\t\t\t<nodePosition
+      266 57 />\n\t\t\t\t</_floatarrays>\n\t\t\t\t<_string>\n\t\t\t\t\t<conversation><![CDATA[Enemy
+      Barks]]></conversation>\n\t\t\t\t\t<nodeName><![CDATA[]]></nodeName>\n\t\t\t\t\t<_type><![CDATA[Makinom.Schematics.Nodes.BarkNode]]></_type>\n\t\t\t\t</_string>\n\t\t\t\t<actorObject
+      type=\"3\" actorID=\"0\" prefabID=\"0\" prefabID2=\"-1\" >\n\t\t\t\t\t<_bool
+      selectedOnlyGameObjects=\"False\" useRoot=\"False\" />\n\t\t\t\t\t<_string>\n\t\t\t\t\t\t<childName><![CDATA[]]></childName>\n\t\t\t\t\t</_string>\n\t\t\t\t</actorObject>\n\t\t\t\t<conversantObject
+      type=\"2\" actorID=\"0\" prefabID=\"0\" prefabID2=\"-1\" >\n\t\t\t\t\t<_bool
+      selectedOnlyGameObjects=\"False\" useRoot=\"False\" />\n\t\t\t\t\t<_string>\n\t\t\t\t\t\t<childName><![CDATA[]]></childName>\n\t\t\t\t\t</_string>\n\t\t\t\t</conversantObject>\n\t\t\t</0>\n\t\t</node>\n\t</_subarrays>\n</schematic>\n"
+    lookUp:
+      textures: []
+      audioClips: []
+      audioMixers: []
+      audioMixerGroups: []
+      gameObjects: []
+      guiSkins: []
+      materials: []
+      physicMaterials: []
+      physicMaterials2D: []
+      sprites: []
+      fonts: []
+      schematicAssets: []
+      generalAssets: []
+    encrypted: 0
