@@ -1,0 +1,83 @@
+fileFormatVersion: 2
+guid: 1dcd559fcabbdd8449e036afafe2712c
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: Marble - Copy/Marble - Copy
+    400000: Marble - Copy/Marble - Copy/Transform
+    2100000: mat.Marble
+    2300000: Marble - Copy/Marble - Copy/MeshRenderer
+    2800000: Marble_Base Color
+    2800002: Marble_Normal
+    2800004: Marble_Metallic
+    2800006: Marble_Height
+    3300000: Marble - Copy/Marble - Copy/MeshFilter
+    11400000: sbsar
+    11400002: graph0
+    13500000: Marble - Copy/Marble - Copy/SphereCollider
+    100100000: Marble - Copy
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 232528478, guid: 43a8bbf65be290d44ba52b94476242b9, type: 3}
+  mGraphInstanceData:
+  - graphLabel: Marble
+    graphDescIndex: 0
+    generateAllOutputs: 0
+    generateMipMaps: 1
+    preset: " <sbspreset pkgurl=\"pkg://Marble\" label=\"\" >\n  <presetinput identifier=\"Tile_Switch\"
+      uid=\"2681996883\" type=\"4\" value=\"0\" />\n  <presetinput identifier=\"Tile_Nb_X\"
+      uid=\"2682020985\" type=\"4\" value=\"1\" />\n  <presetinput identifier=\"Tile_Nb_Y\"
+      uid=\"2682021067\" type=\"4\" value=\"1\" />\n  <presetinput identifier=\"Tile_Gap_Scale\"
+      uid=\"2682016096\" type=\"1\" value=\"0,0\" />\n </sbspreset>\n"
+    shaderName: Standard
+    outputNames: Base Color,Normal,Metallic,Height
+    texturePackingList:
+    - outputName: Base Color
+      alphaSource: Base Color
+    - outputName: Normal
+      alphaSource: Normal
+    - outputName: Roughness
+      alphaSource: Roughness
+    - outputName: Metallic
+      alphaSource: Smoothness
+    - outputName: Height
+      alphaSource: Height
+    colorSpaceList:
+    - outputName: Base Color
+      bLinear: 0
+    - outputName: Normal
+      bLinear: 1
+    - outputName: Roughness
+      bLinear: 1
+    - outputName: Metallic
+      bLinear: 1
+    - outputName: Height
+      bLinear: 1
+    inputTextureMap: []
+    targetSettingList:
+    - label: Default
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 0
+      textureHeight: 0
+      textureFormat: 0
+      loadBehavior: 0
+    - label: Standalone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 0
+      textureHeight: 0
+      textureFormat: 0
+      loadBehavior: 0
+    - label: iPhone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 0
+      textureHeight: 0
+      textureFormat: 0
+      loadBehavior: 0
+    material: {fileID: 2100000, guid: 1dcd559fcabbdd8449e036afafe2712c, type: 3}

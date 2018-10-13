@@ -1,0 +1,87 @@
+fileFormatVersion: 2
+guid: dfc56cf1e9233624fa3dd6b4b6268aed
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: Carpet_Fuzzy - Copy/Carpet_Fuzzy - Copy
+    400000: Carpet_Fuzzy - Copy/Carpet_Fuzzy - Copy/Transform
+    2100000: mat.Carpet Fuzzy
+    2300000: Carpet_Fuzzy - Copy/Carpet_Fuzzy - Copy/MeshRenderer
+    2800000: Carpet Fuzzy_Base Color
+    2800002: Carpet Fuzzy_Normal
+    2800004: Carpet Fuzzy_Metallic
+    2800006: Carpet Fuzzy_Ambient Occlusion
+    2800008: Carpet Fuzzy_Height
+    3300000: Carpet_Fuzzy - Copy/Carpet_Fuzzy - Copy/MeshFilter
+    11400000: sbsar
+    11400002: graph0
+    13500000: Carpet_Fuzzy - Copy/Carpet_Fuzzy - Copy/SphereCollider
+    100100000: Carpet_Fuzzy - Copy
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 232528478, guid: 43a8bbf65be290d44ba52b94476242b9, type: 3}
+  mGraphInstanceData:
+  - graphLabel: Carpet Fuzzy
+    graphDescIndex: 0
+    generateAllOutputs: 0
+    generateMipMaps: 1
+    preset: " <sbspreset pkgurl=\"pkg://Carpet_Fuzzy\" label=\"\" >\n  <presetinput
+      identifier=\"main_color\" uid=\"3325630687\" type=\"3\" value=\"0.650943,0.417464,0.31626,1\"
+      />\n  <presetinput identifier=\"strands_tile\" uid=\"3269085196\" type=\"4\"
+      value=\"16\" />\n </sbspreset>\n"
+    shaderName: Standard
+    outputNames: Base Color,Normal,Metallic,Ambient Occlusion,Height
+    texturePackingList:
+    - outputName: Base Color
+      alphaSource: Base Color
+    - outputName: Normal
+      alphaSource: Normal
+    - outputName: Roughness
+      alphaSource: Roughness
+    - outputName: Metallic
+      alphaSource: Smoothness
+    - outputName: Ambient Occlusion
+      alphaSource: Ambient Occlusion
+    - outputName: Height
+      alphaSource: Height
+    colorSpaceList:
+    - outputName: Base Color
+      bLinear: 0
+    - outputName: Normal
+      bLinear: 1
+    - outputName: Roughness
+      bLinear: 1
+    - outputName: Metallic
+      bLinear: 1
+    - outputName: Ambient Occlusion
+      bLinear: 1
+    - outputName: Height
+      bLinear: 1
+    inputTextureMap: []
+    targetSettingList:
+    - label: Default
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    - label: Standalone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    - label: iPhone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    material: {fileID: 2100000, guid: dfc56cf1e9233624fa3dd6b4b6268aed, type: 3}
