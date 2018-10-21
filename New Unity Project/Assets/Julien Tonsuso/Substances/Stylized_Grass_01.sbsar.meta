@@ -29,7 +29,7 @@ ScriptedImporter:
       identifier=\"$outputsize\" uid=\"2267497286\" type=\"8\" value=\"10,10\" />\n
       \ <presetinput identifier=\"rocks\" uid=\"4049784898\" type=\"4\" value=\"0\"
       />\n  <presetinput identifier=\"Grass_color\" uid=\"4049790395\" type=\"3\"
-      value=\"0.356863,1,0,1\" />\n  <presetinput identifier=\"Grass_coverage\" uid=\"4049763890\"
+      value=\"0.204678,1,0,1\" />\n  <presetinput identifier=\"Grass_coverage\" uid=\"4049763890\"
       type=\"0\" value=\"1\" />\n  <presetinput identifier=\"grass_amount\" uid=\"4049760491\"
       type=\"4\" value=\"19\" />\n  <presetinput identifier=\"grass_scale\" uid=\"4049763610\"
       type=\"0\" value=\"10\" />\n  <presetinput identifier=\"Grass_depth_variation\"
