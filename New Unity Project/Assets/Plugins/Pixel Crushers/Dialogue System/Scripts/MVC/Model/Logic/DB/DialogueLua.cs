@@ -1,4 +1,4 @@
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 #if !(USE_NLUA || OVERRIDE_LUA)
 using UnityEngine;
@@ -121,6 +121,35 @@ namespace PixelCrushers.DialogueSystem
             SetVariable("Conversant", conversantName);
             SetVariable("ActorIndex", StringToTableIndex(string.IsNullOrEmpty(actorIndex) ? actorName : actorIndex));
             SetVariable("ConversantIndex", StringToTableIndex(string.IsNullOrEmpty(conversantIndex) ? actorName : conversantIndex));
+        }
+
+        /// <summary>
+        /// Returns the SimStatus of a dialogue entry, or a blank string if Include Sim Status isn't ticked.
+        /// </summary>
+        public static string GetSimStatus(DialogueEntry dialogueEntry)
+        {
+            return (dialogueEntry != null) ? GetSimStatus(dialogueEntry.conversationID, dialogueEntry.id) : string.Empty;
+        }
+
+        /// <summary>
+        /// Returns the SimStatus of a dialogue entry, or a blank string if Include Sim Status isn't ticked.
+        /// </summary>
+        public static string GetSimStatus(int conversationID, int entryID)
+        {
+            if (includeSimStatus)
+            {
+                bool luaExceptionOccurred = false;
+                try
+                {
+                    return Lua.Run(string.Format("return Conversation[{0}].Dialog[{1}].SimStatus", new System.Object[] { conversationID, entryID }), false, true).asString;
+                }
+                catch (System.Exception)
+                {
+                    luaExceptionOccurred = true;
+                }
+                if (luaExceptionOccurred && DialogueDebug.logErrors) Debug.LogError(string.Format("{0}: The Lua exception above indicates a dialogue database inconsistency. Is an invalid conversation ID recorded in a dialogue entry? Is the database loaded?", new System.Object[] { DialogueDebug.Prefix }));
+            }
+            return string.Empty;
         }
 
         /// <summary>

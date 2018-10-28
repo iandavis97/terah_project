@@ -1,4 +1,4 @@
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -174,6 +174,16 @@ namespace PixelCrushers.DialogueSystem
         protected const float MinTimeBetweenUseButton = 0.5f;
         protected float timeToEnableUseButton = 0;
 
+        public virtual void Start()
+        {
+            bool found = false;
+            if (GetComponent<Collider>() != null) found = true;
+#if USE_PHYSICS2D || !UNITY_2018_1_OR_NEWER
+            if (!found && GetComponent<Collider2D>() != null) found = true;
+#endif
+            if (!found && DialogueDebug.logWarnings) Debug.LogWarning("Dialogue System: Proximity Selector requires a collider, but it has no collider component.", this);
+        }
+
         public virtual void OnConversationEnd(Transform actor)
         {
             timeToEnableUseButton = Time.time + MinTimeBetweenUseButton;
@@ -272,18 +282,6 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
-        /// If we entered a 2D trigger, check if it's a usable object. If so, update the selection
-        /// and raise the SelectedUsableObject event.
-        /// </summary>
-        /// <param name='other'>
-        /// The 2D trigger collider.
-        /// </param>
-        protected void OnTriggerEnter2D(Collider2D other)
-        {
-            CheckTriggerEnter(other.gameObject);
-        }
-
-        /// <summary>
         /// If we just left a trigger, check if it's the current selection. If so, clear the
         /// selection and raise the DeselectedUsableObject event. If we're still in range of
         /// any other usables, select one of them.
@@ -294,6 +292,20 @@ namespace PixelCrushers.DialogueSystem
         protected void OnTriggerExit(Collider other)
         {
             CheckTriggerExit(other.gameObject);
+        }
+
+#if USE_PHYSICS2D || !UNITY_2018_1_OR_NEWER
+
+        /// <summary>
+        /// If we entered a 2D trigger, check if it's a usable object. If so, update the selection
+        /// and raise the SelectedUsableObject event.
+        /// </summary>
+        /// <param name='other'>
+        /// The 2D trigger collider.
+        /// </param>
+        protected void OnTriggerEnter2D(Collider2D other)
+        {
+            CheckTriggerEnter(other.gameObject);
         }
 
         /// <summary>
@@ -308,6 +320,8 @@ namespace PixelCrushers.DialogueSystem
         {
             CheckTriggerExit(other.gameObject);
         }
+
+#endif
 
         protected virtual void CheckTriggerEnter(GameObject other)
         {

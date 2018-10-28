@@ -1,5 +1,5 @@
 #if USE_ARTICY
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -364,7 +364,7 @@ namespace PixelCrushers.DialogueSystem.Articy
 
         private void DrawArticyEntities()
         {
-            articyEntitiesFoldout = EditorGUILayout.Foldout(articyEntitiesFoldout, "Entities (Actors & Items)");
+            articyEntitiesFoldout = EditorGUILayout.Foldout(articyEntitiesFoldout, "Entities (Actors, Items & Quests)");
             if (articyEntitiesFoldout)
             {
                 StartIndentedSection();

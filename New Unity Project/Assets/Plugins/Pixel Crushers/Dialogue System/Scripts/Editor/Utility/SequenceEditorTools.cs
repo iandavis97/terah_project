@@ -1,4 +1,4 @@
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -14,10 +14,10 @@ namespace PixelCrushers.DialogueSystem
 
         private enum MenuResult
         {
-            None, DefaultSequence, Delay, DefaultCameraAngle, UpdateTracker, Continue, ContinueTrue, ContinueFalse
+            Unselected, DefaultSequence, Delay, DefaultCameraAngle, UpdateTracker, RandomizeNextEntry, None, Continue, ContinueTrue, ContinueFalse
         }
 
-        private static MenuResult menuResult = MenuResult.None;
+        private static MenuResult menuResult = MenuResult.Unselected;
 
         private enum AudioDragDropCommand { AudioWait, Audio, SALSA }
 
@@ -36,10 +36,10 @@ namespace PixelCrushers.DialogueSystem
                 DrawContextMenu(sequence);
             }
             EditorGUILayout.EndHorizontal();
-            if (menuResult != MenuResult.None)
+            if (menuResult != MenuResult.Unselected)
             {
                 sequence = ApplyMenuResult(menuResult, sequence);
-                menuResult = MenuResult.None;
+                menuResult = MenuResult.Unselected;
             }
 
             EditorWindowTools.StartIndentedSection();
@@ -99,14 +99,16 @@ namespace PixelCrushers.DialogueSystem
         private static void DrawContextMenu(string sequence)
         {
             GenericMenu menu = new GenericMenu();
-            menu.AddItem(new GUIContent("Help/Overview..."), false, OpenURL, "http://www.pixelcrushers.com/dialogue_system/manual/html/sequences.html");
-            menu.AddItem(new GUIContent("Help/Command Reference..."), false, OpenURL, "http://www.pixelcrushers.com/dialogue_system/manual/html/sequencer_commands.html");
+            menu.AddItem(new GUIContent("Help/Overview..."), false, OpenURL, "https://www.pixelcrushers.com/dialogue_system/manual2x/html/cutscene_sequences.html");
+            menu.AddItem(new GUIContent("Help/Command Reference..."), false, OpenURL, "https://www.pixelcrushers.com/dialogue_system/manual2x/html/sequencer_command_reference.html");
             menu.AddSeparator("");
             menu.AddDisabledItem(new GUIContent("Shortcuts:"));
             menu.AddItem(new GUIContent("Include Dialogue Manager's Default Sequence"), false, SetMenuResult, MenuResult.DefaultSequence);
             menu.AddItem(new GUIContent("Delay for subtitle length"), false, SetMenuResult, MenuResult.Delay);
             menu.AddItem(new GUIContent("Cut to speaker's default camera angle"), false, SetMenuResult, MenuResult.DefaultCameraAngle);
             menu.AddItem(new GUIContent("Update quest tracker"), false, SetMenuResult, MenuResult.UpdateTracker);
+            menu.AddItem(new GUIContent("Randomize next entry"), false, SetMenuResult, MenuResult.RandomizeNextEntry);
+            menu.AddItem(new GUIContent("None (null command with zero duration)"), false, SetMenuResult, MenuResult.None);
             menu.AddItem(new GUIContent("Continue/Simulate continue button click"), false, SetMenuResult, MenuResult.Continue);
             menu.AddItem(new GUIContent("Continue/Enable continue button"), false, SetMenuResult, MenuResult.ContinueTrue);
             menu.AddItem(new GUIContent("Continue/Disable continue button"), false, SetMenuResult, MenuResult.ContinueFalse);
@@ -202,6 +204,10 @@ namespace PixelCrushers.DialogueSystem
                     return "Camera(default)";
                 case MenuResult.UpdateTracker:
                     return "UpdateTracker()";
+                case MenuResult.RandomizeNextEntry:
+                    return "RandomizeNextEntry()";
+                case MenuResult.None:
+                    return "None()";
                 case MenuResult.Continue:
                     return "Continue()";
                 case MenuResult.ContinueTrue:

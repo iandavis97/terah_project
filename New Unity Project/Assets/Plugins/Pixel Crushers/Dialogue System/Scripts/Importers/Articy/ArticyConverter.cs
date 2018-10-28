@@ -1,5 +1,5 @@
 #if USE_ARTICY
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 using System.Collections.Generic;
 using System.IO;
@@ -983,7 +983,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             jumpEntry.canvasRect = new Rect(jump.position.x, jump.position.y, DialogueEntry.CanvasRectWidth, DialogueEntry.CanvasRectHeight);
             SetFeatureFields(jumpEntry.fields, jump.features);
             ConvertLocalizableText(jumpEntry, "Title", jump.displayName);
-            jumpEntry.isGroup = true;
+            jumpEntry.isGroup = false; // Since groups are processed one level ahead, don't make this a group: jumpEntry.isGroup = true;
             jumpEntry.currentSequence = "None()";
             ConvertPinExpressionsToConditionsAndScripts(jumpEntry, jump.pins);
             RecordPins(jump.pins, jumpEntry);
@@ -1073,7 +1073,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             entry.currentDialogueText = string.Empty;
             entry.currentMenuText = string.Empty;
             entry.currentSequence = "None()";
-            entry.isGroup = true;
+            entry.isGroup = false; // Since groups are processed one level ahead, don't make this a group: entry.isGroup = true;
             entry.conditionsString = string.Empty;
             entry.userScript = AddToUserScript(entry.userScript, ConvertExpression(instruction.expression));
             RecordPins(instruction.pins, entry);

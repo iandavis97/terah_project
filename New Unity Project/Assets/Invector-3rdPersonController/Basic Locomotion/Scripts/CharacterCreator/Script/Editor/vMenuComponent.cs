@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using Invector.Utils;
 
 namespace Invector.vCharacterController.vActions
 {
@@ -22,7 +23,7 @@ namespace Invector.vCharacterController.vActions
                 Selection.activeGameObject.AddComponent<vGenericAnimation>();
             else
                 Debug.Log("Please select the Player to add this component.");
-        }
+        }       
 
         [MenuItem("Invector/Basic Locomotion/Actions/Ladder Action")]
         static void LadderActionMenu()
@@ -31,6 +32,15 @@ namespace Invector.vCharacterController.vActions
                 Selection.activeGameObject.AddComponent<vLadderAction>();
             else
                 Debug.Log("Please select the Player to add this component.");
+        }
+
+        [MenuItem("Invector/Basic Locomotion/Components/Events With Delay")]
+        static void EventsWithDelayMenu()
+        {
+            if (Selection.activeGameObject)
+                Selection.activeGameObject.AddComponent<vEventWithDelay>();
+            else
+                Debug.Log("Please select the GameObject to add this component.");
         }
 
         [MenuItem("Invector/Basic Locomotion/Components/HitDamageParticle")]

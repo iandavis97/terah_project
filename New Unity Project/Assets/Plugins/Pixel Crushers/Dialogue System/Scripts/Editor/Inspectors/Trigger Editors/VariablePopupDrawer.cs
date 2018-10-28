@@ -1,4 +1,4 @@
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -37,6 +37,7 @@ namespace PixelCrushers.DialogueSystem
             EditorGUI.BeginProperty(position, GUIContent.none, prop);
             position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
 
+            if (EditorTools.selectedDatabase == null) EditorTools.SetInitialDatabaseIfNull();
             if (ShowReferenceDatabase())
             {
                 var dbPosition = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);

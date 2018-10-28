@@ -298,7 +298,7 @@ namespace Invector.vCharacterController
                 onActiveRagdoll.Invoke();
         }
 
-        public void ReduceStamina(float value, bool accumulative)
+        public virtual void ReduceStamina(float value, bool accumulative)
         {
             if (accumulative) currentStamina -= value * Time.deltaTime;
             else currentStamina -= value;
@@ -330,7 +330,7 @@ namespace Invector.vCharacterController
                 maxStamina = 0;
         }
 
-        public void DeathBehaviour()
+        public virtual void DeathBehaviour()
         {
             // lock the player input
             lockMovement = true;
@@ -388,7 +388,7 @@ namespace Invector.vCharacterController
                 StrafeMovement();
         }
 
-        public virtual void StrafeMovement()
+        protected virtual void StrafeMovement()
         {
             isStrafing = true;
 
@@ -571,7 +571,7 @@ namespace Invector.vCharacterController
 
         #region Jump Methods
 
-        protected void ControlJumpBehaviour()
+        protected virtual void ControlJumpBehaviour()
         {
             if (!isJumping) return;
 
@@ -587,7 +587,7 @@ namespace Invector.vCharacterController
             _rigidbody.velocity = vel;
         }
 
-        public void SetJumpMultiplier(float jumpMultiplier, float timeToReset = 1f)
+        public virtual void SetJumpMultiplier(float jumpMultiplier, float timeToReset = 1f)
         {
             this.jumpMultiplier = jumpMultiplier;
             if (timeToResetJumpMultiplier <= 0)
@@ -598,7 +598,7 @@ namespace Invector.vCharacterController
             else timeToResetJumpMultiplier = timeToReset;
         }
 
-        public void ResetJumpMultiplier()
+        public virtual void ResetJumpMultiplier()
         {
             StopCoroutine("ResetJumpMultiplierRoutine");
             timeToResetJumpMultiplier = 0;
@@ -616,7 +616,7 @@ namespace Invector.vCharacterController
             jumpMultiplier = 1;
         }
 
-        public void AirControl()
+        public virtual void AirControl()
         {
             if (isGrounded) return;
             //if (!jumpFwdCondition) return;
@@ -649,7 +649,7 @@ namespace Invector.vCharacterController
             }
         }
 
-        protected bool jumpFwdCondition
+        protected virtual bool jumpFwdCondition
         {
             get
             {
@@ -663,7 +663,7 @@ namespace Invector.vCharacterController
 
         #region Ground Check                
 
-        void CheckGround()
+        protected virtual void CheckGround()
         {
             CheckGroundDistance();
 
@@ -723,7 +723,7 @@ namespace Invector.vCharacterController
             }
         }
 
-        void CheckGroundDistance()
+        protected virtual void CheckGroundDistance()
         {
             if (isDead) return;
             if (_capsuleCollider != null)
@@ -792,7 +792,7 @@ namespace Invector.vCharacterController
             transform.rotation = Quaternion.Lerp(transform.rotation, surfaceRot, 10f * Time.deltaTime);
         }
 
-        void Sliding()
+        protected virtual void Sliding()
         {
             //var onStep = StepOffset();
 
@@ -810,7 +810,7 @@ namespace Invector.vCharacterController
             }
         }
 
-        bool StepOffset()
+        protected virtual bool StepOffset()
         {            
             if (input.sqrMagnitude < 0.1 || !isGrounded || stopMove || isSliding || isJumping) return false;
 
@@ -852,7 +852,7 @@ namespace Invector.vCharacterController
 
         #region Colliders Check
 
-        void ControlCapsuleHeight()
+        protected virtual void ControlCapsuleHeight()
         {
             if (isCrouching || isRolling || landHigh)
             {
@@ -871,7 +871,7 @@ namespace Invector.vCharacterController
         /// <summary>
         /// Disables rigibody gravity, turn the capsule collider trigger and reset all input from the animator.
         /// </summary>
-        public void DisableGravityAndCollision()
+        public virtual void DisableGravityAndCollision()
         {
             animator.SetFloat("InputHorizontal", 0f);
             animator.SetFloat("InputVertical", 0f);
@@ -884,7 +884,7 @@ namespace Invector.vCharacterController
         /// Turn rigidbody gravity on the uncheck the capsulle collider as Trigger when the animation has finish playing
         /// </summary>
         /// <param name="normalizedTime">Check the value of your animation Exit Time and insert here</param>
-        public void EnableGravityAndCollision(float normalizedTime)
+        public virtual void EnableGravityAndCollision(float normalizedTime)
         {
             // enable collider and gravity at the end of the animation
             if (baseLayerInfo.normalizedTime >= normalizedTime)
@@ -895,7 +895,7 @@ namespace Invector.vCharacterController
         }
         #endregion
 
-        #region Camera Methods
+        #region Rotation with Camera Methods
 
         public virtual void RotateToTarget(Transform target)
         {
@@ -947,7 +947,7 @@ namespace Invector.vCharacterController
 
         #region Ragdoll 
 
-        void CheckRagdoll()
+        protected virtual void CheckRagdoll()
         {
             if (ragdollVel == 0) return;
 
@@ -1024,7 +1024,7 @@ namespace Invector.vCharacterController
             return debugInfo;
         }
 
-        void OnDrawGizmos()
+        protected virtual void OnDrawGizmos()
         {
             if (Application.isPlaying && debugWindow)
             {

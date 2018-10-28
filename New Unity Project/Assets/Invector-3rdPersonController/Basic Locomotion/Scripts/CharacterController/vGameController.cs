@@ -125,7 +125,16 @@ namespace Invector
 
         void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
         {
-           
+            if (currentController.currentHealth > 0)
+            {
+                if (displayInfoInFadeText && vHUDController.instance)
+                    vHUDController.instance.ShowText("Load Scene: " + scene.name);
+                return;
+            }
+            if (displayInfoInFadeText && vHUDController.instance)
+                vHUDController.instance.ShowText("Reload Scene");
+            OnReloadGame.Invoke();
+            FindPlayer();
 
         }
 

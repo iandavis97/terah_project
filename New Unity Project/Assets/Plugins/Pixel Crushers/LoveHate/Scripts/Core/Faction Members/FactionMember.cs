@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -454,7 +454,7 @@ namespace PixelCrushers.LoveHate
             {
                 var rumor = longTermMemory[i];
                 if (rumor.actorFactionID == actorFactionID &&
-                    rumor.targetFactionID == actorFactionID &&
+                    rumor.targetFactionID == targetFactionID &&
                     string.Equals(rumor.tag, deedTag))
                 {
                     return rumor;

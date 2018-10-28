@@ -1,4 +1,4 @@
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -346,6 +346,22 @@ namespace PixelCrushers.DialogueSystem
         static public void ClearQuestTrackerPlayerPrefsKeys()
         {
             PlayerPrefs.DeleteKey("QuestTracker");
+        }
+
+        [MenuItem("Tools/Pixel Crushers/Dialogue System/Tools/Enable TextMesh Pro Support...", false, 100)]
+        static public void AddTMPPRESENT()
+        {
+            if (EditorUtility.DisplayDialog("Enable TextMesh Pro Support", "This will enable the Dialogue System's TextMesh Pro support. Your project must already contain the TextMesh Pro package. To continue, press OK. If you need to install TextMesh Pro first, press Cancel.", "OK", "Cancel"))
+            {
+                MoreEditorUtility.TryAddScriptingDefineSymbols("TMP_PRESENT");
+                EditorUtility.DisplayDialog("TextMesh Pro Support Enabled", "TextMesh Pro support has been enabled. You may need to right-click on the two files named TextMeshProTypewriterEffect and select Reimport to be able to add them to your GameObjects.", "OK");
+            }
+        }
+
+        [MenuItem("Tools/Pixel Crushers/Dialogue System/Tools/Enable TextMesh Pro Support...", true)]
+        static bool ValidateAddTMPPRESENT()
+        {
+            return !MoreEditorUtility.DoesScriptingDefineSymbolExist("TMP_PRESENT");
         }
 
         #endregion

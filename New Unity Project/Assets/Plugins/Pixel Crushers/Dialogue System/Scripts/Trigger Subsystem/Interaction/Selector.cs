@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEngine.Events;
@@ -322,6 +322,7 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void Run2DRaycast()
         {
+#if USE_PHYSICS2D || !UNITY_2018_1_OR_NEWER
             if (raycastAll)
             {
 
@@ -389,6 +390,7 @@ namespace PixelCrushers.DialogueSystem
                     DeselectTarget();
                 }
             }
+#endif
         }
 
         protected virtual void Run3DRaycast()

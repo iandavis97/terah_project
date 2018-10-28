@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEngine.Events;
@@ -405,6 +405,25 @@ namespace PixelCrushers.DialogueSystem
 
             instantiatedButtons.Clear();
             NotifyContentChanged();
+        }
+
+        /// <summary>
+        /// Makes the panel's buttons non-clickable.
+        /// Typically called by the dialogue UI as soon as a button has been
+        /// clicked to make sure the player can't click another one while the
+        /// menu is playing its hide animation.
+        /// </summary>
+        public void MakeButtonsNonclickable()
+        {
+            for (int i = 0; i < instantiatedButtons.Count; i++)
+            {
+                var responseButton = (instantiatedButtons[i] != null) ? instantiatedButtons[i].GetComponent<StandardUIResponseButton>() : null;
+                if (responseButton != null) responseButton.isClickable = false;
+            }
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                if (buttons[i] != null) buttons[i].isClickable = false;
+            }
         }
 
         protected void NotifyContentChanged()

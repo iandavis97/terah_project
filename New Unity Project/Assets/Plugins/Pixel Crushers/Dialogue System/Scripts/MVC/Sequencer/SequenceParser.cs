@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -255,7 +255,7 @@ namespace PixelCrushers.DialogueSystem
                 else
                 {
                     float value;
-                    if (float.TryParse(s, out value))
+                    if (float.TryParse(s, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out value))
                     {
                         atTime = value;
                     }

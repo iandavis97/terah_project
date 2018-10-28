@@ -15,9 +15,10 @@ namespace PixelCrushers.LoveHate.Example
 
 		public Vector3 moveToPosition;
 
-		protected Rigidbody2D rb;
+        protected Rect cameraRect;
 
-		protected Rect cameraRect;
+#if USE_PHYSICS2D || !UNITY_2018_1_OR_NEWER
+        protected Rigidbody2D rb;
 
 		protected virtual void Start()
 		{
@@ -37,7 +38,10 @@ namespace PixelCrushers.LoveHate.Example
 				rb.MovePosition(new Vector2(x, y));
 			}
 		}
+#else
+        protected virtual void Start() {}
+#endif
 
-	}
+    }
 
 }

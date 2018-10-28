@@ -110,17 +110,14 @@ There currently is no separate documentation available.
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
-Demo
+Demo Project
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
-The demo.unitypackage file contains a demo project.
+- Downloading the demo
+You can download a complete Unity demo project here:
+http://orkframework.com/showcase/
 
-- Setting up the demo
-To get the demo running, import the contents of demo.unitypackage into an empty project.
-Make sure that ORK Framework is NOT imported before importing the demo.
-
-Now, add all Unity scenes found in 'Assets/Tutorial Resources/Scenes/' to the project's build settings.
-Use the Unity menu to open the build settings (File > Build Settings...) and drag the scenes on the 'Scenes In Build' area.
+Unzip the file after download, the folder contains a Unity project, i.e. don't import it into an existing project - open it as a Unity project.
 
 - Starting the demo
 To start the demo, open the main menu scene (0 Main Menu) and press play.
@@ -129,6 +126,11 @@ To start the demo, open the main menu scene (0 Main Menu) and press play.
 Use the 'Arrow' keys to move your player and change menu selections.
 The 'Escape' key opens the menu. Use 'Enter' to accept and 'Right-Ctrl' to cancel.
 In real time combat, use 'Space' to attack and 'Left-Ctrl' to open the battle menu.
+
+- Game Tutorials
+The demo project is the result of the game tutorial series.
+I'd highly recommend to go through the tutorials to learn the basic workflow and settings you'll need when working with ORK Framework:
+http://orkframework.com/tutorials/game/
 
 
 
@@ -141,10 +143,6 @@ Contains the gizmo icons (32x32) used by ORK Framework.
 
 - DLL (folder)
 3 DLLs containing ORKFramework.
-
-- demo.unitypackage
-Contains a complete demo project.
-Please see the 'Demo' section for details.
 
 - gameplay_source_code.zip
 Contains the gameplay related source code and a plugin template as MonoDevelop projects.
@@ -184,6 +182,32 @@ http://docs.unity3d.com/Manual/TroubleShootingIPhone.html
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 ORK Version Changelog
 -------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Version 2.18.0:
+- new: Camera Controls: Top Down Border: 'Remember Rotation', 'Remember Panning' and 'Remember Zoom' settings available. Optionally remember the current rotation, panning or zoom of the camera between scenes.
+- new: Camera Controls: Mouse: 'Remember Rotation' and 'Remember Zoom' settings available. Optionally remember the current rotation and zoom of the camera between scenes.
+- new: Abilities, Items: 'Target Range Toggle' setting available when using 'Single' or 'Group' target range. Optionally allow the player to toggle between 'Single' and 'Group' target range during target selection.
+- new: Abilities: User Changes: 'Target Hit Only' setting available. Optionally only use user changes (including critical changes) if at least 1 target was hit.
+- new: Abilities: Cast Time: 'Own Cast Time' setting available. Abilities can override the (new) default ability cast time setting (defined in the battle settings). Settings will automatically be udpated to use own cast times if they previously used a cast time.
+- new: Abilities: Cast Time: 'Play Sound' settings available. Optionally play an audio clip or sound type on the user when starting to cast an ability.
+- new: Abilities, Items, Weapons, Armors: Variables: Initializing the variables of a new instance will now allow using the instance itself as selected data with the 'action' key. This can be e.g. used in formulas to use other variables for another variable's calculation (must be set up before the one with the formula calculation).
+- new: Abilities, Items: 'Allow Dead User' setting available. Optionally allow action calculation if the user is dead. E.g. if the user fired a projectile (using a 'Damage Dealer' component to do damage), the projectile can still cause damage if the user was killed.
+- new: Items: Cast Time: 'Cast Time' settings available. Like abilities, items can now use cast times before actually using the item.
+- new: Battle Settings: 'Target Range Key' setting available. Use this key to toggle between 'Single' and 'Group' target ranges for abilities/items that allow toggling the target range. Can be used during target selection, e.g. in battle menus or menu screens.
+- new: Battle Settings: Cast Time: 'Cast Time Settings' available. Optionally use cast times for abilities, items, defend, escape, none and grid move commands.
+- new: HUDs: Timebar: 'Timebar' HUD type available. Displays a timebar image and places combatant HUDs on the timebar based on their current timebar value. Optionally also includes cast time placement on the bar.
+- new: HUDs: Combatant: Cast Time: New text codes available to display the cast action's description ('%d') and icon ('%i).
+- new: Event System: Nav Mesh Warp: 'Nav Mesh Warp' node available in 'Movement > Movement' nodes. Warps a NavMesh agent to a new position.
+- new: Event System: Despawn Combatant Spawner: 'Despawn Combatant Spawner' node available in 'Combatant > Combatant' nodes. Despawns all combatants of a combatant spawner, i.e. removes them and makes them available for spawning at a later time (no automatic respawn).
+- new: Event System: Is Casting Item: 'Is Casting Item' node available in 'Combatant > Inventory' nodes. Checks if a combatant is currently casting an item.
+- new: Event System: Get Combatant Gains: 'Get Combatant Gains' node available in 'Battle > Gains' nodes. Collects the loot and status value rewards (including experience) from a combatant. The loot/gains can only be collected once per combatant, e.g. use this node if you want to drop a combatant's loot early in its death event instead of after the event finished.
+- change: Battle Grids: Performance improvements on various grid operations, especially calculating move range cells.
+- change: Formulas, Event System: Change Game Variables: Formulas and events now pass on the local variables and selected data to variable changes. I.e. you can now use them in formulas used to calculate a variable change.
+- change: Active Time Battles: Cast Time: Changes how cast time is handled in 'Active Time' battles without dynamic combat. Previously, casting would block other actions from being performed (or start casting). Now, actions can be performed while another combatant is casting an action and casting can start while a combatant performs an action.
+- fix: Dragging: Fixed an issue that caused an error when using click drag.
+- fix: Level Up: Fixed an issue where 'Fully Recover' didn't take status value bonuses into account.
+- fix: Active Time Battles: Fixed an issue where AI controlled combatants didn't perform actions if the 'Menu Border' was below the 'Action Border'.
+
 
 Version 2.17.1:
 - new: Inventory Settings, Items, Weapons, Armors: Stack Limit: 'Stack Limit' settings available. Optionally limit the quantity of items that can be stored in a single stack. Items exceeding the stack limit will be stored in a new/other stack.

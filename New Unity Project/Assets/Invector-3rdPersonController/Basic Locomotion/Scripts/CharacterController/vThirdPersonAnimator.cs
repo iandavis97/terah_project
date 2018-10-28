@@ -28,7 +28,7 @@ namespace Invector.vCharacterController
 
         #endregion
 
-        public void OnAnimatorMove()
+        protected virtual void OnAnimatorMove()
         {
             if (!this.enabled) return;
             
@@ -71,26 +71,23 @@ namespace Invector.vCharacterController
             }
         }
 
-        public virtual void UpdateAnimator()
+        protected virtual void UpdateAnimator()
         {
             if (animator == null || !animator.enabled) return;          
 
             LayerControl();
             ActionsControl();
 
-            RandomIdle();
+            TriggerRandomIdle();
 
             // trigger by input
-            RollAnimation();            
-
-            // trigger at any time using conditions
-            TriggerLandHighAnimation();
+            RollAnimation();                        
 
             LocomotionAnimation();
             DeadAnimation();
         }
 
-        public void LayerControl()
+        public virtual void LayerControl()
         {
             baseLayerInfo = animator.GetCurrentAnimatorStateInfo(baseLayer);
             underBodyInfo = animator.GetCurrentAnimatorStateInfo(underBodyLayer);
@@ -100,7 +97,7 @@ namespace Invector.vCharacterController
             fullBodyInfo = animator.GetCurrentAnimatorStateInfo(fullbodyLayer);
         }
 
-        public void ActionsControl()
+        public virtual void ActionsControl()
         {
             // to have better control of your actions, you can filter the animations state using bools 
             // this way you can know exactly what animation state the character is playing
@@ -119,7 +116,7 @@ namespace Invector.vCharacterController
 
         #region Locomotion Animations
 
-        void RandomIdle()
+        protected virtual void TriggerRandomIdle()
         {
             if (input != Vector2.zero || actions) return;
 
@@ -143,7 +140,7 @@ namespace Invector.vCharacterController
             }
         }
 
-        public void LocomotionAnimation()
+        protected virtual void LocomotionAnimation()
         {            
             animator.SetBool("IsStrafing", isStrafing);
             animator.SetBool("IsCrouching", isCrouching);
@@ -173,16 +170,16 @@ namespace Invector.vCharacterController
                 GetTurnOnSpotDirection(transform, Camera.main.transform, ref _speed, ref _direction, input);
                 FreeTurnOnSpot(_direction * 180);
             }
-        }       
+        }
 
-        public void FreeTurnOnSpot(float direction)
+        protected virtual void FreeTurnOnSpot(float direction)
         {
             bool inTransition = animator.IsInTransition(0);
             float directionDampTime = inTurn || inTransition ? 1000000 : 0;
             animator.SetFloat("TurnOnSpotDirection", direction, directionDampTime, Time.deltaTime);
         }
 
-        public void GetTurnOnSpotDirection(Transform root, Transform camera, ref float _speed, ref float _direction, Vector2 input)
+        protected virtual void GetTurnOnSpotDirection(Transform root, Transform camera, ref float _speed, ref float _direction, Vector2 input)
         {
             Vector3 rootDirection = root.forward;
             Vector3 stickDirection = new Vector3(input.x, 0, input.y);
@@ -219,22 +216,11 @@ namespace Invector.vCharacterController
                 autoCrouch = true;
 
                 if (isStrafing && (input != Vector2.zero || speed > 0.25f))
-                {                   
+                {
                     var rot = rollRotation;
                     var eulerAngles = new Vector3(transform.eulerAngles.x, rot.eulerAngles.y, transform.eulerAngles.z);
-                    transform.eulerAngles = eulerAngles;                  
+                    transform.eulerAngles = eulerAngles;
                 }
-
-                //if (baseLayerInfo.normalizedTime > 0.1f && baseLayerInfo.normalizedTime < 0.3f)
-                //    _rigidbody.useGravity = false;
-
-                //// prevent the character to rolling up 
-                //if (verticalVelocity >= 1)
-                //    _rigidbody.velocity = Vector3.ProjectOnPlane(_rigidbody.velocity, groundHit.normal);
-
-                //// reset the rigidbody a little ealier to the character fall while on air
-                //if (baseLayerInfo.normalizedTime > 0.3f)
-                //    _rigidbody.useGravity = true;                
             }
         }
 
@@ -303,12 +289,12 @@ namespace Invector.vCharacterController
 
         #region Trigger Animations       
 
-        public void TriggerAnimationState(string animationClip, float transition)
+        public virtual void TriggerAnimationState(string animationClip, float transition)
         {
             animator.CrossFadeInFixedTime(animationClip, transition);
         }
 
-        public bool IsAnimatorTag(string tag)
+        public virtual bool IsAnimatorTag(string tag)
         {           
             if (animator == null) return false;
             if (baseLayerInfo.IsTag(tag)) return true;
@@ -318,16 +304,6 @@ namespace Invector.vCharacterController
             if (upperBodyInfo.IsTag(tag)) return true;
             if (fullBodyInfo.IsTag(tag)) return true;
             return false;
-        }
-
-        void TriggerLandHighAnimation()
-        {
-            if (landHigh)
-            {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-                vInput.instance.GamepadVibration(0.25f);
-#endif
-            }
         }
 
         #endregion

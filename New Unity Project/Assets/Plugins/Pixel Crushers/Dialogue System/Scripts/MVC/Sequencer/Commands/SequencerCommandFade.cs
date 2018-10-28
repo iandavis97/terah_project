@@ -1,4 +1,4 @@
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 
@@ -37,7 +37,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
             direction = GetParameter(0);
             duration = GetParameterAsFloat(1, 0);
             color = Tools.WebColor(GetParameter(2, "#000000"));
-            if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: Fade({1}, {2}, {3})", new System.Object[] { DialogueDebug.Prefix, direction, duration, color }));
+            if (DialogueDebug.logInfo) Debug.Log(string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}: Sequencer: Fade({1}, {2}, {3})", new System.Object[] { DialogueDebug.Prefix, direction, duration, color }));
 
             if (duration > SmoothMoveCutoff)
             {

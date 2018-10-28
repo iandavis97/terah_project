@@ -1,4 +1,4 @@
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Text;
@@ -217,7 +217,12 @@ namespace PixelCrushers.DialogueSystem
             Lua.Run(saveData, DialogueDebug.logInfo);
             ExpandCompressedSimStatusData();
             RefreshRelationshipAndStatusTablesFromLua();
-            if (initializeNewVariables) InitializeNewVariablesFromDatabase();
+            if (initializeNewVariables)
+            {
+                InitializeNewVariablesFromDatabase();
+                InitializeNewQuestEntriesFromDatabase();
+                if (includeSimStatus) InitializeNewSimStatusFromDatabase();
+            }
             Apply();
         }
 
@@ -805,6 +810,89 @@ namespace PixelCrushers.DialogueSystem
             catch (System.Exception e)
             {
                 Debug.LogError(string.Format("{0}: InitializeNewVariablesFromDatabase() failed to get variable data: {1}", new System.Object[] { DialogueDebug.Prefix, e.Message }));
+            }
+        }
+
+        /// <summary>
+        /// Instructs the Dialogue System to add any missing quest entries that are in the master 
+        /// database but not in Lua.
+        /// </summary>
+        public static void InitializeNewQuestEntriesFromDatabase()
+        {
+            try
+            {
+                var luaCode = string.Empty;
+                var database = DialogueManager.MasterDatabase;
+                if (database == null) return;
+                for (int i = 0; i < database.items.Count; i++)
+                {
+                    if (database.items[i].IsItem) continue;
+                    var dbQuest = database.items[i];
+                    var questName = dbQuest.Name;
+                    var dbEntryCount = dbQuest.LookupInt("Entry Count");
+                    var luaEntryCount = DialogueLua.GetQuestField(questName, "Entry Count").AsInt;
+                    if (luaEntryCount < dbEntryCount)
+                    {
+                        luaCode += "Item[\"" + DialogueLua.StringToTableIndex(questName) + "\"].Entry_Count=" + dbEntryCount + "; ";
+                        for (int j = 0; j < dbQuest.fields.Count; j++)
+                        {
+                            var field = dbQuest.fields[j];
+                            if (field.title.StartsWith("Entry ") && !field.title.EndsWith(" Count"))
+                            {
+                                luaCode += "Item[\"" + DialogueLua.StringToTableIndex(questName) + "\"]." +
+                                    DialogueLua.StringToTableIndex(field.title) + " = " +
+                                    DialogueLua.ValueAsString(field.type, field.value) + "; ";
+                            }
+                        }
+                    }
+                    Lua.Run(luaCode);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(string.Format("{0}: InitializeNewQuestEntriesFromDatabase() failed to get quest data: {1}", new System.Object[] { DialogueDebug.Prefix, e.Message }));
+            }
+        }
+
+        public static void InitializeNewSimStatusFromDatabase()
+        {
+            if (!includeSimStatus) return;
+            try
+            {
+                var database = DialogueManager.MasterDatabase;
+                if (database == null) return;
+                var missingConversations = new List<Conversation>();
+                var fakeLoadedDatabases = new List<DialogueDatabase>();
+                var luaCode = string.Empty;
+                for (int i = 0; i < database.conversations.Count; i++)
+                {
+                    var conversation = database.conversations[i];
+                    var convTableIdent = "Conversation[" + conversation.id + "]";
+                    var convTable = Lua.Run("return " + convTableIdent).AsTable;
+                    if (!convTable.IsValid)
+                    {
+                        missingConversations.Add(conversation);
+                    }
+                    else
+                    {
+                        for (int j = 0; j < conversation.dialogueEntries.Count; j++)
+                        {
+                            var entry = conversation.dialogueEntries[j];
+                            var dialogTableIdent = convTableIdent + ".Dialog[" + entry.id + "]";
+                            var entryTable = Lua.Run("return " + dialogTableIdent).AsTable;
+                            if (!entryTable.IsValid)
+                            {
+                                luaCode += dialogTableIdent + "={SimStatus=\"Untouched\"}; ";
+                            }
+                        }
+                    }
+                }
+                Lua.Run(luaCode, DialogueDebug.LogInfo);
+                DialogueLua.AddToConversationTable(missingConversations, fakeLoadedDatabases);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Dialogue System: InitializeNewSimStatusFromDatabase() failed: " + e.Message);
             }
         }
 

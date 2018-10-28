@@ -4,6 +4,23 @@ Copyright © Pixel Crushers
 RELEASE NOTES
 -------------
 
+Version 1.9.3
+- IMPORTANT CHANGE: On Unity 2018+, you must define scripting symbol USE_PHYSICS2D to use 2D physics.
+- Fixed: FactionMember.FindRumorInMemory wasn't matching target faction correctly.
+- Fixed: Faction Member inspector was showing 1 + memory count.
+- Fixed: Trigger Event and Collision Event components now handle >32 tags.
+- Improved: Updated for .NET Standard 2.0 compatibility.
+- Improved: FactionManager now delays check for faction database until Start.
+- Improved: Added Assign Unique Key menu item for Saver components.
+- Improved: Added Control Graphic Raycasters checkbox to Input Device Manager.
+- Improved: Timed Event now has option to time by # of frames.
+- Improved: Tag masks in Trigger Event & Collider Event now support >32 tags.
+- Save System: Added Assign Unique Keys menu item.
+- Save System: Animator Saver now saves animator parameters.
+- Save System: If Active Saver activates inactive target, it now also tells target's other savers to apply data.
+- ORK Framework: Fixed GetTemperament. Added GetEmotionalState.
+
+
 Version 1.9.2
 - Added: LoveHate static helper class.
 - Fixed: Removed editor warning in EditorNote.cs.

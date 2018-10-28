@@ -29,9 +29,9 @@ namespace PixelCrushers.LoveHate.Example
 
 		private FactionMember m_member;
 
-		private DeedReporter m_deedReporter;
+        private DeedReporter m_deedReporter;
 
-		public List<FactionMember> m_inRange = new List<FactionMember>();
+        public List<FactionMember> m_inRange = new List<FactionMember>();
 
 		private enum State { Wander, Pursue, Evade }
 
@@ -50,7 +50,8 @@ namespace PixelCrushers.LoveHate.Example
 		{
 			base.Start();
 			m_deedReporter = GetComponent<DeedReporter>();
-			m_member = GetComponent<FactionMember>();
+            if (m_deedReporter != null) m_deedReporter.enabled = true; // Dummy line to quiet Unity 2018+ if USE_PHYSICS2D isn't set yet.
+            m_member = GetComponent<FactionMember>();
 			m_member.GetPowerLevel = GetPowerLevel;
 			m_member.GetSelfPerceivedPowerLevel = GetSelfPerceivedPowerLevel;
 			m_destination = GetRandomDestination();
@@ -68,7 +69,9 @@ namespace PixelCrushers.LoveHate.Example
 			return selfPerceivedPowerLevel;
 		}
 
-		private void OnTriggerEnter2D(Collider2D collider)
+#if USE_PHYSICS2D || !UNITY_2018_1_OR_NEWER
+
+        private void OnTriggerEnter2D(Collider2D collider)
 		{
 			var otherMember = collider.GetComponentInChildren<FactionMember>();
 			if (otherMember == null || m_inRange.Contains(otherMember)) return;
@@ -93,7 +96,29 @@ namespace PixelCrushers.LoveHate.Example
 			}
 		}
 
-		private void HandleTarget(FactionMember newTarget)
+        private void OnCollisionEnter2D(Collision2D coll)
+        {
+            var otherMember = coll.collider.GetComponentInChildren<FactionMember>();
+            if (otherMember == null || !aggressive) return;
+            if (m_member.GetAffinity(otherMember) < 0)
+            {
+                if (m_deedReporter != null)
+                {
+                    m_deedReporter.ReportDeed("attack", otherMember);
+                }
+                if (!string.Equals(otherMember.faction.name, "Farmer"))
+                {
+                    Destroy(otherMember.gameObject);
+                    HandleTarget(null);
+                    m_inRange.RemoveAll(x => x == null);
+                    CheckForNewTarget();
+                }
+            }
+        }
+
+#endif
+
+        private void HandleTarget(FactionMember newTarget)
 		{
 			m_target = (newTarget == null) ? null : newTarget.transform;
 			if (m_target != null && m_member.GetAffinity(newTarget) <= dislikeThreshold)
@@ -106,26 +131,6 @@ namespace PixelCrushers.LoveHate.Example
 			}
 		}
 		
-		private void OnCollisionEnter2D(Collision2D coll)
-		{
-			var otherMember = coll.collider.GetComponentInChildren<FactionMember>();
-			if (otherMember == null || !aggressive) return;
-			if (m_member.GetAffinity(otherMember) < 0)
-			{
-				if (m_deedReporter != null)
-				{
-					m_deedReporter.ReportDeed("attack", otherMember);
-				}
-				if (!string.Equals(otherMember.faction.name, "Farmer"))
-				{
-					Destroy(otherMember.gameObject);
-					HandleTarget(null);
-					m_inRange.RemoveAll(x => x == null);
-					CheckForNewTarget();
-				}
-			}
-		}
-
 		private void CheckForNewTarget()
 		{
 			if (m_inRange.Count > 0)

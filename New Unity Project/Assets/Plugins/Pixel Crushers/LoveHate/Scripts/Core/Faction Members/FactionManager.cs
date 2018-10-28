@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Text;
@@ -59,6 +59,8 @@ namespace PixelCrushers.LoveHate
 
         private static FactionManager m_instance = null;
 
+        private bool m_hasInitialized = false;
+
         public static FactionManager instance
         {
             get { return m_instance; }
@@ -76,11 +78,16 @@ namespace PixelCrushers.LoveHate
                 return;
             }
             m_instance = this;
+            Initialize();
+        }
+
+        protected virtual void Start()
+        { 
             if (factionDatabase == null)
             {
-                Debug.LogError("Love/Hate: Assign a faction database to FactionManager", this);
+                Debug.LogWarning("Love/Hate: Assign a faction database to FactionManager.", this);
             }
-            else
+            else if (!m_hasInitialized)
             {
                 Initialize();
             }
@@ -98,6 +105,7 @@ namespace PixelCrushers.LoveHate
             }
             m_members.Clear();
             m_witnessQueue.Clear();
+            m_hasInitialized = true;
             if (!Debug.isDebugBuild) debug = false;
         }
 

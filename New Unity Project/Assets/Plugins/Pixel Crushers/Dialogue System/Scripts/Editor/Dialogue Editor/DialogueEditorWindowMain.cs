@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -61,6 +61,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private const string AutoBackupFolderKey = "PixelCrushers.DialogueSystem.DialogueEditor.AutoBackupFolder";
         private const string AddNewNodesToRightKey = "PixelCrushers.DialogueSystem.DialogueEditor.AddNewNodesToRight";
         private const string TrimWhitespaceAroundPipesKey = "PixelCrushers.DialogueSystem.DialogueEditor.TrimWhitespaceAroundPipes";
+        private const string LocalizationLanguagesKey = "PixelCrushers.DialogueSystem.DialogueEditor.LocalizationLanguages";
 
         private const float RuntimeUpdateFrequency = 0.5f;
         private float timeSinceLastRuntimeUpdate = 0;
@@ -120,6 +121,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             timeForNextAutoBackup = Time.realtimeSinceStartup + autoBackupFrequency;
             addNewNodesToRight = EditorPrefs.GetBool(AddNewNodesToRightKey, false);
             trimWhitespaceAroundPipes = EditorPrefs.GetBool(TrimWhitespaceAroundPipesKey, true);
+            if (EditorPrefs.HasKey(LocalizationLanguagesKey)) localizationLanguages = JsonUtility.FromJson<LocalizationLanguages>(EditorPrefs.GetString(LocalizationLanguagesKey));
         }
 
         private void SaveEditorSettings()
@@ -130,6 +132,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             EditorPrefs.SetString(AutoBackupFolderKey, autoBackupFolder);
             EditorPrefs.SetBool(AddNewNodesToRightKey, addNewNodesToRight);
             EditorPrefs.SetBool(TrimWhitespaceAroundPipesKey, trimWhitespaceAroundPipes);
+            EditorPrefs.SetString(LocalizationLanguagesKey, JsonUtility.ToJson(localizationLanguages));
         }
 
 #if UNITY_2017_2_OR_NEWER

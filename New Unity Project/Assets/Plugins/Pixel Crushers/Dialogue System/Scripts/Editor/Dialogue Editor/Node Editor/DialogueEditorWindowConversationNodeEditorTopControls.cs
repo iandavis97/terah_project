@@ -232,9 +232,12 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private string[] GetConversationTitles()
         {
             List<string> titles = new List<string>();
-            foreach (var conversation in database.conversations)
+            if (database != null)
             {
-                titles.Add(conversation.Title.Replace("&", "<AMPERSAND>"));
+                foreach (var conversation in database.conversations)
+                {
+                    titles.Add(conversation.Title.Replace("&", "<AMPERSAND>"));
+                }
             }
             return titles.ToArray();
         }

@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -41,11 +41,11 @@ namespace PixelCrushers.DialogueSystem
             public BooleanType booleanValue = BooleanType.True;
             public float floatValue = 0;
             public ValueSetMode valueSetMode = ValueSetMode.To;
+            public string[] scriptQuestEntryNames = new string[0];
         }
 
         private bool isOpen = false;
         private List<ScriptItem> scriptItems = new List<ScriptItem>();
-        private string[] scriptQuestEntryNames = new string[0];
         private string savedLuaCode = string.Empty;
         private bool append = true;
 
@@ -160,7 +160,7 @@ namespace PixelCrushers.DialogueSystem
             if (newResourceType != item.resourceType)
             {
                 item.resourceType = newResourceType;
-                scriptQuestEntryNames = new string[0];
+                item.scriptQuestEntryNames = new string[0];
             }
 
             if (item.resourceType == ScriptWizardResourceType.Quest)
@@ -181,13 +181,13 @@ namespace PixelCrushers.DialogueSystem
                 if (newQuestNamesIndex != item.questNamesIndex)
                 {
                     item.questNamesIndex = newQuestNamesIndex;
-                    scriptQuestEntryNames = new string[0];
+                    item.scriptQuestEntryNames = new string[0];
                 }
-                if ((scriptQuestEntryNames.Length == 0) && (item.questNamesIndex < complexQuestNames.Length))
+                if ((item.scriptQuestEntryNames.Length == 0) && (item.questNamesIndex < complexQuestNames.Length))
                 {
-                    scriptQuestEntryNames = GetQuestEntryNames(complexQuestNames[item.questNamesIndex]);
+                    item.scriptQuestEntryNames = GetQuestEntryNames(complexQuestNames[item.questNamesIndex]);
                 }
-                item.questEntryIndex = EditorGUILayout.Popup(item.questEntryIndex, scriptQuestEntryNames);
+                item.questEntryIndex = EditorGUILayout.Popup(item.questEntryIndex, item.scriptQuestEntryNames);
                 EditorGUILayout.LabelField("to", GUILayout.Width(22));
                 //---Was: item.questState = (QuestState) EditorGUILayout.EnumPopup(item.questState, GUILayout.Width(96));
                 item.questState = QuestStateDrawer.LayoutQuestStatePopup(item.questState, 96);
@@ -617,7 +617,7 @@ namespace PixelCrushers.DialogueSystem
             if (newResourceType != item.resourceType)
             {
                 item.resourceType = newResourceType;
-                scriptQuestEntryNames = new string[0];
+                item.scriptQuestEntryNames = new string[0];
             }
 
             if (item.resourceType == ScriptWizardResourceType.Quest)
@@ -649,16 +649,16 @@ namespace PixelCrushers.DialogueSystem
                 if (newQuestNamesIndex != item.questNamesIndex)
                 {
                     item.questNamesIndex = newQuestNamesIndex;
-                    scriptQuestEntryNames = new string[0];
+                    item.scriptQuestEntryNames = new string[0];
                 }
-                if ((scriptQuestEntryNames.Length == 0) && (item.questNamesIndex < complexQuestNames.Length))
+                if ((item.scriptQuestEntryNames.Length == 0) && (item.questNamesIndex < complexQuestNames.Length))
                 {
-                    scriptQuestEntryNames = GetQuestEntryNames(complexQuestNames[item.questNamesIndex]);
+                    item.scriptQuestEntryNames = GetQuestEntryNames(complexQuestNames[item.questNamesIndex]);
                 }
 
                 rect = new Rect(x, y, 96, EditorGUIUtility.singleLineHeight);
                 x += rect.width + 2;
-                item.questEntryIndex = EditorGUI.Popup(rect, item.questEntryIndex, scriptQuestEntryNames);
+                item.questEntryIndex = EditorGUI.Popup(rect, item.questEntryIndex, item.scriptQuestEntryNames);
 
                 rect = new Rect(x, y, 22, rect.height);
                 x += rect.width + 2;

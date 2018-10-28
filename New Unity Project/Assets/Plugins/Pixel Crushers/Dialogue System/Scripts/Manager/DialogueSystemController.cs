@@ -1,4 +1,4 @@
- // Copyright © Pixel Crushers. All rights reserved.
+ // Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections;
@@ -62,7 +62,7 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// If <c>true</c>, Unity will not destroy the game object when loading a new level.
         /// </summary>
-        [Tooltip("Retain this GameObject when changing levels.")]
+        [Tooltip("Retain this GameObject when changing levels. Note: If InputDeviceManager's Singleton checkbox is ticked or GameObject has SaveSystem, GameObject will still be marked Don't Destroy On Load.")]
         public bool dontDestroyOnLoad = true;
 
         /// <summary>
@@ -89,11 +89,33 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Set to higher levels for troubleshooting.")]
         public DialogueDebug.DebugLevel debugLevel = DialogueDebug.DebugLevel.Warning;
 
+        /// <summary>
+        /// Raised when the Dialogue System receives an UpdateTracker message
+        /// to update the quest tracker HUD and quest log window.
+        /// </summary>
         public event System.Action receivedUpdateTracker = delegate { };
 
+        /// <summary>
+        /// Raised when a conversation starts. Parameter is primary actor.
+        /// </summary>
         public event TransformDelegate conversationStarted = delegate { };
 
+        /// <summary>
+        /// Raised when a conversation ends. Parameter is primary actor.
+        /// </summary>
         public event TransformDelegate conversationEnded = delegate { };
+
+        /// <summary>
+        /// Raised when the Dialogue System has completely initialized, including
+        /// loadin the initial dialogue database and registering Lua functions.
+        /// </summary>
+        public event System.Action initializationComplete = delegate { };
+
+        /// <summary>
+        /// True when this Dialogue System Controller is fully initialized.
+        /// </summary>
+        public bool isInitialized { get { return m_isInitialized; } }
+        private bool m_isInitialized = false;
 
         private const string DefaultDialogueUIResourceName = "Default Dialogue UI";
 
@@ -295,6 +317,19 @@ namespace PixelCrushers.DialogueSystem
                     if (this.transform.parent != null) this.transform.SetParent(null, false);
                     DontDestroyOnLoad(this.gameObject);
                 }
+                else
+                {
+                    var saveSystem = GetComponent<SaveSystem>();
+                    var inputDeviceManager = GetComponent<InputDeviceManager>();
+                    if (saveSystem != null)
+                    {
+                        if (DialogueDebug.logWarnings) Debug.LogWarning("Dialogue System: The Dialogue Manager's Don't Destroy On Load checkbox is UNticked, but the GameObject has a Save System which will mark it Don't Destroy On Load anyway. You may want to tick Don't Destroy On Load or move the Save System to another GameObject.", this);
+                    }
+                    else if (inputDeviceManager != null && inputDeviceManager.singleton)
+                    {
+                        if (DialogueDebug.logWarnings) Debug.LogWarning("Dialogue System: The Dialogue Manager's Don't Destroy On Load checkbox is UNticked, but the GameObject has an Input Device Manager whose Singleton checkbox is ticked, which will mark it Don't Destroy On Load anyway. You may want to tick Don't Destroy On Load or untick the Input Device Manager's Singleton checkbox.", this);
+                    }
+                }
                 allowLuaExceptions = false;
                 warnIfActorAndConversantSame = false;
                 DialogueTime.mode = dialogueTimeMode;
@@ -372,6 +407,8 @@ namespace PixelCrushers.DialogueSystem
             if (preloadResources) PreloadResources();
             QuestLog.RegisterQuestLogFunctions();
             RegisterLuaFunctions();
+            m_isInitialized = true;
+            initializationComplete();
         }
 
         private void InitializeDisplaySettings()
@@ -1554,6 +1591,7 @@ namespace PixelCrushers.DialogueSystem
 
             Lua.RegisterFunction("ShowAlert", null, typeof(DialogueSystemController).GetMethod("LuaShowAlert"));
             Lua.RegisterFunction("HideAlert", null, typeof(DialogueSystemController).GetMethod("LuaHideAlert"));
+            Lua.RegisterFunction("RandomizeNextEntry", null, typeof(DialogueSystemController).GetMethod("RandomizeNextEntry"));
         }
 
         public static void LuaShowAlert(string message)
@@ -1564,6 +1602,11 @@ namespace PixelCrushers.DialogueSystem
         public static void LuaHideAlert()
         {
             DialogueManager.HideAlert();
+        }
+
+        public void RandomizeNextEntry()
+        {
+            if (conversationController != null) conversationController.randomizeNextEntry = true;
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -354,7 +354,7 @@ namespace PixelCrushers.LoveHate
             EditorGUI.TextField(targetRect, target.name);
             if (rumor.count > 0)
             {
-                EditorGUI.IntField(countRect, rumor.count + 1);
+                EditorGUI.IntField(countRect, rumor.count);
             }
         }
 
