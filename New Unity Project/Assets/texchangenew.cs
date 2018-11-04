@@ -29,19 +29,19 @@ public GameObject Calyx;
     IEnumerator change(){
         var counter=0;
         while(counter>=0){
+            counter++;
             if(Calyx.GetComponent<EmotionalState>().GetCurrentEmotionName()=="Joy"){ 
               yield return new WaitForSeconds(0.1f);
         m_Renderer.material.mainTexture = texture1;
         yield return new WaitForSeconds(4.5f);
-         m_Renderer.material.mainTexture = texture2;
-        counter++;  
+         m_Renderer.material.mainTexture = texture2;  
             }
 	            else if(Calyx.GetComponent<EmotionalState>().GetCurrentEmotionName()=="Anger"){ 
+                    counter++;
               yield return new WaitForSeconds(0.1f);
         m_Renderer.material.mainTexture = texture3;
         yield return new WaitForSeconds(4.5f);
-         m_Renderer.material.mainTexture = texture4;
-        counter++;  
+         m_Renderer.material.mainTexture = texture4;  
             }
             else if(Calyx.GetComponent<EmotionalState>().GetCurrentEmotionName()=="Surprise"){ 
               yield return new WaitForSeconds(0.1f);
