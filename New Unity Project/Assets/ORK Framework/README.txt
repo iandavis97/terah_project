@@ -183,6 +183,41 @@ http://docs.unity3d.com/Manual/TroubleShootingIPhone.html
 ORK Version Changelog
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 2.19.0:
+- new: Abilities, Items, Weapons, Armors: Variables: 'Use In Description' setting available. Optionally replace variable text codes in the description with the ability/item/equipment variables instead of global variables.
+- new: Combatants: Battle Animations: 'Battle Animations' are now defind in the combatant's 'Battle Settings > Override Settings'. The default battle animations for actions like defend, escape or death are now defined in 'Battle System > Battle Settings' for all combatants. Each combatant can override individual battle animations for abilities, items and default actions (defend, etc.). Previous settings will automatically update and add overrides for all default actions.
+- new: Battle Settings: Battle Animations: 'Battle Animations' settings available. Define battle animations for default actions (e.g. defend, escape or death) for all combatants. Combatants can optionally override the default battle animations.
+- new: Battle Settings, Abilities, Items: Cast Time: 'Game Event Settings' available. Optionally execute game events when a combatant starts casting or cancels casting an action. The combatant is used as starting object of the game event, the casted action is available as selected data via the key 'action'.
+- new: Battle Settings: 'Base Counter Chance', 'Base Block Chance' and 'Base Experience Factor' settings available. You can now define default counter/block chances and experience factor for all combatants. Each combatant can individually override these settings. Previous settings will automatically update to override the default settings.
+- new: Battle Menu: Shortcut Slot: 'Shortcut Slot' battle menu item type available. Displays a shortcut assigned to a defined shortcut slot. Supports ability, item, equipment, defend, escape, none (end battle), grid move, grid examine and grid orientation shortcuts. The battle menu item isn't displayed if the shortcut slot is empty or occupied by an unsupported shortcut.
+- new: Battle Menu: Ability: 'Single Ability' settings available. Optionally display a single, defined ability instead of a list of abilities. If the ability isn't available for the combatant, the battle menu item isn't displayed.
+- new: Battle Menu: Item: 'Single Item' settings available. Optionally display a single, defined item instead of a list of items. If the item isn't in the combatant's inventory, the battle menu item isn't displayed.
+- new: Battle Grid Settings: Move Command: 'Move To Own Cells' setting available. Optionally allow a combatant to move to cells it currently occupies itself (due to the combatant's grid cell size).
+- new: Battle AI: 'Ignore Size Cells' setting available in all nodes checking grid distances. Checking a combatant's size cells is optional. By default disabled (checking size cells).
+- new: Formulas: Check Grid Distance: 'Ignore Size Cells' setting available. Checking a combatant's size cells is optional. By default disabled (checking size cells).
+- new: Combatants: Grid Cell Size: 'Grid Cell Size' settings available. Optionally allow a combatant to occupy more than 1 grid cell in grid battles.
+- new: Combatants: 'Base Escape Chance' setting available. Combatants can now optionally override the default escape chance defined in the battle settings.
+- new: Menu Screens: Ability Tree, Research, Status Value Upgrades: New preview values available. E.g. selecting a status value upgrade will show the status value changes as a preview (including the learn costs). Also, unlearned passive abilities will preview their bonuses. You need a HUD (e.g. in a 'Combatant' menu part) to display the preview values by using one of the 'Preview' value origins in 'Status Value' HUD elements.
+- new: Event System: Store Grid Path: 'Store Combatants' settings available. Optionally store the combatants placed on the grid path cells instead of the cells.
+- new: Event System: Check Grid Distance: 'Check Cell Combatant' settings available. Optionally use the combatant placed on a cell for the distance check, taking the combatant's size cells into account.
+- new: Combatant Spawners: 'Spawn At Position' setting available when using colliders for area spawning. Optionally spawns the combatants at the position of the game object (or defined game objects) instead of randomly spawning within the collider's area. Use this setting to use trigger start types for the spawner but still spawn at defined positions.
+- new: Editor: Color Fields: Added support for HDR color picker.
+- change: Battle System: Performance improvements throughout the battle system, especially in battle grid operations that cause a lot of things per frame (e.g. calculating the move range cells).
+- change: Event System: Grid Nodes: All nodes related to grid paths have been moved from 'Battle > Grid' to 'Battle > Grid Path'.
+- change: Item Collectors: Item collectors now show the 'Inventory Full' notification if an item can't be collected due to the limited space in the player's inventory.
+- change: Battle Components: Using 'Own Spots' will automatically fall back to the defined standard spot if an advantage spot isn't selected (player/enemy advantage battle).
+- change: Combatants: The 'Turn Start Events' and 'Turn End Events' settings can now be found in the combatant's 'Base Settings > Game Event Settings'.
+- change: Status Development: Experience: 'Experience' type status values can now also use formulas instead of being limited to using curves.
+- fix: HUDs: Fixed an issue where background images of empty HUD elements where still displayed when not using 'Display Empty Elements'.
+- fix: Battle AI: Check Height Differences: 'Check Height Differences now also works in non-grid battles.
+- fix: Battle AI: Grid Move: Fixed an issue where 'Avoid Allies' used the 'Avoid Enemies' range.
+- fix: Combatant Spanwers: Fixed an issue where failing a combatant's requirement stops spawning the following combatants.
+- fix: Game States: Changing Scene: The 'Changing Scene' state wasn't valid during a load game scene change.
+- fix: Battle Grids: Grid Cell Events: Fixed an issue where grid cell events could prevent a combatant from finishing the turn.
+- fix: HUDs: Fixed an issue where percent values (e.g. 'Status Value' HUD elements) resultet in 'NaN' when having a maximum value of 0.
+- fix: Status Values: Consumable: Fixed an issue where setting the start value in 'Percent' wasn't correct if the value's minimum value wasn't 0.
+
+
 Version 2.18.0:
 - new: Camera Controls: Top Down Border: 'Remember Rotation', 'Remember Panning' and 'Remember Zoom' settings available. Optionally remember the current rotation, panning or zoom of the camera between scenes.
 - new: Camera Controls: Mouse: 'Remember Rotation' and 'Remember Zoom' settings available. Optionally remember the current rotation and zoom of the camera between scenes.
