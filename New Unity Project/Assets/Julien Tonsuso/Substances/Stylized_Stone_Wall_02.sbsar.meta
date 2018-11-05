@@ -26,7 +26,15 @@ ScriptedImporter:
     graphDescIndex: 0
     generateAllOutputs: 0
     generateMipMaps: 1
-    preset: " <sbspreset pkgurl=\"pkg://Stylized_Stone_Wall_02\" label=\"\" >\n </sbspreset>\n"
+    preset: " <sbspreset pkgurl=\"pkg://Stylized_Stone_Wall_02\" label=\"\" >\n  <presetinput
+      identifier=\"$outputsize\" uid=\"702849572\" type=\"8\" value=\"10,10\" />\n
+      \ <presetinput identifier=\"Plaster_Color\" uid=\"1602345877\" type=\"3\" value=\"1,0.950385,0.882075,1\"
+      />\n  <presetinput identifier=\"Plaster_Amount\" uid=\"1602345115\" type=\"0\"
+      value=\"0.09\" />\n  <presetinput identifier=\"Stone_Color\" uid=\"1602331872\"
+      type=\"3\" value=\"1,0.917384,0.778302,1\" />\n  <presetinput identifier=\"Pattern_2_Nb_X\"
+      uid=\"1602236975\" type=\"4\" value=\"13\" />\n  <presetinput identifier=\"Pattern_2_Nb_Y\"
+      uid=\"1602236507\" type=\"4\" value=\"13\" />\n  <presetinput identifier=\"Pattern_2_Luminance_Variation-Contrast\"
+      uid=\"1602233464\" type=\"0\" value=\"0\" />\n </sbspreset>\n"
     shaderName: Standard
     outputNames: Base Color,Normal,Metallic,Height,Ambient Occlusion
     texturePackingList:
@@ -61,8 +69,8 @@ ScriptedImporter:
       bOverride: 0
       bLockRatio: 1
       bHighQuality: 0
-      textureWidth: 256
-      textureHeight: 256
+      textureWidth: 1024
+      textureHeight: 1024
       textureFormat: 0
       loadBehavior: 0
     - label: Standalone
@@ -81,4 +89,4 @@ ScriptedImporter:
       textureHeight: 256
       textureFormat: 0
       loadBehavior: 0
-    material: {instanceID: 0}
+    material: {fileID: 2100000, guid: fd4c61a08d959c244ab98e9336b4c759, type: 3}

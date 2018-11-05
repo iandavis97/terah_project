@@ -1,21 +1,21 @@
 fileFormatVersion: 2
-guid: dfc56cf1e9233624fa3dd6b4b6268aed
+guid: d1ad681e099289f438117e4b0d5d77c3
 ScriptedImporter:
   fileIDToRecycleName:
-    100000: Carpet_Fuzzy - Copy/Carpet_Fuzzy - Copy
-    400000: Carpet_Fuzzy - Copy/Carpet_Fuzzy - Copy/Transform
+    100000: Carpet_Fuzzy - Copy (2)/Carpet_Fuzzy - Copy (2)
+    400000: Carpet_Fuzzy - Copy (2)/Carpet_Fuzzy - Copy (2)/Transform
     2100000: mat.Carpet Fuzzy
-    2300000: Carpet_Fuzzy - Copy/Carpet_Fuzzy - Copy/MeshRenderer
+    2300000: Carpet_Fuzzy - Copy (2)/Carpet_Fuzzy - Copy (2)/MeshRenderer
     2800000: Carpet Fuzzy_Base Color
     2800002: Carpet Fuzzy_Normal
     2800004: Carpet Fuzzy_Metallic
     2800006: Carpet Fuzzy_Ambient Occlusion
     2800008: Carpet Fuzzy_Height
-    3300000: Carpet_Fuzzy - Copy/Carpet_Fuzzy - Copy/MeshFilter
+    3300000: Carpet_Fuzzy - Copy (2)/Carpet_Fuzzy - Copy (2)/MeshFilter
     11400000: sbsar
     11400002: graph0
-    13500000: Carpet_Fuzzy - Copy/Carpet_Fuzzy - Copy/SphereCollider
-    100100000: Carpet_Fuzzy - Copy
+    13500000: Carpet_Fuzzy - Copy (2)/Carpet_Fuzzy - Copy (2)/SphereCollider
+    100100000: Carpet_Fuzzy - Copy (2)
   externalObjects: {}
   userData: 
   assetBundleName: 
@@ -27,14 +27,9 @@ ScriptedImporter:
     generateAllOutputs: 0
     generateMipMaps: 1
     preset: " <sbspreset pkgurl=\"pkg://Carpet_Fuzzy\" label=\"\" >\n  <presetinput
-      identifier=\"main_color\" uid=\"3325630687\" type=\"3\" value=\"0.839623,0.675876,0.518823,1\"
-      />\n  <presetinput identifier=\"AO_Opacity\" uid=\"3326673561\" type=\"0\" value=\"0.21\"
+      identifier=\"main_color\" uid=\"3325630687\" type=\"3\" value=\"0.707547,0.110978,0,1\"
       />\n  <presetinput identifier=\"strands_tile\" uid=\"3269085196\" type=\"4\"
-      value=\"16\" />\n  <presetinput identifier=\"strand_thickness\" uid=\"3325635405\"
-      type=\"0\" value=\"0.01\" />\n  <presetinput identifier=\"strands_rotation\"
-      uid=\"3325572881\" type=\"0\" value=\"0.07\" />\n  <presetinput identifier=\"strand_distort\"
-      uid=\"3325636125\" type=\"0\" value=\"3.8\" />\n  <presetinput identifier=\"strands_noise\"
-      uid=\"3326031816\" type=\"0\" value=\"0.17\" />\n </sbspreset>\n"
+      value=\"9\" />\n </sbspreset>\n"
     shaderName: Standard
     outputNames: Base Color,Normal,Metallic,Ambient Occlusion,Height
     texturePackingList:
@@ -89,4 +84,4 @@ ScriptedImporter:
       textureHeight: 256
       textureFormat: 0
       loadBehavior: 0
-    material: {fileID: 2100000, guid: dfc56cf1e9233624fa3dd6b4b6268aed, type: 3}
+    material: {fileID: 2100000, guid: d1ad681e099289f438117e4b0d5d77c3, type: 3}
