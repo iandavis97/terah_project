@@ -14,6 +14,7 @@ public GameObject Calyx;
 
 	// Use this for initialization
 	void Start () {
+        Calyx= gameObject;
 	}
 	
 	// Update is called once per frame
