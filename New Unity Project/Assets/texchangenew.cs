@@ -97,35 +97,43 @@ public GameObject Calyx;
          yield return new WaitForSeconds(0.1f);
         m_Renderer.material.mainTexture = texture1;
         yield return new WaitForSeconds(4.5f);
-         m_Renderer.material.mainTexture = texture2; }
+         m_Renderer.material.mainTexture = texture2; 
+        StopCoroutine("changejoy");}
     
     IEnumerator changeanger(){
     yield return new WaitForSeconds(0.1f);
         m_Renderer.material.mainTexture = texture3;
         yield return new WaitForSeconds(4.5f);
-         m_Renderer.material.mainTexture = texture4; }
+         m_Renderer.material.mainTexture = texture4; 
+        StopCoroutine("changeanger");}
     
         IEnumerator changesurprise(){
     yield return new WaitForSeconds(0.1f);
         m_Renderer.material.mainTexture = texture5;
         yield return new WaitForSeconds(4.5f);
-         m_Renderer.material.mainTexture = texture6; }
+         m_Renderer.material.mainTexture = texture6; 
+                    StopCoroutine("changesurprise");}
+
     
         IEnumerator changedisgust(){
     yield return new WaitForSeconds(0.1f);
         m_Renderer.material.mainTexture = texture7;
         yield return new WaitForSeconds(4.5f);
-         m_Renderer.material.mainTexture = texture8; }
+         m_Renderer.material.mainTexture = texture8; 
+                    StopCoroutine("changedisgust");}
+
     
         IEnumerator changesadness(){
     yield return new WaitForSeconds(0.1f);
         m_Renderer.material.mainTexture = texture9;
         yield return new WaitForSeconds(4.5f);
-         m_Renderer.material.mainTexture = texture10; }
+         m_Renderer.material.mainTexture = texture10; 
+                            StopCoroutine("changesadness");}
     
         IEnumerator changefear(){
     yield return new WaitForSeconds(0.1f);
         m_Renderer.material.mainTexture = texture11;
         yield return new WaitForSeconds(4.5f);
-         m_Renderer.material.mainTexture = texture12; }
+         m_Renderer.material.mainTexture = texture12; 
+                            StopCoroutine("changefear");}
 }
