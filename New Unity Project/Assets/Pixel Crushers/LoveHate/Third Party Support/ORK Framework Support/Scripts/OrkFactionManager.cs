@@ -25,7 +25,8 @@ namespace PixelCrushers.LoveHate.ORKFrameworkSupport
 		{
 			m_started = true;
 			RegisterSaveData();
-			DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
+
 		}
 		
 		private void OnEnable()
