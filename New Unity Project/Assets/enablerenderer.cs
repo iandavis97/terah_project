@@ -6,17 +6,17 @@ using PixelCrushers.DialogueSystem;
 public class enablerenderer : MonoBehaviour {
 
 	// Use this for initialization
-    void OnEnable(){
-        Lua.RegisterFunction("enablerender", this, typeof(enablerenderer).GetMethod("enablerender"));
-    Lua.RegisterFunction("disablerender", this, typeof(enablerenderer).GetMethod("disablerender"));	
+    void OnEnable(){	
 
     }
 	void Start () {
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		        Lua.RegisterFunction("enablerender", this, typeof(enablerenderer).GetMethod("enablerender"));
+    Lua.RegisterFunction("disablerender", this, typeof(enablerenderer).GetMethod("disablerender"));
 	}
     
     public void enablerender(){
