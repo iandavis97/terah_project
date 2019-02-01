@@ -384,7 +384,8 @@ namespace PixelCrushers.DialogueSystem
             var dialogueManagerTransform = DialogueManager.instance.transform;
             if (dialogueManagerTransform != speaker && dialogueManagerTransform != listener)
             {
-                DialogueManager.instance.BroadcastMessage(message, speaker, SendMessageOptions.DontRequireReceiver);
+                var actor = (speaker != null) ? speaker : ((listener != null) ? listener : dialogueManagerTransform);
+                DialogueManager.instance.BroadcastMessage(message, actor, SendMessageOptions.DontRequireReceiver);
             }
         }
 

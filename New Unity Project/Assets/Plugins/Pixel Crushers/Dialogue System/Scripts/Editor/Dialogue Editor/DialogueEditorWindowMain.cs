@@ -62,6 +62,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private const string AddNewNodesToRightKey = "PixelCrushers.DialogueSystem.DialogueEditor.AddNewNodesToRight";
         private const string TrimWhitespaceAroundPipesKey = "PixelCrushers.DialogueSystem.DialogueEditor.TrimWhitespaceAroundPipes";
         private const string LocalizationLanguagesKey = "PixelCrushers.DialogueSystem.DialogueEditor.LocalizationLanguages";
+        private const string SequencerDragDropCommandsKey = "PixelCrushers.DialogueSystem.DialogueEditor.SequencerDragDropCommands";
 
         private const float RuntimeUpdateFrequency = 0.5f;
         private float timeSinceLastRuntimeUpdate = 0;
@@ -122,6 +123,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             addNewNodesToRight = EditorPrefs.GetBool(AddNewNodesToRightKey, false);
             trimWhitespaceAroundPipes = EditorPrefs.GetBool(TrimWhitespaceAroundPipesKey, true);
             if (EditorPrefs.HasKey(LocalizationLanguagesKey)) localizationLanguages = JsonUtility.FromJson<LocalizationLanguages>(EditorPrefs.GetString(LocalizationLanguagesKey));
+            if (EditorPrefs.HasKey(SequencerDragDropCommandsKey)) SequenceEditorTools.RestoreDragDropCommands(EditorPrefs.GetString(SequencerDragDropCommandsKey));
         }
 
         private void SaveEditorSettings()
@@ -133,6 +135,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             EditorPrefs.SetBool(AddNewNodesToRightKey, addNewNodesToRight);
             EditorPrefs.SetBool(TrimWhitespaceAroundPipesKey, trimWhitespaceAroundPipes);
             EditorPrefs.SetString(LocalizationLanguagesKey, JsonUtility.ToJson(localizationLanguages));
+            EditorPrefs.SetString(SequencerDragDropCommandsKey, SequenceEditorTools.SaveDragDropCommands());
         }
 
 #if UNITY_2017_2_OR_NEWER

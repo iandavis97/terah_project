@@ -96,7 +96,7 @@ namespace PixelCrushers.DialogueSystem
                     if (wait)
                     {
                         yield return null; // Wait to enter state.
-                        var clipLength = m_animator.GetCurrentAnimatorStateInfo(0).length;
+                        var clipLength = (m_animator != null) ? m_animator.GetCurrentAnimatorStateInfo(0).length : 0;
                         if (Mathf.Approximately(0, Time.timeScale))
                         {
                             var timeout = Time.realtimeSinceStartup + clipLength;

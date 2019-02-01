@@ -75,9 +75,7 @@ namespace PixelCrushers.DialogueSystem
         /// </param>
         public static int StringToInt(string s)
         {
-            int result = 0;
-            int.TryParse(s, out result);
-            return result;
+            return SafeConvert.ToInt(s);
         }
 
         /// <summary>
@@ -91,9 +89,7 @@ namespace PixelCrushers.DialogueSystem
         /// </param>
         public static float StringToFloat(string s)
         {
-            float result = 0;
-            float.TryParse(s, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out result);
-            return result;
+            return SafeConvert.ToFloat(s);
         }
 
         /// <summary>

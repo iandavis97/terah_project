@@ -147,7 +147,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
         public void OnDestroy()
         {
             // Final position:
-            if (angleTransform != null && subject != null)
+            if (angleTransform != null && subject != null && cameraTransform != null)
             {
                 cameraTransform.rotation = targetRotation;
                 cameraTransform.position = targetPosition;

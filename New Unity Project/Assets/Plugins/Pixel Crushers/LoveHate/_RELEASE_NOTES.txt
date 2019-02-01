@@ -4,6 +4,24 @@ Copyright © Pixel Crushers
 RELEASE NOTES
 -------------
 
+Version 1.9.5:
+[January 29, 2019]
+- Updated assembly definition files to include Wrappers; renamed Common to PixelCrushers.
+- Fixed: MessageSystem bug when removing listeners while sending a message.
+- Fixed: UIPanel timing bug when animations cause outgoing panel to overlap incoming panel.
+- Improved: Editors now handle issues with outdated third party assemblies more gracefully.
+- Save System: Calling LoadGame() w/Save System > Save Current Scene unticked now also updates internal saved game cache.
+- Save System: ScenePortal.UsePortal() is now virtual.
+- TextTable: Large text areas now word wrapped.
+- ORK Framework: Updated for ORK 2.21.0.
+
+
+Version 1.9.4:
+- Added: CSV export/import.
+- Added: JSON export/import.
+- Fixed: String-to-float conversion in .NET4 is now culture invariant.
+
+
 Version 1.9.3
 - IMPORTANT CHANGE: On Unity 2018+, you must define scripting symbol USE_PHYSICS2D to use 2D physics.
 - Fixed: FactionMember.FindRumorInMemory wasn't matching target faction correctly.

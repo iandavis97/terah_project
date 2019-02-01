@@ -59,7 +59,7 @@ namespace PixelCrushers.DialogueSystem
 
         private QueuedSequencerCommand ParseCommand(StringReader reader)
         {
-            ParseOptionalWhitespace(reader);
+            ParseOptionalWhitespace(reader, true);
             var required = false;
             var s = ParseWord(reader);
             if (string.Equals(s, SequencerKeywords.Required, System.StringComparison.OrdinalIgnoreCase) || string.Equals(s, SequencerKeywords.Require, System.StringComparison.OrdinalIgnoreCase))
@@ -105,10 +105,10 @@ namespace PixelCrushers.DialogueSystem
             return sb.ToString();
         }
 
-        private void ParseOptionalWhitespace(StringReader reader)
+        private void ParseOptionalWhitespace(StringReader reader, bool includingSemicolons = false)
         {
             int safeguard = 0;
-            while (IsNextCharWhiteSpace(reader) && safeguard < MaxSafeguard)
+            while ((IsNextCharWhiteSpace(reader) || (includingSemicolons && IsNextChar(reader, ';'))) && safeguard < MaxSafeguard)
             {
                 safeguard++;
                 ReadNextChar(reader);

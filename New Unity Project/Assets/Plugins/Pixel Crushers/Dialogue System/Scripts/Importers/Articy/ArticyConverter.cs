@@ -44,7 +44,7 @@ namespace PixelCrushers.DialogueSystem.Articy
         }
 
         /// <summary>
-        /// This static utility method creates a converter and uses it run the conversion.
+        /// This static utility method creates a converter and uses it to run the conversion.
         /// </summary>
         /// <param name='articyData'>
         /// Articy data.
@@ -79,8 +79,8 @@ namespace PixelCrushers.DialogueSystem.Articy
         private int itemID;
         private int locationID;
         private static List<string> fullVariableNames = new List<string>(); // Make static to expose ConvertExpression().
-        private Conversation documentConversation;
-        private DialogueEntry lastDocumentEntry;
+        //private Conversation documentConversation;
+        //private DialogueEntry lastDocumentEntry;
 
         #endregion
 
@@ -121,21 +121,21 @@ namespace PixelCrushers.DialogueSystem.Articy
             if (conversation == null) return;
             conversationStack.Add(conversation);
 
-            var conversationArticyId = conversation.LookupValue(ArticyIdFieldTitle);
-            var articyDialogue = articyData.dialogues.ContainsKey(conversationArticyId) ? articyData.dialogues[conversationArticyId] : null; // May be null if a flow fragment.
-            if (articyDialogue != null && articyDialogue.isDocument)
-            {
-                documentConversation = conversation;
-                lastDocumentEntry = conversation.GetFirstDialogueEntry();
-            }
+            //var conversationArticyId = conversation.LookupValue(ArticyIdFieldTitle);
+            //var articyDialogue = articyData.dialogues.ContainsKey(conversationArticyId) ? articyData.dialogues[conversationArticyId] : null; // May be null if a flow fragment.
+            //if (articyDialogue != null && articyDialogue.isDocument)
+            //{
+            //    documentConversation = conversation;
+            //    lastDocumentEntry = conversation.GetFirstDialogueEntry();
+            //}
         }
 
         private void PopConversation()
         {
             if (conversationStack.Count < 1) return;
             conversationStack.RemoveAt(conversationStack.Count - 1);
-            documentConversation = null;
-            lastDocumentEntry = null;
+            //documentConversation = null;
+            //lastDocumentEntry = null;
         }
 
         private Conversation GetConversationStackTop()
@@ -226,8 +226,8 @@ namespace PixelCrushers.DialogueSystem.Articy
             actorID = 0;
             itemID = 0;
             locationID = 0;
-            documentConversation = null;
-            lastDocumentEntry = null;
+            //documentConversation = null;
+            //lastDocumentEntry = null;
             fullVariableNames.Clear();
             ResetArticyIdIndex();
             this.template = template;
@@ -496,6 +496,10 @@ namespace PixelCrushers.DialogueSystem.Articy
             conversationID++;
             var conversationTitle = string.Empty;
             conversationTitle += articyDialogue.displayName.DefaultText;
+            if (articyDialogue.isDocument && !string.IsNullOrEmpty(prefs.DocumentsSubmenu))
+            {
+                conversationTitle = prefs.DocumentsSubmenu + "/" + conversationTitle;
+            }
             Conversation conversation = template.CreateConversation(conversationID, conversationTitle);
             Field.SetValue(conversation.fields, ArticyIdFieldTitle, articyDialogue.id, FieldType.Text);
             Field.SetValue(conversation.fields, "Description", articyDialogue.text.DefaultText, FieldType.Text);
@@ -897,14 +901,15 @@ namespace PixelCrushers.DialogueSystem.Articy
             ConvertPinExpressionsToConditionsAndScripts(entry, fragment.pins);
             RecordPins(fragment.pins, entry);
 
-            // Handle documents:
-            if (documentConversation != null && lastDocumentEntry != null && !DoesLinkExist(lastDocumentEntry.outgoingLinks, entry))
-            {
-                Debug.Log("Adding link in conv " + documentConversation.Title + " entry " + lastDocumentEntry.id + " to entry " + entry.conversationID + ":" + entry.id);
-                var link = new Link(lastDocumentEntry.conversationID, lastDocumentEntry.id, entry.conversationID, entry.id);
-                lastDocumentEntry.outgoingLinks.Add(link);
-                lastDocumentEntry = entry;
-            }
+            // No longer used:
+            //// Handle documents:
+            //if (documentConversation != null && lastDocumentEntry != null && !DoesLinkExist(lastDocumentEntry.outgoingLinks, entry))
+            //{
+            //    Debug.Log("Adding link in conv " + documentConversation.Title + " entry " + lastDocumentEntry.id + " to entry " + entry.conversationID + ":" + entry.id);
+            //    var link = new Link(lastDocumentEntry.conversationID, lastDocumentEntry.id, entry.conversationID, entry.id);
+            //    lastDocumentEntry.outgoingLinks.Add(link);
+            //    lastDocumentEntry = entry;
+            //}
         }
 
         private bool DoesLinkExist(List<Link> outgoingLinks, DialogueEntry destination)
@@ -1076,6 +1081,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             entry.isGroup = false; // Since groups are processed one level ahead, don't make this a group: entry.isGroup = true;
             entry.conditionsString = string.Empty;
             entry.userScript = AddToUserScript(entry.userScript, ConvertExpression(instruction.expression));
+            ConvertPinExpressionsToConditionsAndScripts(entry, instruction.pins);
             RecordPins(instruction.pins, entry);
         }
 
@@ -1148,6 +1154,28 @@ namespace PixelCrushers.DialogueSystem.Articy
         /// <returns>A Lua version of the expression.</returns>
         /// <param name='expression'>articy expresso expression.</param>
         public static string ConvertExpression(string expression)
+        {
+            if (string.IsNullOrEmpty(expression)) return expression;
+
+            // If already Lua, return it:
+            if (expression.Contains("Variable[")) return expression;
+
+            // If no semicolon, convert single expression:
+            if (!expression.Contains(";")) return ConvertSingleExpression(expression);
+
+            var s = string.Empty;
+            var singleExpressions = expression.Split(';'); // TO DO: Handle semicolons nested inside string literals.
+            for (int i = 0; i < singleExpressions.Length; i++)
+            {
+                var singleExpression = singleExpressions[i];
+                if (string.IsNullOrEmpty(singleExpression)) continue;
+                if (s.Length > 0) s += ";\n";
+                s += ConvertSingleExpression(singleExpression);
+            }
+            return s;
+        }
+
+        public static string ConvertSingleExpression(string expression)
         {
             if (string.IsNullOrEmpty(expression)) return expression;
 
@@ -1510,15 +1538,35 @@ namespace PixelCrushers.DialogueSystem.Articy
             string textureName = actor.textureName;
             if (!string.IsNullOrEmpty(textureName))
             {
-                string filename = Path.GetFileNameWithoutExtension(textureName).Replace('\\', '/');
-                if (Application.isPlaying)
+                actor.portrait = LoadTexture(textureName);
+            }
+
+            // Alternate portraits:
+            var s = actor.LookupValue("SUBTABLE__AlternatePortraits");
+            if (!string.IsNullOrEmpty(s))
+            {
+                var alternatePortraitIDs = s.Split(';');
+                foreach (var alternatePortraitID in alternatePortraitIDs)
                 {
-                    actor.portrait = DialogueManager.LoadAsset(filename, typeof(Texture2D)) as Texture2D;
+                    if (articyData.assets.ContainsKey(alternatePortraitID))
+                    {
+                        var portrait = LoadTexture(articyData.assets[alternatePortraitID].displayName.DefaultText);
+                        if (portrait != null) actor.alternatePortraits.Add(portrait);
+                    }
                 }
-                else
-                {
-                    actor.portrait = Resources.Load(filename, typeof(Texture2D)) as Texture2D;
-                }
+            }
+        }
+
+        private Texture2D LoadTexture(string originalPath)
+        {
+            string filename = Path.GetFileNameWithoutExtension(originalPath).Replace('\\', '/');
+            if (Application.isPlaying)
+            {
+                return DialogueManager.LoadAsset(filename, typeof(Texture2D)) as Texture2D;
+            }
+            else
+            {
+                return Resources.Load(filename, typeof(Texture2D)) as Texture2D;
             }
         }
 

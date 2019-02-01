@@ -62,6 +62,12 @@ namespace PixelCrushers.DialogueSystem
         public IsDialogueEntryValidDelegate IsDialogueEntryValid { get { return isDialogueEntryValid; } private set { isDialogueEntryValid = value; } }
         /// @endcond
 
+        // Public accessors for cached private variables below:
+        public bool allowLuaExceptions { get { return m_allowLuaExceptions; } set { m_allowLuaExceptions = value; } }
+        public EntrytagFormat entrytagFormat { get { return m_entrytagFormat; } set { m_entrytagFormat = value; } }
+        public EmTag emTagForOldResponses { get { return m_emTagForOldResponses; } set { m_emTagForOldResponses = value; } }
+        public EmTag emTagForInvalidResponses { get { return m_emTagForInvalidResponses; } set { m_emTagForInvalidResponses = value; } }
+        public bool includeInvalidEntries { get { return m_includeInvalidEntries; } set { m_includeInvalidEntries = value; } }
 
         private DialogueDatabase m_database = null;
         private CharacterInfo m_actorInfo = null;
@@ -408,7 +414,7 @@ namespace PixelCrushers.DialogueSystem
                                     if (m_emTagForOldResponses != EmTag.None)
                                     {
                                         string simStatus = Lua.Run(string.Format("return Conversation[{0}].Dialog[{1}].SimStatus", new System.Object[] { destinationEntry.conversationID, destinationEntry.id })).asString;
-                                        bool isOldResponse = string.Equals(simStatus, "WasDisplayed");
+                                        bool isOldResponse = string.Equals(simStatus, DialogueLua.WasDisplayed);
                                         if (isOldResponse) text = string.Format("[em{0}]{1}[/em{0}]", (int)m_emTagForOldResponses, text);
                                     }
                                     if (m_emTagForInvalidResponses != EmTag.None)

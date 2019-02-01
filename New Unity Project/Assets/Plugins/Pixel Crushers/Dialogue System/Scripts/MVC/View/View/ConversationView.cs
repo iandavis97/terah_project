@@ -353,7 +353,15 @@ namespace PixelCrushers.DialogueSystem
 
         private void OnCancelSubtitle()
         {
-            BroadcastMessage(DialogueSystemMessages.OnConversationLineCancelled, lastNPCSubtitle, SendMessageOptions.DontRequireReceiver);
+            if (lastNPCSubtitle == null) // Need to create a dummy subtitle to OnConversationLineCancelled's signature.
+            {
+                var dummyNPCSubtitle = new Subtitle(null, null, null, string.Empty, string.Empty, null);
+                BroadcastMessage(DialogueSystemMessages.OnConversationLineCancelled, dummyNPCSubtitle, SendMessageOptions.DontRequireReceiver);
+            }
+            else
+            {
+                BroadcastMessage(DialogueSystemMessages.OnConversationLineCancelled, lastNPCSubtitle, SendMessageOptions.DontRequireReceiver);
+            }
             waitForContinue = false;
             FinishSubtitle();
         }
@@ -481,7 +489,8 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private float GetDefaultSubtitleDuration(string text)
+        /// <returns>A duration based on the text length and the Dialogue Manager's Subtitle Settings > Min Subtitle Seconds and Subtitle Chars Per Second.</returns>
+        public float GetDefaultSubtitleDuration(string text)
         {
             int numCharacters = string.IsNullOrEmpty(text) ? 0 : Tools.StripRichTextCodes(text).Length;
             return Mathf.Max(settings.GetMinSubtitleSeconds(), numCharacters / Mathf.Max(1, settings.GetSubtitleCharsPerSecond()));

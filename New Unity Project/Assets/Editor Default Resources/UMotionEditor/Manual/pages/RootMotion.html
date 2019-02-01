@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<div class="versionHeader">
-			<p class="versionText">Version: <b>1.15p02</b> </p>
+			<p class="versionText">Version: <b>1.16</b> </p>
 		</div>
 		<div class="leftContent">
 			<div class="leftContentInner">
@@ -204,6 +204,8 @@
 
 <li class="file"><a href="UnityTimelineIntegration.html">Unity Timeline Integration</a></li>
 
+<li class="file"><a href="ExportingAnimationsFAQ.html">Exporting Animations FAQ</a></li>
+
 <li class="file"><a href="Support.html">Support / FAQ</a></li>
 
 <li class="file"><a href="ReleaseNotes.html">Release Notes</a></li>
@@ -221,7 +223,7 @@
     <li class="listItem"><span class="listText">In Place</span></li>
     <li class="listItem"><span class="listText">Root Motion</span></li>
 </ul><p class="textBlock">An <b>In Place</b> animation either doesn't move the animated character at all or it resets its position once the animation is finished. A <b>Root Motion</b> animation on the other hand applies motion relative to the world space. A walking animation would thus continue moving the character even when the animation loop restarts.</p><p class="textBlock">The following tutorial made by Unity explains the difference:</p><iframe width="560" height="315" src="https://www.youtube.com/embed/Kn6jxLWA31M?ecver=1" frameborder="0" allowfullscreen></iframe>
-<p class="imageText">Unity Tutorial Video Explaining Root Motion</p><h2 class="headline2" id="">Humanoid Root Motion</h2><p class="textBlock">A <b>Humanoid</b> project in UMotion always has root motion enabled by default for the hip bones. It is not possible to select a different bone.</p><h2 class="headline2" id="">Generic Root Motion</h2><p class="textBlock">For <b>Generic</b> animations Root Motion needs to be enabled manually. <b>Legacy Generic</b> animations don't support Root Motion.</p><p class="textBlock">At first the following steps should be done to prepare the animated model for Root Motion:</p><ul class="listMain">
+<p class="imageText">Unity Tutorial Video Explaining Root Motion</p><p class="textBlock"><b>Important:</b> If you have problems with your exported root motion animations, take a look at the <a href="ExportingAnimationsFAQ.html#rootMotionIssues" class="link">Exporting Animations FAQ</a>.</p><h2 class="headline2" id="">Humanoid Root Motion</h2><p class="textBlock">A <b>Humanoid</b> project in UMotion always has root motion enabled by default for the hip bones. It is not possible to select a different bone.</p><h2 class="headline2" id="">Generic Root Motion</h2><p class="textBlock">For <b>Generic</b> animations Root Motion needs to be enabled manually. <b>Legacy Generic</b> animations don't support Root Motion.</p><p class="textBlock">At first the following steps should be done to prepare the animated model for Root Motion:</p><ul class="listMain">
     <li class="listItem"><span class="listText">
         Navigate to the model in Unity's Project window and select it. Make sure that the model is currently not used in the Pose Editor because otherwise selecting isn't possible. The inspector will now show the import settings for that model.
     </span></li>
@@ -248,7 +250,7 @@
 </p><img src="../images/AnimatorComponent.png" class="image"></img>
 <p class="imageText">Animator Component</p>
 				<div class="mainContentFooter">
-					<p class="textBlock" style="float:left">Copyright © 2017 - 2018 Soxware Interactive ALL RIGHTS RESERVED</p>
+					<p class="textBlock" style="float:left">Copyright © 2017 - 2019 Soxware Interactive ALL RIGHTS RESERVED</p>
 					<p class="textBlock" align="right"><a href="https://forum.unity.com/threads/new-umotion-animation-editor-released.490618/" class="link">Unity Forum Thread</a> | <a href="https://www.facebook.com/Soxware/" class="link">Facebook</a> | <a href="https://twitter.com/SoxwareInteract" class="link">Twitter</a> | <a href="https://www.youtube.com/channel/UCCuE6nI5gHvUQjx0lo6Twtg" class="link">Youtube</a></p>
 				</div>
 			</div>

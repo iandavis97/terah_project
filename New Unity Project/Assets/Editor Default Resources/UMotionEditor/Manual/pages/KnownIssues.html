@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<div class="versionHeader">
-			<p class="versionText">Version: <b>1.15p02</b> </p>
+			<p class="versionText">Version: <b>1.16</b> </p>
 		</div>
 		<div class="leftContent">
 			<div class="leftContentInner">
@@ -204,6 +204,8 @@
 
 <li class="file"><a href="UnityTimelineIntegration.html">Unity Timeline Integration</a></li>
 
+<li class="file"><a href="ExportingAnimationsFAQ.html">Exporting Animations FAQ</a></li>
+
 <li class="file"><a href="Support.html">Support / FAQ</a></li>
 
 <li class="file"><a href="ReleaseNotes.html">Release Notes</a></li>
@@ -219,7 +221,7 @@
 			<div class="mainContentInner">
 				<h1 class="headline1" id="">Known Issues</h1><p class="textBlock">This page lists all known issues that can't be fixed. These issues are usually related to a specific Unity version.</p><h2 class="headline2" id="Issue01">Issue 01: Shortcuts in Context Menus and Menu Bar not displayed</h2><p class="textBlock">In Unity 5.3 shortcuts aren't displayed correctly in context menus and in the menu bar of the Clip Editor. This is due to a bug in that Unity version and is fixed in newer Unity versions.</p><h2 class="headline2" id="Issue02">Issue 02: Bones are rendered with a visible offset and often appear above the Unity editor UI.</h2><p class="textBlock">This issue is related to Unity 5.6.1f1. Please update to Unity 5.6.2f1 or newer.</p><h2 class="headline2" id="Issue03">Issue 03: In the Animation Event window the tooltip of the warning icon is not working correctly.</h2><p class="textBlock">This known issue no longer exists as the related Unity version isn't supported any more by UMotion.</p><h2 class="headline2" id="Issue04">Issue 04: Humanoid export produces visible differences.</h2><p class="textBlock">This known issue no longer exists as the related Unity version isn't supported any more by UMotion.</p><h2 class="headline2" id="Issue05">Issue 05: Fixed since UMotion V1.02.</h2><p class="textBlock">This known issue no longer exists as it is fixed since UMotion V1.02.</p><h2 class="headline2" id="Issue06">Issue 06: Fixed since UMotion V1.04p10.</h2><p class="textBlock">This known issue no longer exists as it is fixed since UMotion V1.04p10.</p><h2 class="headline2" id="Issue07">Issue 07: Bones not displayed correctly in Unity 2017.3 and 2017.4.</h2><p class="textBlock">When "allow HDR" is true on the Main Camera in the scene and Scene Lighting is enabled in the Scene View --> bones are not rendered correctly in Unity 2017.3 and 2017.4 due to a bug in that Unity versions. This bug was reported to Unity and is patched in Unity 2018.1. As a workaround, UMotion automatically disables the Scene View lighting when a GameObject is applied to the Pose Editor. It restores the original Scene View lightning state as soon as the GameObject is removed from the Pose Editor.</p><img src="../images/KnownIssue07.png"></img><h2 class="headline2" id="Issue08">Issue 08: Unity's Preview window is displaying only a small part of an exported animation.</h2><p class="textBlock">If Unity's Preview window is detached from the Inspector window it can happen that it displays only the first few frames of an animation even though the animation is exported correctly. As soon as the Inspector window get's in focus again, the Preview window is also displaying the whole animation correctly again.</p><h2 class="headline2" id="Issue09">Issue 09: Unity 2017.3.0 throws GUI exceptions on Mac OS.</h2><p class="textBlock">There are several cases where Unity's GUI system is showing errors in the console on Mac OS in Unity 2017.3.0. The errors also partly exist in other Unity versions. They usually have no negative impact on UMotion's functionality.</p><h2 class="headline2" id="Issue10">Issue 10: Root motion not applied correctly in Unity Timeline.</h2><p class="textBlock">In Unity 2017.3 and below, Unity Timeline isn't applying root motion of humanoid animation clips correctly. The root motion can be slighlty more or less than the real root motion (how it would be applied by Unity's Animator Component). This bug is fixed in Unity 2018.1 and above (see <a href="https://issuetracker.unity3d.com/issues/timeline-object-with-animation-ends-up-with-a-position-offset-when-used-in-a-timeline" class="link">Unity Issue Tracker - Case 927718</a>). You might notice this difference when editing an animation clip of Unity Timeline with UMotion as UMotion is previewing the animation with the correct root motion.</p>
 				<div class="mainContentFooter">
-					<p class="textBlock" style="float:left">Copyright © 2017 - 2018 Soxware Interactive ALL RIGHTS RESERVED</p>
+					<p class="textBlock" style="float:left">Copyright © 2017 - 2019 Soxware Interactive ALL RIGHTS RESERVED</p>
 					<p class="textBlock" align="right"><a href="https://forum.unity.com/threads/new-umotion-animation-editor-released.490618/" class="link">Unity Forum Thread</a> | <a href="https://www.facebook.com/Soxware/" class="link">Facebook</a> | <a href="https://twitter.com/SoxwareInteract" class="link">Twitter</a> | <a href="https://www.youtube.com/channel/UCCuE6nI5gHvUQjx0lo6Twtg" class="link">Youtube</a></p>
 				</div>
 			</div>
