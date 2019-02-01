@@ -102,6 +102,7 @@ namespace PixelCrushers.DialogueSystem
             setAnimatorStateList.drawElementCallback = OnDrawSetAnimatorStateListElement;
 
             foldouts = EditorPrefs.HasKey(InspectorEditorPrefsKey) ? JsonUtility.FromJson<Foldouts>(EditorPrefs.GetString(InspectorEditorPrefsKey)) : new Foldouts();
+            if (foldouts == null) foldouts = new Foldouts();
 
         }
 

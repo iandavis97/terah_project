@@ -46,7 +46,7 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("(Optional) Component that enables or disables scrollbar as necessary for content.")]
         public UIScrollbarEnabler scrollbarEnabler;
 
-        [Tooltip("Reset the scroll bar to this value when preparing response menu.")]
+        [Tooltip("Reset the scroll bar to this value when preparing response menu. To skip resetting the scrollbar, specify a negative value.")]
         public float buttonTemplateScrollbarResetValue = 1;
 
         [Tooltip("Automatically set up explicit joystick/keyboard navigation for instantiated template buttons instead of using Automatic navigation.")]
@@ -240,10 +240,17 @@ namespace PixelCrushers.DialogueSystem
                     // Reset scrollbar to top:
                     if (buttonTemplateScrollbar != null)
                     {
-                        buttonTemplateScrollbar.value = buttonTemplateScrollbarResetValue;
-                        if (scrollbarEnabler != null)
+                        if (buttonTemplateScrollbarResetValue >= 0)
                         {
-                            scrollbarEnabler.CheckScrollbarWithResetValue(buttonTemplateScrollbarResetValue);
+                            buttonTemplateScrollbar.value = buttonTemplateScrollbarResetValue;
+                            if (scrollbarEnabler != null)
+                            {
+                                scrollbarEnabler.CheckScrollbarWithResetValue(buttonTemplateScrollbarResetValue);
+                            }
+                        }
+                        else if (scrollbarEnabler != null)
+                        {
+                            scrollbarEnabler.CheckScrollbar();
                         }
                     }
 
@@ -337,7 +344,7 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private int GetNextAvailableResponseButtonPosition(int start, int direction)
+        protected int GetNextAvailableResponseButtonPosition(int start, int direction)
         {
             if (buttons != null)
             {
@@ -357,7 +364,7 @@ namespace PixelCrushers.DialogueSystem
             return 5;
         }
 
-        public void SetupTemplateButtonNavigation()
+        public virtual void SetupTemplateButtonNavigation()
         {
             // Assumes buttons are active (since uses GetComponent), so call after activating panel.
             if (instantiatedButtons == null || instantiatedButtons.Count == 0) return;

@@ -1,4 +1,4 @@
-#if UNITY_2017_1_OR_NEWER && !(UNITY_2017_3 && UNITY_WSA)
+#if UNITY_2017_1_OR_NEWER
 // Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;

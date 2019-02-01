@@ -35,7 +35,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
         {
             // Get the values of the parameters:
             direction = GetParameter(0);
-            duration = GetParameterAsFloat(1, 0);
+            duration = GetParameterAsFloat(1, 1);
             color = Tools.WebColor(GetParameter(2, "#000000"));
             if (DialogueDebug.logInfo) Debug.Log(string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}: Sequencer: Fade({1}, {2}, {3})", new System.Object[] { DialogueDebug.Prefix, direction, duration, color }));
 

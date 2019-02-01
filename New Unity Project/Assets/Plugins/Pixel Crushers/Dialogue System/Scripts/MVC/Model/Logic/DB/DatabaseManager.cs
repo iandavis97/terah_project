@@ -136,7 +136,7 @@ namespace PixelCrushers.DialogueSystem
             Add(defaultDatabase);
             foreach (DialogueDatabase database in previousLoadedDatabases)
             {
-                Add(database);
+                if (database != defaultDatabase) Add(database);
             }
         }
 

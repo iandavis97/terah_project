@@ -1,4 +1,4 @@
-﻿#if UNITY_2017_1_OR_NEWER && !(UNITY_2017_3 && UNITY_WSA)
+﻿#if UNITY_2017_1_OR_NEWER
 // Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
@@ -30,6 +30,11 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
 
         public IEnumerator Start()
         {
+            if (parameters == null || parameters.Length == 0)
+            {
+                Stop();
+                yield break;
+            }
             var mode = GetParameter(0).ToLower();
             var subject = GetSubject(1, Sequencer.Speaker);
             var nowait = string.Equals(GetParameter(2), "nowait", System.StringComparison.OrdinalIgnoreCase) ||

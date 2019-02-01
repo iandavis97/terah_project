@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<div class="versionHeader">
-			<p class="versionText">Version: <b>1.15p02</b> </p>
+			<p class="versionText">Version: <b>1.16</b> </p>
 		</div>
 		<div class="leftContent">
 			<div class="leftContentInner">
@@ -204,6 +204,8 @@
 
 <li class="file"><a href="UnityTimelineIntegration.html">Unity Timeline Integration</a></li>
 
+<li class="file"><a href="ExportingAnimationsFAQ.html">Exporting Animations FAQ</a></li>
+
 <li class="file"><a href="Support.html">Support / FAQ</a></li>
 
 <li class="file"><a href="ReleaseNotes.html"><b><u>Release Notes</u></b></a></li>
@@ -241,7 +243,31 @@
         </br>
         </br>The beta version is incremented with every change related to the current beta generation (includes bug fixes, new features or changes to the manual). Beta versions are watermarked as "beta" in the Clip Editor and are not available via the Asset Store.</td>
     </tr>
-</table></br></br><h2 class="headline2" id="">UMotion V1.15p02</h2><h3 class="headline3" id="">New or Changed Features</h3><p class="textBlock">None</p><h3 class="headline3" id="">Bug Fixes</h3><ul class="listMain">
+</table></br></br><h2 class="headline2" id="">UMotion V1.16</h2><h3 class="headline3" id="">New or Changed Features</h3><ul class="listMain">
+    <li class="listItem"><span class="listText">Line numbers are now displayed in exception stack traces.</span></li>
+    <li class="listItem"><span class="listText">Added a warning messages to the animation importer when a bone/transform that is animated in the imported animation is locked in the UMotion project. Furthermore a dialog appears that asks if the locked bones/transforms should be automatically re-configured to show the animation.</span></li>
+    <li class="listItem"><span class="listText">Improved the text that is displayed in the "Channels" section of the Pose Editor when a locked bone/transform is selected.</span></li>
+    <li class="listItem"><span class="listText">Added helping links to the export settings and the export log window that refer to the "Exporting Animations FAQ".</span></li>
+    <li class="listItem"><span class="listText">Added a warning dialog when a GameObject is assigned to the Pose Editor for the first time and bones/transforms have duplicate names.</span></li>
+    <li class="listItem"><span class="listText">Added an error message when exporting *.fbx animations and duplicate names are found in bones/transforms.</span></li>
+    <li class="listItem"><span class="listText">Added a "Tip" to the clip import dialog regarding humanoid animator IK.</span></li>
+</ul><h3 class="headline3" id="">Bug Fixes</h3><ul class="listMain">
+    <li class="listItem"><span class="listText">Fixed that UMotion windows are closed everytime Unity is opened (happens only in HDRP projects).</span></li>
+    <li class="listItem"><span class="listText">Fixed that a script with an obfuscated name is shown in the "Add Component" menu.</span></li>
+    <li class="listItem"><span class="listText">Fixed that the description in the "Key Dialog" window is cut off.</span></li>
+    <li class="listItem"><span class="listText">Fixed that UMotion thinks it crashed if a 3rd party script throws an exception in "MonoBehaviour.OnValidate()".</span></li>
+    <li class="listItem"><span class="listText">Fixed that some special operations (e.g. deleting only a single key and then closing the project) don't set the umotion project dirty thus are not stored.</span></li>
+</ul><h3 class="headline3" id="">Manual Changes</h3><ul class="listMain">
+    <li class="listItem"><span class="listText">Added a new chapter "Exporting Animations FAQ". Helps troubleshooting issues related to exporting animations.</span></li>
+</ul></br></br><h2 class="headline2" id="">UMotion V1.15p04</h2><h3 class="headline3" id="">New or Changed Features</h3><p class="textBlock">None</p><h3 class="headline3" id="">Bug Fixes</h3><ul class="listMain">
+    <li class="listItem"><span class="listText">Fixed that the camera isn't rendered correctly when a character is applied to the pose editor due to HD render pipeline's fog.</span></li>
+    <li class="listItem"><span class="listText">Fixed that it's not possible to assign a shortcut to "Frame View" (Curves).</span></li>
+    <li class="listItem"><span class="listText">Fixed a crash when trying to create a "Custom IK" chain with the IK Setup Wizard when the target bone is locked.</span></li>
+</ul><h3 class="headline3" id="">Manual Changes</h3><p class="textBlock">None</p></br></br><h2 class="headline2" id="">UMotion V1.15p03</h2><h3 class="headline3" id="">New or Changed Features</h3><p class="textBlock">None</p><h3 class="headline3" id="">Bug Fixes</h3><ul class="listMain">
+    <li class="listItem"><span class="listText">Fixed wrong text rendering in all UMotion windows when UMotion is used together with Unity's new editor skin.</span></li>
+    <li class="listItem"><span class="listText">Fixed an exception that is thrown when the IK handel's parent is set to be the IK target and the operation is undone and then redone.</span></li>
+    <li class="listItem"><span class="listText">Fixed a compile error when using UMotion in Unity 2019.1.</span></li>
+</ul><h3 class="headline3" id="">Manual Changes</h3><p class="textBlock">None</p></br></br><h2 class="headline2" id="">UMotion V1.15p02</h2><h3 class="headline3" id="">New or Changed Features</h3><p class="textBlock">None</p><h3 class="headline3" id="">Bug Fixes</h3><ul class="listMain">
     <li class="listItem"><span class="listText">Fixed that continuity was not ensured for quaternion curves of exported *.anim files.</span></li>
     <li class="listItem"><span class="listText">Fixed a crash that appears when the curves view is opened, selection syncing between Pose and Clip Editor is enabled and the opened animation clip is deleted.</span></li>
     <li class="listItem"><span class="listText">Fixed a crash that can appear on Linux/Mac OS under certain circumstances when UMotion is opened/reloaded after an assembly reload.</span></li>
@@ -797,7 +823,7 @@
     <li class="listItem"><span class="listText">Added Issue 06 to the Known Issues list.</span></li>
 </ul></br></br><h2 class="headline2" id="">UMotion V1.00</h2><h3 class="headline3" id="">New or Changed Features</h3><p class="textBlock">Initial version</p><h3 class="headline3" id="">Bug Fixes</h3><p class="textBlock">Initial version</p><h3 class="headline3" id="">Manual Changes</h3><p class="textBlock">Initial version</p>
 				<div class="mainContentFooter">
-					<p class="textBlock" style="float:left">Copyright © 2017 - 2018 Soxware Interactive ALL RIGHTS RESERVED</p>
+					<p class="textBlock" style="float:left">Copyright © 2017 - 2019 Soxware Interactive ALL RIGHTS RESERVED</p>
 					<p class="textBlock" align="right"><a href="https://forum.unity.com/threads/new-umotion-animation-editor-released.490618/" class="link">Unity Forum Thread</a> | <a href="https://www.facebook.com/Soxware/" class="link">Facebook</a> | <a href="https://twitter.com/SoxwareInteract" class="link">Twitter</a> | <a href="https://www.youtube.com/channel/UCCuE6nI5gHvUQjx0lo6Twtg" class="link">Youtube</a></p>
 				</div>
 			</div>

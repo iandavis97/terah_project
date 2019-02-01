@@ -34,7 +34,7 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// When the script starts, check the condition and set the target GameObject active/inactive.
         /// </summary>
-        [Tooltip("When script starts, check condition & set target GameObject active/inactive.")]
+        [Tooltip("When script starts, check condition & set target GameObject active/inactive. Otherwise it only checks when a game is loaded or entering from another scene.")]
         public bool checkOnStart;
 
         protected virtual void Start()
@@ -63,7 +63,17 @@ namespace PixelCrushers.DialogueSystem
 
         public virtual void Check()
         {
-            if (enabled) target.SetActive(condition.IsTrue(null));
+            if (enabled)
+            {
+                if (target == null)
+                {
+                    if (DialogueDebug.logWarnings) Debug.LogWarning("Dialogue System: No target is assigned to Persistent Active Data component on " + name + ".", this);
+                }
+                else
+                {
+                    target.SetActive(condition.IsTrue(null));
+                }
+            }
         }
 
     }

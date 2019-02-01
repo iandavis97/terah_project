@@ -102,20 +102,20 @@ MonoBehaviour:
     - title: Name
       value: Terminal
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
     - title: Pictures
       value: '[]'
       type: 3
-      typeString: 
+      typeString: CustomFieldType_Files
     - title: Description
       value: The control unit that the player can use to open the hangar airlock (killing
         the Emperor and innocent bystanders) or re-lock it (letting them all live).
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
     - title: IsPlayer
       value: False
       type: 2
-      typeString: 
+      typeString: CustomFieldType_Boolean
     portrait: {fileID: 2800000, guid: a491fca6456b0204080efb8fb6caa853, type: 3}
     alternatePortraits: []
   - id: 5
@@ -1945,7 +1945,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Sequence
-        value: None()
+        value: Delay({{end}})
         type: 0
         typeString: 
       conversationID: 4
@@ -2101,7 +2101,9 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Sequence
-        value: TextInput(Text Field UI,Password,password)
+        value: 'Camera(Terminal Camera Angle,,1);
+
+          TextInput(Text Field UI,Password,password)'
         type: 0
         typeString: 
       conversationID: 5
@@ -2300,7 +2302,9 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: Delay({{end}})
+        value: 'Camera(original,,1);
+
+          Delay({{end}})'
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 5
@@ -2446,7 +2450,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: None()
+        value: Camera(original,,1)
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 5

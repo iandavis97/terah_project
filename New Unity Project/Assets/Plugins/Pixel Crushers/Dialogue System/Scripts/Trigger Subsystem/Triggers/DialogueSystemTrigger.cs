@@ -1,7 +1,6 @@
 // Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
-using UnityEngine.Events;
 using System;
 using System.Collections;
 
@@ -813,7 +812,7 @@ namespace PixelCrushers.DialogueSystem
                 earliestTimeToAllowTriggerExit = Time.time + MarginToAllowTriggerExit;
                 if (stopConversationIfTooFar)
                 {
-                    monitorDistanceCoroutine = StartCoroutine(MonitorDistance(actor));
+                    monitorDistanceCoroutine = StartCoroutine(MonitorDistance(DialogueManager.currentActor));
                 }
             }
         }

@@ -68,7 +68,7 @@ public class AmplifyColorEffectEditorBase : Editor
 
 	bool FindClone( AmplifyColorBase effect )
 	{
-		GameObject effectPrefab = PrefabUtility.GetCorrespondingObjectFromSource( effect.gameObject ) as GameObject;
+		GameObject effectPrefab = PrefabUtility.GetPrefabParent( effect.gameObject ) as GameObject;
 		PrefabType effectPrefabType = PrefabUtility.GetPrefabType( effect.gameObject );
 		bool effectIsPrefab = ( effectPrefabType != PrefabType.None && effectPrefabType != PrefabType.PrefabInstance );
 		bool effectHasPrefab = ( effectPrefab != null );
@@ -84,7 +84,7 @@ public class AmplifyColorEffectEditorBase : Editor
 				continue;
 			}
 
-			GameObject otherPrefab = PrefabUtility.GetCorrespondingObjectFromSource( other.gameObject ) as GameObject;
+			GameObject otherPrefab = PrefabUtility.GetPrefabParent( other.gameObject ) as GameObject;
 			PrefabType otherPrefabType = PrefabUtility.GetPrefabType( other.gameObject );
 			bool otherIsPrefab = ( otherPrefabType != PrefabType.None && otherPrefabType != PrefabType.PrefabInstance );
 			bool otherHasPrefab = ( otherPrefab != null );

@@ -135,6 +135,7 @@ namespace PixelCrushers.DialogueSystem
         private DialogueDebug.DebugLevel m_lastDebugLevelSet = DialogueDebug.DebugLevel.None;
         private List<ActiveConversationRecord> m_activeConversations = new List<ActiveConversationRecord>();
         private UILocalizationManager m_uiLocalizationManager = null;
+        private bool m_calledRandomizeNextEntry = false;
 
         public static bool applicationIsQuitting = false;
         public static string lastInitialDatabaseName = null;
@@ -677,13 +678,17 @@ namespace PixelCrushers.DialogueSystem
 
                 SetConversationUI(actor, conversant);
 
+                m_calledRandomizeNextEntry = false;
                 var model = new ConversationModel(m_databaseManager.masterDatabase, title, actor, conversant, allowLuaExceptions, isDialogueEntryValid, initialDialogueEntryID);
+                var needToSetRandomizeNextEntryAgain = m_calledRandomizeNextEntry; // Special case when START node leads to group node with RandomizeNextEntry().
+                m_calledRandomizeNextEntry = false;
                 if (!model.hasValidEntry) return;
                 if (model.firstState != null && model.firstState.subtitle != null && model.firstState.subtitle.dialogueEntry != null) lastConversationID = model.firstState.subtitle.dialogueEntry.conversationID;
                 var view = this.gameObject.AddComponent<ConversationView>();
                 view.Initialize(dialogueUI, GetNewSequencer(), displaySettings, OnDialogueEntrySpoken);
                 view.SetPCPortrait(model.GetPCTexture(), model.GetPCName());
                 m_conversationController = new ConversationController(model, view, displaySettings.inputSettings.alwaysForceResponseMenu, OnEndConversation);
+                if (needToSetRandomizeNextEntryAgain) RandomizeNextEntry();
                 var target = (actor != null) ? actor : this.transform;
                 if (actor != this.transform) gameObject.BroadcastMessage(DialogueSystemMessages.OnConversationStart, target, SendMessageOptions.DontRequireReceiver);
 
@@ -1037,6 +1042,9 @@ namespace PixelCrushers.DialogueSystem
                     case ResponseTimeoutAction.ChooseCurrentResponse:
                         m_conversationController.GotoCurrentResponse();
                         break;
+                    case ResponseTimeoutAction.ChooseLastResponse:
+                        m_conversationController.GotoLastResponse();
+                        break;
                 }
             }
         }
@@ -1187,6 +1195,7 @@ namespace PixelCrushers.DialogueSystem
         {
             if (dialogueUI != null && (displaySettings.alertSettings.allowAlertsDuringConversations || !isConversationActive))
             {
+                if (message.Contains("\\n")) message = message.Replace("\\n", "\n");
                 dialogueUI.ShowAlert(GetLocalizedText(message), duration);
             }
         }
@@ -1199,7 +1208,6 @@ namespace PixelCrushers.DialogueSystem
         /// </param>
         public void ShowAlert(string message)
         {
-            if (message.Contains("\\n")) message = message.Replace("\\n", "\n");
             var minSecs = displaySettings.alertSettings.minAlertSeconds;
             if (Mathf.Approximately(0, minSecs)) minSecs = displaySettings.subtitleSettings.minSubtitleSeconds;
             var charsPerSec = displaySettings.alertSettings.alertCharsPerSecond;
@@ -1217,7 +1225,7 @@ namespace PixelCrushers.DialogueSystem
             if (displaySettings.alertSettings.allowAlertsDuringConversations || !isConversationActive)
             {
                 string message = DialogueLua.GetVariable("Alert").asString;
-                if (!string.IsNullOrEmpty(message))
+                if (!string.IsNullOrEmpty(message) && !string.Equals(message, "nil"))
                 {
                     Lua.Run("Variable['Alert'] = ''");
                     ShowAlert(message);
@@ -1591,7 +1599,7 @@ namespace PixelCrushers.DialogueSystem
 
             Lua.RegisterFunction("ShowAlert", null, typeof(DialogueSystemController).GetMethod("LuaShowAlert"));
             Lua.RegisterFunction("HideAlert", null, typeof(DialogueSystemController).GetMethod("LuaHideAlert"));
-            Lua.RegisterFunction("RandomizeNextEntry", null, typeof(DialogueSystemController).GetMethod("RandomizeNextEntry"));
+            Lua.RegisterFunction("RandomizeNextEntry", this, typeof(DialogueSystemController).GetMethod("RandomizeNextEntry"));
         }
 
         public static void LuaShowAlert(string message)
@@ -1606,6 +1614,7 @@ namespace PixelCrushers.DialogueSystem
 
         public void RandomizeNextEntry()
         {
+            m_calledRandomizeNextEntry = true;
             if (conversationController != null) conversationController.randomizeNextEntry = true;
         }
 

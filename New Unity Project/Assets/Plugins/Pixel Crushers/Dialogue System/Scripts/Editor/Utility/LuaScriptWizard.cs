@@ -22,6 +22,12 @@ namespace PixelCrushers.DialogueSystem
             Add
         }
 
+        private enum NetSetMode
+        {
+            Set,
+            NetSet
+        }
+
         private class ScriptItem
         {
             public ScriptWizardResourceType resourceType = ScriptWizardResourceType.Quest;
@@ -41,6 +47,7 @@ namespace PixelCrushers.DialogueSystem
             public BooleanType booleanValue = BooleanType.True;
             public float floatValue = 0;
             public ValueSetMode valueSetMode = ValueSetMode.To;
+            public NetSetMode netSetMode = NetSetMode.Set;
             public string[] scriptQuestEntryNames = new string[0];
         }
 
@@ -155,7 +162,19 @@ namespace PixelCrushers.DialogueSystem
         {
             EditorGUILayout.BeginHorizontal();
 
+#if USE_UNET
+            if (item.resourceType == ScriptWizardResourceType.Quest || item.resourceType == ScriptWizardResourceType.QuestEntry || item.resourceType == ScriptWizardResourceType.Variable)
+            {
+                item.netSetMode = (NetSetMode)EditorGUILayout.EnumPopup(item.netSetMode, GUILayout.Width(36));
+            }
+            else
+            {
+                item.netSetMode = NetSetMode.Set;
+                EditorGUILayout.LabelField("Set", GUILayout.Width(32));
+            }
+#else
             EditorGUILayout.LabelField("Set", GUILayout.Width(32));
+#endif
             ScriptWizardResourceType newResourceType = (ScriptWizardResourceType)EditorGUILayout.EnumPopup(item.resourceType, GUILayout.Width(96));
             if (newResourceType != item.resourceType)
             {
@@ -347,9 +366,7 @@ namespace PixelCrushers.DialogueSystem
 
                         // Quest:
                         string questName = GetWizardQuestName(questNames, item.questNamesIndex);
-                        //sb.AppendFormat("Quest[\"{0}\"].State = \"{1}\"",
-                        //                DialogueLua.StringToTableIndex(questName),
-                        //                QuestLog.StateToString(item.questState));
+                        if (item.netSetMode == NetSetMode.NetSet) sb.Append("Net");
                         sb.AppendFormat("SetQuestState(\"{0}\", \"{1}\")",
                                         questName,
                                         QuestLog.StateToString(item.questState));
@@ -360,10 +377,7 @@ namespace PixelCrushers.DialogueSystem
 
                         // Quest Entry:
                         string questName = GetWizardQuestName(complexQuestNames, item.questNamesIndex);
-                        //sb.AppendFormat("Quest[\"{0}\"].Entry_{1}_State = \"{2}\"",
-                        //                DialogueLua.StringToTableIndex(questName),
-                        //                item.questEntryIndex + 1,
-                        //                QuestLog.StateToString(item.questState));
+                        if (item.netSetMode == NetSetMode.NetSet) sb.Append("Net");
                         sb.AppendFormat("SetQuestEntryState(\"{0}\", {1}, \"{2}\")",
                                         questName,
                                         item.questEntryIndex + 1,
@@ -378,28 +392,65 @@ namespace PixelCrushers.DialogueSystem
                         switch (GetWizardVariableType(item.variableNamesIndex))
                         {
                             case FieldType.Boolean:
-                                sb.AppendFormat("Variable[\"{0}\"] = {1}",
-                                                DialogueLua.StringToTableIndex(variableName),
-                                                (item.booleanValue == BooleanType.True) ? "true" : "false");
-                                break;
-                            case FieldType.Number:
-                                if (item.valueSetMode == ValueSetMode.To)
+                                if (item.netSetMode == NetSetMode.NetSet)
                                 {
-                                    sb.AppendFormat("Variable[\"{0}\"] = {1}",
+                                    sb.AppendFormat("NetSetBool(\"{0}\", {1})",
                                                     DialogueLua.StringToTableIndex(variableName),
-                                                    item.floatValue);
+                                                    (item.booleanValue == BooleanType.True) ? "true" : "false");
                                 }
                                 else
                                 {
-                                    sb.AppendFormat("Variable[\"{0}\"] = Variable[\"{0}\"] + {1}",
+                                    sb.AppendFormat("Variable[\"{0}\"] = {1}",
                                                     DialogueLua.StringToTableIndex(variableName),
-                                                    item.floatValue);
+                                                    (item.booleanValue == BooleanType.True) ? "true" : "false");
+                                }
+                                break;
+                            case FieldType.Number:
+                                if (item.netSetMode == NetSetMode.NetSet)
+                                {
+
+                                    if (item.valueSetMode == ValueSetMode.To)
+                                    {
+                                        sb.AppendFormat("NetSetNumber(\"{0}\", {1})",
+                                                        DialogueLua.StringToTableIndex(variableName),
+                                                        item.floatValue);
+                                    }
+                                    else
+                                    {
+                                        sb.AppendFormat("NetSetNumber(\"{0}\", Variable[\"{0}\"] + {1})",
+                                                        DialogueLua.StringToTableIndex(variableName),
+                                                        item.floatValue);
+                                    }
+                                }
+                                else
+                                {
+                                    if (item.valueSetMode == ValueSetMode.To)
+                                    {
+                                        sb.AppendFormat("Variable[\"{0}\"] = {1}",
+                                                        DialogueLua.StringToTableIndex(variableName),
+                                                        item.floatValue);
+                                    }
+                                    else
+                                    {
+                                        sb.AppendFormat("Variable[\"{0}\"] = Variable[\"{0}\"] + {1}",
+                                                        DialogueLua.StringToTableIndex(variableName),
+                                                        item.floatValue);
+                                    }
                                 }
                                 break;
                             default:
-                                sb.AppendFormat("Variable[\"{0}\"] = \"{1}\"",
-                                                DialogueLua.StringToTableIndex(variableName),
-                                                item.stringValue);
+                                if (item.netSetMode == NetSetMode.NetSet)
+                                {
+                                    sb.AppendFormat("NetSetString(\"{0}\", \"{1}\")",
+                                                    DialogueLua.StringToTableIndex(variableName),
+                                                    item.stringValue);
+                                }
+                                else
+                                {
+                                    sb.AppendFormat("Variable[\"{0}\"] = \"{1}\"",
+                                                    DialogueLua.StringToTableIndex(variableName),
+                                                    item.stringValue);
+                                }
                                 break;
                         }
 

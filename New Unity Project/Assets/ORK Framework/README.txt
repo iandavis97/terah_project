@@ -183,6 +183,173 @@ http://docs.unity3d.com/Manual/TroubleShootingIPhone.html
 ORK Version Changelog
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 2.22.0a/b:
+- fix: Data Update: Fixed an issue with the data update for flying texts in ORK Framework 2.22.0.
+
+
+Version 2.22.0:
+- new: Battle Texts, Status Values, Status Effects, Attack/Defence Attributes: Flying Texts: You can now set up different flying texts for player, ally and enemy groups. Previous settings will be updated automatically to be displayed for all groups.
+- new: Text Codes: New text codes available to display the buy price ('#buyprice') and sell price ('#sellprice') of a selected item (like '#inventory' to display the quantity currently in the player's inventory).
+- new: Game Controls: 'Cursor Hold Timeout' setting available. Defines the time in seconds that has to pass between consecutive cursor moves when the input is received without a break (e.g. holding a key).
+- new: Input Keys: Unity Input Manager: 'Use Raw Axis' setting available. Optionally use the raw axis value, without smoothing filtering applied (Input.GetAxisRaw). This can be useful for vertical/horizontal inputs used for menus.
+- new: Game Settings: 'Visibility Settings' available. Define how visibility is checked, either checking the renderer's visibility to any camera, the position within viewport space of the main camera or by checking the frustum planes of the main camera. Defaults to checking the renderer's visibility.
+- new: Game Settings: Bestiary Settings: 'Auto Add Entry' setting available. Optionally only add a new bestiary entry for a combatant if something was learned instead of when encountering them. By default enabled (adding new entries by encountering an enemy).
+- new: Game Settings: Bestiary Settings: 'Notification Settings' available. Optionally show notifications when a bestiary entry was added, removed, updated or completed.
+- new: Abilities, Items: 'Battle Info Text' settings available. Optionally override the default battle info texts defined in 'Battle System > Battle Text' with custom texts per ability/item.
+- new: Notifications: 'Can Accept' and 'Auto Close' settings available. Notifications can now optionally allow being accepted instead of only closing after a defined time. When allowing to accept the notification, auto closing becomes optional.
+- new: Notifications: 'Block Player Control', 'Block Camera Control', 'Block Control Maps' and 'Block Move AI' settings available. Optionally block controls and move AI while a notification is displayed.
+- new: Notifications: AI: 'Show Portrait' settings available in all AI notifications. Optionally show a portrait of the AI behaviour or AI ruleset of the notification.
+- new: Combatants: Attacks & Abilities: 'Menu Ability Types' settings available. Menu screens and battle menus can limit displaying empty ability types to types that will be available to the combatant based on the combatant/class ability development settings. Define which settings will be used (ability development, ability and ability tree) and add additional ability types to be displayed.
+- new: Battle Settings: Group/Individual Targets: 'Raycast Targeting' settings available. Optionally select targets using raycasts each frame, e.g. selecting the target the cursor hovers above. Selecting (and removing) can also depend on a defined timeout, e.g. only selecting a target when hovering above it for 1 second.
+- new: Battle Settings: Group/Individual Targets: 'Only Visible' setting available. Optionally only allow selecting combatants that are visible (based on the 'Visibility Settings').
+- new: Battle Settings: Group/Individual Targets: 'Distance Sort' setting available. Optionally sort available targets for the 'Next' and 'Previous' input keys by the distance to the user.
+- new: Battle Settings: Group/Individual Targets: 'Line Of Sight' settings available. Optionally check if any other objects are between user and available targets.
+- new: Battle Settings: Group/Individual Targets: Click/Touch Control: 'Raycast Distance' and 'Layer Mask' settings available. You can now define the distance and used layer mask of the click/touch input raycast used to determine if a combatant was selected.
+- new: Active Time Battles: 'Pause Cast Time' settings available. Optionally also pause the cast time of actions when using 'Pause On Menu', 'Pause On Choosing' or 'Pause On Action'. Separate settings for all 3 pause options.
+- new: Battle Menu: Ability, Item: 'Show Empty Types' settings available. Optionally show ability/item types not available to the combatant with inactive choice buttons. Can optionally be limited to the ability types that are and will be available to the combatant based on the ability development settings.
+- new: Battle AI: Use Killed By: 'Use Killed By' node available in 'Target' nodes. Adds the combatant that killed the user to the found targets list. This is only available if the combatant was previously killed by someone in battle.
+- new: HUDs: Combatant, Turn Order, Latest Turn: 'AI Behaviour' and 'AI Ruleset' HUD element types available. Displays the AI behaviours/rulesets of a combatant.
+- new: HUDs: Combatant, Turn Order, Latest Turn: 'Use Object Variables' setting available for all HUD elements with text. Optionally use the object variables of the combatant instead of global variables for variable text codes.
+- new: HUDs, Menu Screens: New text codes available for HUD elements displaying ability/equipment level points. You can now add the remaining value until max level points and min level points, as well as the minimum level points.
+- new: Menu Screens: Ability: 'Only Combatant Types' setting available when displaying all ability types and using 'Show Empty Types'. Optionally limit the displayed ability types to the types that are and will be available to the combatant based on the ability development settings.
+- new: Menu Screens: Sub Menus: 'Game Event' type available. Optionally start a game event using the selected item/equipment/etc. as selected data with the key 'action'.
+- new: Menu Screens: Sub Menus: 'Block Focus' setting available when enabling 'Close Out Of Box Click'. Blocking the focus when a sub menu is open is now optional if it's closed when clicking somewhere out of the box. By default enabled.
+- new: Event System: Change Selected Data Name: 'Change Selected Data Name' node available in 'Event > Selected Data' nodes. Changes or resets the name of selected data, currently supports combatants, abilities, equipment, items, AI behaviours/rulesets and crafting recipes.
+- new: Event System: Store Selected Data Name: 'Store Selected Data Name' node available in 'Event > Selected Data' nodes. Stores the name of selected data, currently supports combatants, abilities, equipment, items and other shortcuts.
+- new: Event System: Dialogue Nodes: 'Lock Focus' setting available in different dialogue nodes. Optionally lock the focus on the newly opened GUI box.
+- new: Event System: Is Visible: 'Is Visible' node available in 'Game Object > Renderer' nodes. Checks if a game object is visible.
+- new: Event System: Curve Move: 'Move Time' settings available. Optionally define a time in seconds used to perform the curve move. The curves will be scaled by the time, using the highest curve time as base.
+- new: Event System: Curve Move: 'Multiply By' settings available for the X, Y and Z axis settings. Multiplies the curve's value by the defined value (e.g. a distance stored in a game variable).
+- new: Event System: Set Killed By: 'Set Killed By' node available in 'Battle > Combatant' nodes. Mark that a combatant has been killed by another combatant.
+- new: Event System: Select Combatant: 'Combatant Origin' settings available. Select if the combatant itself or e.g. the combatant's last target is used.
+- new: Interactions: Drop: 'Drop Type' settings available. Drop interactions now also support abilities.
+- change: Event System: Raycast Object, Raycast To Variable: 'Use Mouse Input' setting is now available when 'Use Input' is enabled. Previously, using input always used the mouse/cursor position. Old settings will automatically update to using the mouse position when using input.
+- change: Event System: Set Attacked By, Change Last Target: These nodes are now available in all event types.
+- change: Editor: About: The version now also displays which Unity version it is intended for (i.e. Unity 5.6, Unity 2017 or Unity 2018).
+- change: Interactions: Drop: The interaction will now also be started when dropping more than the required item quantity on it.
+- fix: Event System: Call Menu Screen: Fixed an issue that prevented the event from continuing when not using 'Wait'.
+- fix: Event System: Distance To Variable: Fixed an issue that calculated the wrong distance when not using 'Use Grid Distance'.
+- fix: Grid Settings: Grid Examine: Fixed an issue where using the grid examine command could cause errors when showing the grid move range.
+- fix: Weapons, Armors: Equipment Abilities: Fixed an issue where multiple abilities from the same equipment where not added when equipped.
+- fix: Battle End: Editor: Fixed an issue where disabling 'Show Gains' in the 'Victory Gain Notification' caused all following settings to be hidden.
+- fix: Battle End Events: Collect Battle Gains: Fixed an issue where using the 'Wait' setting could prevent the event from progressing when there where not victory gain dialogues displayed.
+- fix: Bestiary: Fixed an issue where 'Attacked By' didn't learn anything about the attacking enemy.
+
+
+Version 2.21.0:
+- new: Flying Texts: Position Settings: 'Reset Order' settings available when using 'Use In Order' setting. Optionally reset the order after a defined amout of time. E.g. use this to have changes of an ability use different positions, resetting shortly after to reuse them from the first position in the next use.
+- new: Battle Settings: Flying Texts: 'Default Position Settings' available. Define the default position settings for all flying texts, each flying text setting can optionally override the default positions. All flying texts using the default positions share the position order (when using 'Use In Order'), i.e. each different flying text will progress using the next position.
+- new: Grid Settings: Grid Move: 'Limit Height Movement' settings available. Optionally define a maximum height difference for upward/downward movement between grid cells. E.g. use this to prevent combatants from moving on cells that are too high to move to from lower cells. Can be overridden by each combatant.
+- new: Combatants: Grid Settings: 'Limit Height Movement' settings available. Optionally override the default settings defined in the grid move command. E.g. use this to create flying enemies that shouldn't take height limits into account.
+- new: Battle Settings: Target Information Dialogue: 'HUD Placement' setting available. Define where the HUD elements will be placed in relation to the dialogue's content, either as defined by the elements, before the content (moving the content downward) or after the content.
+- new: Battle End: 'Combatant Gain Notification' settings available. Optionally display a dialogue displaying a combatant's victory gains (experience and status value gains, not coming from level ups). Can optionally be combined with level up texts.
+- new: Battle End: Level Up Notification: 'Combine Level Ups' settings available. Optionally combine all level ups and class level ups of a combatant using separator texts instead of displaying them as separate dialogues.
+- new: Battle End: Level Up Notification: New text codes available in all status value related texts. Use '%old' and '%new' to display the old and new value of the status value, 'Normal' type status values can also use '%oldb' and '%newb' to display the old/new base values (without bonuses).
+- new: Menu Settings: Status Preview Settings: 'Overrule Selection Previews' setting available. Selection previews (e.g. during target selection or grid move selection) can be overruled by other previews (e.g. from a tooltip when hovering over a shortcut bar).
+- new: Menu Settings: Status Preview Settings: 'UI Hides Selection Previews' setting available. Selection previews (e.g. during target selection or grid move selection) are hidden while the cursor is over a GUI box (e.g. a HUD).
+- new: Save Game Menu: 'Delete File' settings available. Optionally use an input key to delete the currently selected save file (choice) in 'Save Game Menu' and 'Load Game Menu' dialogues.
+- new: Save Game Menu: 'Use Delete Key' setting available in 'Save Game Menu' and 'Load Game Menu' dialogues. Optionally use the delete input key defind in the 'Delete File' settings.
+- new: GUI Boxes: Choice Settings: 'Use Fixed Offset' settings available for 'Circle' type choice mode. Optionally define a fixed offset in degrees between choices. If disabled, the offset is calculated based on the number of choices and the 'Circle Degree' setting.
+- new: HUDs: Tooltip: 'Type Tooltip' settings available. Optionally display the tooltip HUD for type content (e.g. item types, ability trees, areas, area types, etc.).
+- new: HUDs: Console: 'Enable Tooltip' setting available. Optionally add tooltips to the console type tabs of the HUD.
+- new: Menu Screens: Ability, Ability Tree, Equipment, Inventory, Inventory Exchange, Research: 'HUD Placement' setting available. Define where the HUD elements will be placed in relation to the dialogue's content, either as defined by the elements, before the content (moving the content downward) or after the content.
+- new: Menu Screens: Ability, Ability Tree, AI Behaviour, AI Ruleset, Bestiary Area/Type, Crafting, Inventory, Inventory Exchange, Log, Quest, Research: 'Enable Tooltip' settings available for type settings. Optionally display a tooltip for menu items representing a type/tree/area.
+- new: Menu Screens: Information, Combatant, Group Combatant: 'Unfocused Control' setting available. Optionally allow using the page change keys when the menu part isn't focused.
+- new: Shop Layouts: Type Box: 'Enable Tooltip' setting available. Optionally display a tooltip for menu items representing an item type.
+- new: Event System: Join Active Group: Advanced level and class level settings available. Previous settings will be updated automatically.
+- new: Event System: Is Item Collected: 'Is Item Collected' node available in 'Game > Scene' nodes. Checks if an item in a scene (identified via scene ID) has been collected.
+- new: Event System: Is Battle Finished: 'Is Battle Finished' node available in 'Game > Scene' nodes. Checks if a battle in a scene (identified via scene ID) has been finished.
+- new: Event System: Is Menu Open: 'Is Menu Open' node available in 'Game > Menu' nodes. Checks if a defined menu screen or any menu screen is opened.
+- new: Event System: Is Shop Open: 'Is Shop Open' node available in 'Game > Shop' nodes. Checks if a defined shop or any shop is opened.
+- new: Event System: Store Combatant Cell: 'Store Combatant Cell' node available in 'Battle > Grid' nodes. Stores or loads the combatant's cell coordinates and direction. Use this to remember the combatant's placement on the grid between battles.
+- new: Item Collectors: 'Collected Game Event' setting available for 'Single' and 'Random' item collectors not using 'Destroy Collected Object'. Optionally use a game event for already collected items when loading the scene. E.g. use this to open already collected chests.
+- change: Battle End: The 'GUI Box' settings are now found in 'Victory Gains Notification', 'Combatant Gains Notification' and 'Level Up Notification' settings. Previous settings will be updated automatically.
+- change: Flying Texts: All text notifications (e.g. damage/refresh texts of status values or status effect apply/remove texts) have been renamed to flying texts to more appropriately state what they are. This includes various settings throughout the framework (e.g. options to enable/disable showing a flying text for status changes).
+- change: Flying Texts: Using positions in order ('Use In Order' setting) is now individual for each combatant.
+- change: Event System: The 'Show Notification' node has been renamed to 'Show Flying Text'.
+- change: Event System: Dialogue Nodes: Stopping an event (e.g. using 'Stop On Destroy' in an event interaction) will now close a currently displayed dialogue.
+- change: Scripting: Save Games: You can now access the last save game index that was saved or loaded through 'ORK.SaveGame.LastIndex'.
+- change: GUI Boxes: Tabs: The selected tab is now highlighted when using the new UI.
+- change: Grid Highlights: Move Range: The move range is no longer highlighted when no cells are available. E.g. using a line renderer highlight with 'Enclosed Cells' enabled previously added a highlight around the player's cell.
+- fix: Menu Screens: Group: Fixed an issue where using drag and drop options didn't add HUD elements to the combatant choices.
+- fix: Grid Settings: Grid Move: Selecting a the cell of a combatant you can move over no longer previews move/AP costs.
+- fix: Status Previews: Fixed an issue where 'Normal' type status values with 'Combined Value' enabled didn't calculate the correct preview value.
+- fix: Grid Settings: Grid Move: Using 'Diagonal Move' without 'Diagonal Distance One' could lead to paths being dismissed when using the grid move action.
+- fix: HUDs, Input Keys: Fixed an issue where 'Control' HUD inputs could be received a frame after being released, causing double input in some cases.
+- fix: GUI Boxes: Fixed an issue where the text alignment of tabs wasn't used correctly.
+
+
+Version 2.20.0:
+- new: Content Layouts: New text codes available in all content layouts throughout the framework. You can now specifically show the quantity ('%q'), buy price ('%bp'), total buy price ('%tbp'), sell price ('%sp') and total sell price ('%tsp') of displayed content instead of using the context specific info text code ('%').
+- new: Camera Controls: Mouse, Top Down Border: 'Audio Clip' settings available for non-axis input keys. Optionally play an audio clip when using the input keys.
+- new: Game Settings: Area Notifications: 'Close On Scene Change' setting available. Optionally close area notifications immediately and drop all queued notifications when changing scenes.
+- new: Console Settings: 'Auto Remove Lines' settings available. Optionally remove console lines after a defined amount of time.
+- new: Shops: 'Inventory Exchange Menu' settings available. Optionally use an 'Inventory Exchange' menu screen instead of a shop layout.
+- new: Ability Types, AI Types, Crafting Types, Combatant Types: 'Item Type' setting available. Defines the corresponding item type of the various types. The item type will be used for type separation of abilities, AI rulesets/behaviours, crafting recipes and combatants in shops and inventory menus.
+- new: Formulas: Selected Data Count: 'Selected Data Count' node vailable in 'Selected Data' nodes. Checks how many data is stored in a selected data list.
+- new: Formulas: Select Combatant: 'Select Combatant' node available in 'Selected Data' nodes. Uses combatants as selected data.
+- new: Formulas: Select Item: 'Add AI Behaviours', 'Add AI Rulesets' and 'Add Crafting Recipes' settings available in 'Item Box Settings'. Optionally add AI behaviours/rulesets and crafting recipes to selected data.
+- new: Inventory Settings: Mark New Content: 'Shop Settings' available. Optionally use different settings for shops. Currently only using an 'Inventory Exchange' menu as a shop layout allows marking new content.
+- new: Inventory Settings: Item Box: 'Inventory Exchange Menu' settings available. Optionally use an 'Inventory Exchange' menu screen instead of the item box dialogue.
+- new: Battle AI: Variables, Selected Data: Battle AIs now support local variables and selected data.
+- new: Battle AI: Selected Data Nodes: 'Selected Data' nodes available. Store and check selected data, e.g. combatants, items or abilities. Selected data can be used as variable origin, e.g. to check ability variables.
+- new: Battle AI: Change Game Variables: 'Change Game Variables' node available. Allows changing game variables from different sources, e.g. local, global or object variables. This node replaces the previous 'Change Object Variables' node.
+- new: Battle AI: Check Game Variables: 'Variable Origin' settings available. Now supports checking game variables from different sources, e.g. local, global or object variables.
+- new: Grid Settings: Examine Grid: Combatant Info Box: 'Call Key' settings available. Optionally use a defined input key to open a combatant info box. This can also be limited to only be available while the cursor is over the combatant, e.g. for right-click examining.
+- new: Grid Settings: Examine Grid: Combatant Info Box: 'Open Audio' and 'Close Audio' settings available. Optionally play an audio clip when opening or closing a combatant info box.
+- new: Grid Highlights: Move Command: 'Blocked Highlight Occupied' setting available. Highlighting cells occupied by combatants as blocked or passable is now optional. By default enabled (using blocked/passable highlights).
+- new: Grid Cell Types: 'Use Position Offset' settings available. Optionally adds an offset to the cell's original placement position. Combatants are placed at the cell's position, e.g. use this to create elevated cells without having elevated terrain.
+- new: Grid Cell Types, Grid Highlights: Prefabs: 'Use Original Position' setting available. Optionally place prefabs at the original placement position of a grid cell. Only used by cells that use position offsets.
+- new: GUI Boxes: Input Field Settings: 'Number Input Type" settings available. Define how number value inputs are displayed, either as a 'Slider' or as 'Horizontal Buttons'.
+- new: GUI Boxes: Choice Settings: 'Drag Only Selected' setting available. Optionally only allow dragging selected choices.
+- new: HUDs: Console, Control, Information, Tooltip: 'Game Running' game state condition available. Optionally also display HUDs when the game is not running (e.g. in the main menu scene or after game over).
+- new: HUDs: Toggle Key: 'Audio Clip' settings available. Optionally play an audio clip when using the toggle key.
+- new: HUDs: Control: 'Audio Clip' settings available for 'Positive Button' and 'Negative Button' control types. Optionally play an audio clip when using the button.
+- new: HUDs: Click Action: You can now add multiple click actions to HUD elements.
+- new: HUDs: Click Action: 'Toggle HUD' click action available. Toggles defined HUDs on or off.
+- new: HUDs: Click Action: 'Released After' setting available. Defines the time in seconds the player must hold the click/touch to start the click action. E.g. open a menu screen when releasing the mouse button after 2 seconds.
+- new: HUDs: Click Action: 'Consume Click' setting available. The click will be consumed by the click action. E.g. a click on a shortcut slot can't trigger using the shortcut.
+- new: Main Menu, Menu Screens: Options: 'Number Input' settings available. Number value inputs can optionally override the setting of the used GUI box and use a different number input type.
+- new: Main Menu, Menu Screens: Options: 'Accept' and 'Cancel' option types available. Add button inputs to accept or cancel the changes. Using button inputs will hide the ok/cancel buttons of the GUI box.
+- new: Menu Screens: 'Fail Audio' settings available. Optionally play an audio clip when opening the menu screen fails due to requirements.
+- new: Menu Screens: Status Value Distribution: 'Status Value Distribution' menu part available. Allows distributing points to change status values. Define where the points come from (e.g. experience points), which status values are available and how much they change per point.
+- new: Menu Screens: Inventory Exchange: 'Inventory Exchange' menu part available. Similar to the 'Inventory' menu part, this menu part allows exchanging content between 2 sources, e.g. 2 combatants, a combatant and an item box or a combatant and a shop. Displays both sources alongside each other, optionally separated by item type.
+- new: Menu Screens: Inventory, Ability, Ability Tree: 'Start Focused' setting available in 'Item Box Settings' and 'Ability Box Settings'. Optionally focus the item/ability box instead of the type box when opening the menu screen.
+- new: Menu Screens: Inventory: 'Add AI Behaviours', 'Add AI Rulesets' and 'Add Crafting Recipes' settings available in 'Item Box Settings'. Optionally show AI behaviours/rulesets and crafting recipes in the inventory menu.
+- new: Menu Screens: 'No Hidden User' setting available. Optionally block hidden group members from being the menu screen user when opening the menu screen.
+- new: Event System: Value Input Dialogue: 'Option Type' setting available. You can now display a 'Variable' (as previous) or an 'Accept' or 'Cancel' button input. Using button inputs will hide the ok/cancel buttons of the GUI box.
+- new: Event System: Value Input Dialogue: 'Number Input' settings available. Number value inputs can optionally override the setting of the used GUI box and use a different number input type.
+- new: Event System: Select Item: 'Add AI Behaviours', 'Add AI Rulesets' and 'Add Crafting Recipes' settings available in 'Item Box Settings'. Optionally add AI behaviours/rulesets and crafting recipes to selected data.
+- new: Event System: Call Menu Screen: 'Inventory Exchange' settings available. Optionally define the inventory sources when calling a menu screen with an 'Inventory Exchange' menu part. Combatants and item boxes can be used as inventory sources.
+- new: Event System: Distance To Variable: 'Distance To Variable' node available in 'Movement > Movement' nodes. Stores the distance or grid distance between 2 game objects into a float game variable.
+- new: Battle Events: Learn Action Ability: 'Learn Action Ability' node available in 'Battle > Action' nodes. Learns the ability of the used battle action. Only used if the used battle action is an ability action.
+- change: Battle AI: The 'Change Object Variables' node has been replaced with the new 'Change Game Variables' node. Previous nodes will be updated automatically.
+- change: Grid Settings: Examine Grid: Combatant Info Box: The 'Auto Show' setting is now available for each combatant info box instead of for all of them combined.
+- change: Shops: Sell to Shop: 'AI Types' and 'Crafting Types' settings have been removed. Limiting sellable AI behaviorus/rulesets and crafting recipes is now handled through their type's item type.
+- change: Shop Layouts: Type Box: 'Combined Sorting' setting has been removed due to no longer displaying different types (e.g. item types and ability types) in shops.
+- change: Shop Layouts: Using the 'All' buy quantity selection now prevents buying items if the player doesn't have enough currency to buy all available items.
+- change: Event System: Start Item Collection: The 'Start Item Collection' node is now available in all event types.
+- change: Event System: Menu nodes are now available in all event types.
+- change: GUI Boxes: Having 'Select First' enabled and clicking on a not selected choice button will now play the 'Cursor Move' audio clip.
+- change: Scripting: Combatants: All class related functions and properties of a combatant are now accessed via the 'Class' property, e.g. the class level via 'combatant.Class.Level' instead of 'combatant.ClassLevel'.
+- change: Scripting: Combatants: All game object and component references of a combatant are now accessed via the 'Object' property, e.g. the move AI component via 'combatant.Object.MoveAI' instead of 'combatant.MoveAI'.
+- change: Scripting: Combatants: All UI related functions and properties of a combatant are now accessed via the 'UI' property, e.g. the current HUD effect index via 'combatant.UI.EffectIndex' instead of 'combatant.HUDEffectIndex'.
+- change: Scripting: Combatants: All battle menu related functions and properties of a combatant are now accessed via the 'Battle' property, e.g. the battle menu via 'combatant.Battle.BattleMenu' instead of 'combatant.BattleMenu'.
+- change: Scripting: Combatants: All level and level up related functions and properties of a combatant are now accessed via the 'Status' property, e.g. the current level via 'combatant.Status.Level' instead of 'combatant.Level'.
+- change: Scripting: Combatants: All status effect related functions and properties of a combatant are now accessed via the 'Effects' property, e.g. blocking items state via 'combatant.Status.Effects.BlockItems' instead of 'combatant.Status.BlockItems'.
+- change: Status Effects: 'Stop Move' setting has been renamed to 'Block All Actions'.
+- fix: Screen Fader: Fixed an issue where the screen fader didn't occupy the full screen when using the new UI and high differences between default screen size and actual screen size (e.g. 1080x1920 and 1920x1080).
+- fix: Shops: Buying abilities with quantity limits didn't reduce quantity or remove the ability from the shop.
+- fix: Shop Layouts: The buy/sell price is now displayed correctly for the total available quantity when using 'All' buy/sell quantity selections. Previously it displayed the price for a quantity of 1, regardless of the available amount.
+- fix: GUI Boxes: New UI: Fixed an issue where clicking on inactive choices didn't select the choice when using the new UI.
+- fix: Combatants: Conditional Prefabs: Fixed an issue where certain conditions didn't automatically change the prefab, e.g. 'In Battle'.
+- fix: Notifications: Fixed an issue where notifications where still queued when exiting to the main menu.
+- fix: HUDs: Toggle Key: Fixed an issue where 'Use While Key' actually reversed the state.
+- fix: HUDs: Information: Click Action: Fixed an issue where using a 'Menu Screen' click action could lead to an error in 'Information' type HUDs.
+- fix: Menu Screens: Fixed an issue where using an open game event with 'Wait' enabled that has wait times (e.g. 'Wait' node or waiting for a camera transition) could prevent the menu screen from being opened.
+- fix: Save Games: Fixed an issue where loading a save game could result in doubling the dropped items (dropped from inventory).
+
+
 Version 2.19.0:
 - new: Abilities, Items, Weapons, Armors: Variables: 'Use In Description' setting available. Optionally replace variable text codes in the description with the ability/item/equipment variables instead of global variables.
 - new: Combatants: Battle Animations: 'Battle Animations' are now defind in the combatant's 'Battle Settings > Override Settings'. The default battle animations for actions like defend, escape or death are now defined in 'Battle System > Battle Settings' for all combatants. Each combatant can override individual battle animations for abilities, items and default actions (defend, etc.). Previous settings will automatically update and add overrides for all default actions.

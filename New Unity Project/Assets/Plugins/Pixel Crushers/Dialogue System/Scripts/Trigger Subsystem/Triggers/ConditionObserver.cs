@@ -213,6 +213,12 @@ namespace PixelCrushers.DialogueSystem
             }
 
             DialogueManager.SendUpdateTracker();
+
+            if (once)
+            {
+                StopObserving();
+                enabled = false;
+            }
         }
     }
 
