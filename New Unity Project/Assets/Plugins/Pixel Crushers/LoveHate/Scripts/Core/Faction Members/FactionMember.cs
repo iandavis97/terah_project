@@ -233,6 +233,21 @@ namespace PixelCrushers.LoveHate
 
         public bool FindResources()
         {
+            // Find eyes for CanSee:
+            if (eyes == null)
+            {
+                try
+                {
+                    var animator = GetComponent<Animator>();
+                    if (animator != null && animator.GetBoneTransform(HumanBodyBones.Head))
+                    {
+                        eyes = animator.GetBoneTransform(HumanBodyBones.Head);
+                    }
+                }
+                catch (Exception) { }
+            }
+
+            // Find faction manager and faction database:
             if (factionManager == null)
             {
                 factionManager = FindObjectOfType<FactionManager>();

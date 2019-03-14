@@ -138,10 +138,11 @@ MonoBehaviour:
         GetDefaultShaderProperties ()\r\n        {\r\n            return cachedDefaultProperties
         ?? (cachedDefaultProperties = new[] {\r\n                    new ShaderProperty(\"_MainTex\",
         ShaderPropertyType.Texture, Texture2D.whiteTexture),\r\n                    new
-        ShaderProperty(\"_Color\", ShaderPropertyType.Color, Color.white)\r\n                });\r\n
-        \       }\r\n\r\n        protected override string GetDefaultShaderName ()\r\n
-        \       {\r\n            return \"Legacy Shaders/Diffuse\";\r\n        }\r\n
-        \   }\r\n}\r\n"
+        ShaderProperty(\"_MainTex_ST\", ShaderPropertyType.Vector, new Vector4(1,
+        1, 0, 0)),\r\n                    new ShaderProperty(\"_Color\", ShaderPropertyType.Color,
+        Color.white)\r\n                });\r\n        }\r\n\r\n        protected
+        override string GetDefaultShaderName ()\r\n        {\r\n            return
+        \"Legacy Shaders/Diffuse\";\r\n        }\r\n    }\r\n}\r\n"
   - packagePath: Components\UnityEngine.ParticleSystemRenderer
     files:
     - filePath: ParticleSystemRendererExtension.cs
@@ -175,10 +176,11 @@ MonoBehaviour:
         GetDefaultShaderProperties ()\r\n        {\r\n            return cachedDefaultProperties
         ?? (cachedDefaultProperties = new[] {\r\n                    new ShaderProperty(\"_MainTex\",
         ShaderPropertyType.Texture, Texture2D.whiteTexture),\r\n                    new
-        ShaderProperty(\"_Color\", ShaderPropertyType.Color, Color.white)\r\n                });\r\n
-        \       }\r\n\r\n        protected override string GetDefaultShaderName ()\r\n
-        \       {\r\n            return \"Legacy Shaders/Diffuse\";\r\n        }\r\n
-        \   }\r\n}\r\n"
+        ShaderProperty(\"_MainTex_ST\", ShaderPropertyType.Vector, new Vector4(1,
+        1, 0, 0)),\r\n                    new ShaderProperty(\"_Color\", ShaderPropertyType.Color,
+        Color.white)\r\n                });\r\n        }\r\n\r\n        protected
+        override string GetDefaultShaderName ()\r\n        {\r\n            return
+        \"Legacy Shaders/Diffuse\";\r\n        }\r\n    }\r\n}\r\n"
   - packagePath: Components\UnityEngine.SpriteRenderer
     files:
     - filePath: SpriteRendererExtension.cs
@@ -9265,43 +9267,45 @@ MonoBehaviour:
     - filePath: BlendModes-UnlitTransparent-Framebuffer.shader
       fileContent: "\r\nShader \"Hidden/BlendModes/UnlitTransparent/Framebuffer\"
         {\r\nProperties {\r\n    _MainTex (\"Base (RGB) Trans (A)\", 2D) = \"white\"
-        {}\r\n    \r\n}\r\n\r\nSubShader {\r\n    Tags {\"Queue\"=\"Transparent\"
-        \"IgnoreProjector\"=\"True\" \"RenderType\"=\"Transparent\"}\r\n    LOD 100\r\n\r\n
-        \   ZWrite On\r\n    Blend SrcAlpha OneMinusSrcAlpha\r\n\r\n    \r\n\r\n    Pass
-        {\r\n\r\n        \r\n\r\n        CGPROGRAM\r\n            #pragma vertex vert\r\n
-        \           #pragma fragment frag\r\n            #pragma target 2.0\r\n            #pragma
-        multi_compile_fog\r\n            #pragma only_renderers framebufferfetch\r\n
-        \           #pragma multi_compile BLENDMODES_MODE_DARKEN BLENDMODES_MODE_MULTIPLY
-        BLENDMODES_MODE_COLORBURN BLENDMODES_MODE_LINEARBURN BLENDMODES_MODE_DARKERCOLOR
-        BLENDMODES_MODE_LIGHTEN BLENDMODES_MODE_SCREEN BLENDMODES_MODE_COLORDODGE
-        BLENDMODES_MODE_LINEARDODGE BLENDMODES_MODE_LIGHTERCOLOR BLENDMODES_MODE_OVERLAY
-        BLENDMODES_MODE_SOFTLIGHT BLENDMODES_MODE_HARDLIGHT BLENDMODES_MODE_VIVIDLIGHT
-        BLENDMODES_MODE_LINEARLIGHT BLENDMODES_MODE_PINLIGHT BLENDMODES_MODE_HARDMIX
-        BLENDMODES_MODE_DIFFERENCE BLENDMODES_MODE_EXCLUSION BLENDMODES_MODE_SUBTRACT
-        BLENDMODES_MODE_DIVIDE BLENDMODES_MODE_HUE BLENDMODES_MODE_SATURATION BLENDMODES_MODE_COLOR
-        BLENDMODES_MODE_LUMINOSITY\r\n\r\n            #include \"UnityCG.cginc\"\r\n
-        \           #include \"../../../Shaders/BlendModesCG.cginc\"\r\n\r\n            struct
-        appdata_t {\r\n                float4 vertex : POSITION;\r\n                float2
-        texcoord : TEXCOORD0;\r\n                \r\n                UNITY_VERTEX_INPUT_INSTANCE_ID\r\n
+        {}\r\n    _Color (\"Tint Color\", Color) = (1,1,1,1)\r\n    \r\n}\r\n\r\nSubShader
+        {\r\n    Tags {\"Queue\"=\"Transparent\" \"IgnoreProjector\"=\"True\" \"RenderType\"=\"Transparent\"}\r\n
+        \   LOD 100\r\n\r\n    ZWrite On\r\n    Blend SrcAlpha OneMinusSrcAlpha\r\n\r\n
+        \   \r\n\r\n    Pass {\r\n\r\n        \r\n\r\n        CGPROGRAM\r\n            #pragma
+        vertex vert\r\n            #pragma fragment frag\r\n            #pragma target
+        2.0\r\n            #pragma multi_compile_fog\r\n            #pragma only_renderers
+        framebufferfetch\r\n            #pragma multi_compile BLENDMODES_MODE_DARKEN
+        BLENDMODES_MODE_MULTIPLY BLENDMODES_MODE_COLORBURN BLENDMODES_MODE_LINEARBURN
+        BLENDMODES_MODE_DARKERCOLOR BLENDMODES_MODE_LIGHTEN BLENDMODES_MODE_SCREEN
+        BLENDMODES_MODE_COLORDODGE BLENDMODES_MODE_LINEARDODGE BLENDMODES_MODE_LIGHTERCOLOR
+        BLENDMODES_MODE_OVERLAY BLENDMODES_MODE_SOFTLIGHT BLENDMODES_MODE_HARDLIGHT
+        BLENDMODES_MODE_VIVIDLIGHT BLENDMODES_MODE_LINEARLIGHT BLENDMODES_MODE_PINLIGHT
+        BLENDMODES_MODE_HARDMIX BLENDMODES_MODE_DIFFERENCE BLENDMODES_MODE_EXCLUSION
+        BLENDMODES_MODE_SUBTRACT BLENDMODES_MODE_DIVIDE BLENDMODES_MODE_HUE BLENDMODES_MODE_SATURATION
+        BLENDMODES_MODE_COLOR BLENDMODES_MODE_LUMINOSITY\r\n\r\n            #include
+        \"UnityCG.cginc\"\r\n            #include \"../../../Shaders/BlendModesCG.cginc\"\r\n\r\n
+        \           struct appdata_t {\r\n                float4 vertex : POSITION;\r\n
+        \               float2 texcoord : TEXCOORD0;\r\n                \r\n                UNITY_VERTEX_INPUT_INSTANCE_ID\r\n
         \           };\r\n\r\n            struct v2f {\r\n                float4 vertex
         : SV_POSITION;\r\n                float2 texcoord : TEXCOORD0;\r\n                UNITY_FOG_COORDS(1)\r\n
         \               \r\n                UNITY_VERTEX_OUTPUT_STEREO\r\n            };\r\n\r\n
-        \           sampler2D _MainTex;\r\n            float4 _MainTex_ST;\r\n            \r\n\r\n
-        \           v2f vert (appdata_t v)\r\n            {\r\n                v2f
-        o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n
-        \               o.vertex = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord
-        = TRANSFORM_TEX(v.texcoord, _MainTex);\r\n                \r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n
+        \           sampler2D _MainTex;\r\n            float4 _MainTex_ST;\r\n            fixed4
+        _Color;\r\n            \r\n\r\n            v2f vert (appdata_t v)\r\n            {\r\n
+        \               v2f o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n
+        \               UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n                o.vertex
+        = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord = TRANSFORM_TEX(v.texcoord,
+        _MainTex);\r\n                \r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n
         \               return o;\r\n            }\r\n\r\n            void frag(v2f
         i, inout fixed4 buffer : SV_Target)\r\n            \r\n            {\r\n                fixed4
-        col = tex2D(_MainTex, i.texcoord);\r\n                BLENDMODES_BLEND_PIXEL_FRAMEBUFFER(col.rgb,
+        col = tex2D(_MainTex, i.texcoord) * _Color;\r\n                BLENDMODES_BLEND_PIXEL_FRAMEBUFFER(col.rgb,
         buffer.rgb)\r\n                UNITY_APPLY_FOG(i.fogCoord, col);\r\n                buffer
         = col;\r\n                \r\n            }\r\n        ENDCG\r\n    }\r\n}\r\n\r\n
         \   Fallback \"Unlit/Transparent\"\r\n}\r\n"
     - filePath: BlendModes-UnlitTransparent-FramebufferMasked.shader
       fileContent: "\r\nShader \"Hidden/BlendModes/UnlitTransparent/FramebufferMasked\"
         {\r\nProperties {\r\n    _MainTex (\"Base (RGB) Trans (A)\", 2D) = \"white\"
-        {}\r\n    _BLENDMODES_StencilId (\"Stencil ID\", Float) = 0\r\n        _BLENDMODES_BlendStencilComp
-        (\"Blend Stencil Comparison\", Float) = 0\r\n        _BLENDMODES_NormalStencilComp
+        {}\r\n    _Color (\"Tint Color\", Color) = (1,1,1,1)\r\n    _BLENDMODES_StencilId
+        (\"Stencil ID\", Float) = 0\r\n        _BLENDMODES_BlendStencilComp (\"Blend
+        Stencil Comparison\", Float) = 0\r\n        _BLENDMODES_NormalStencilComp
         (\"Normal Stencil Comparison\", Float) = 1\r\n}\r\n\r\nSubShader {\r\n    Tags
         {\"Queue\"=\"Transparent\" \"IgnoreProjector\"=\"True\" \"RenderType\"=\"Transparent\"}\r\n
         \   LOD 100\r\n\r\n    ZWrite On\r\n    Blend SrcAlpha OneMinusSrcAlpha\r\n\r\n
@@ -9324,14 +9328,15 @@ MonoBehaviour:
         \           };\r\n\r\n            struct v2f {\r\n                float4 vertex
         : SV_POSITION;\r\n                float2 texcoord : TEXCOORD0;\r\n                UNITY_FOG_COORDS(1)\r\n
         \               \r\n                UNITY_VERTEX_OUTPUT_STEREO\r\n            };\r\n\r\n
-        \           sampler2D _MainTex;\r\n            float4 _MainTex_ST;\r\n            \r\n\r\n
-        \           v2f vert (appdata_t v)\r\n            {\r\n                v2f
-        o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n
-        \               o.vertex = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord
-        = TRANSFORM_TEX(v.texcoord, _MainTex);\r\n                \r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n
+        \           sampler2D _MainTex;\r\n            float4 _MainTex_ST;\r\n            fixed4
+        _Color;\r\n            \r\n\r\n            v2f vert (appdata_t v)\r\n            {\r\n
+        \               v2f o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n
+        \               UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n                o.vertex
+        = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord = TRANSFORM_TEX(v.texcoord,
+        _MainTex);\r\n                \r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n
         \               return o;\r\n            }\r\n\r\n            void frag(v2f
         i, inout fixed4 buffer : SV_Target)\r\n            \r\n            {\r\n                fixed4
-        col = tex2D(_MainTex, i.texcoord);\r\n                BLENDMODES_BLEND_PIXEL_FRAMEBUFFER(col.rgb,
+        col = tex2D(_MainTex, i.texcoord) * _Color;\r\n                BLENDMODES_BLEND_PIXEL_FRAMEBUFFER(col.rgb,
         buffer.rgb)\r\n                UNITY_APPLY_FOG(i.fogCoord, col);\r\n                buffer
         = col;\r\n                \r\n            }\r\n        ENDCG\r\n    }\r\n
         \   Pass {\r\n\r\n        Stencil { Ref [_BLENDMODES_StencilId] Comp [_BLENDMODES_NormalStencilComp]
@@ -9344,20 +9349,22 @@ MonoBehaviour:
         \           };\r\n\r\n            struct v2f {\r\n                float4 vertex
         : SV_POSITION;\r\n                float2 texcoord : TEXCOORD0;\r\n                UNITY_FOG_COORDS(1)\r\n
         \               \r\n                UNITY_VERTEX_OUTPUT_STEREO\r\n            };\r\n\r\n
-        \           sampler2D _MainTex;\r\n            float4 _MainTex_ST;\r\n            \r\n\r\n
-        \           v2f vert (appdata_t v)\r\n            {\r\n                v2f
-        o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n
-        \               o.vertex = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord
-        = TRANSFORM_TEX(v.texcoord, _MainTex);\r\n                \r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n
+        \           sampler2D _MainTex;\r\n            float4 _MainTex_ST;\r\n            fixed4
+        _Color;\r\n            \r\n\r\n            v2f vert (appdata_t v)\r\n            {\r\n
+        \               v2f o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n
+        \               UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n                o.vertex
+        = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord = TRANSFORM_TEX(v.texcoord,
+        _MainTex);\r\n                \r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n
         \               return o;\r\n            }\r\n\r\n            \r\n            fixed4
         frag (v2f i) : SV_Target\r\n            {\r\n                fixed4 col =
-        tex2D(_MainTex, i.texcoord);\r\n                \r\n                UNITY_APPLY_FOG(i.fogCoord,
+        tex2D(_MainTex, i.texcoord) * _Color;\r\n                \r\n                UNITY_APPLY_FOG(i.fogCoord,
         col);\r\n                \r\n                return col;\r\n            }\r\n
         \       ENDCG\r\n    }\r\n}\r\n\r\n    Fallback \"Unlit/Transparent\"\r\n}\r\n"
     - filePath: BlendModes-UnlitTransparent-Grab.shader
       fileContent: "\r\nShader \"Hidden/BlendModes/UnlitTransparent/Grab\" {\r\nProperties
-        {\r\n    _MainTex (\"Base (RGB) Trans (A)\", 2D) = \"white\" {}\r\n    \r\n}\r\n\r\nSubShader
-        {\r\n    Tags {\"Queue\"=\"Transparent\" \"IgnoreProjector\"=\"True\" \"RenderType\"=\"Transparent\"}\r\n
+        {\r\n    _MainTex (\"Base (RGB) Trans (A)\", 2D) = \"white\" {}\r\n    _Color
+        (\"Tint Color\", Color) = (1,1,1,1)\r\n    \r\n}\r\n\r\nSubShader {\r\n    Tags
+        {\"Queue\"=\"Transparent\" \"IgnoreProjector\"=\"True\" \"RenderType\"=\"Transparent\"}\r\n
         \   LOD 100\r\n\r\n    ZWrite On\r\n    Blend SrcAlpha OneMinusSrcAlpha\r\n\r\n
         \   GrabPass { }\r\n\r\n    Pass {\r\n\r\n        \r\n\r\n        CGPROGRAM\r\n
         \           #pragma vertex vert\r\n            #pragma fragment frag\r\n            #pragma
@@ -9377,27 +9384,29 @@ MonoBehaviour:
         : SV_POSITION;\r\n                float2 texcoord : TEXCOORD0;\r\n                UNITY_FOG_COORDS(1)\r\n
         \               BLENDMODES_GRAB_POSITION(2)\r\n                UNITY_VERTEX_OUTPUT_STEREO\r\n
         \           };\r\n\r\n            sampler2D _MainTex;\r\n            float4
-        _MainTex_ST;\r\n            BLENDMODES_GRAB_TEXTURE_SAMPLER\r\n\r\n            v2f
-        vert (appdata_t v)\r\n            {\r\n                v2f o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n
-        \               UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n                o.vertex
-        = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord = TRANSFORM_TEX(v.texcoord,
-        _MainTex);\r\n                BLENDMODES_COMPUTE_GRAB_POSITION(o, o.vertex)\r\n
-        \               UNITY_TRANSFER_FOG(o,o.vertex);\r\n                return
+        _MainTex_ST;\r\n            fixed4 _Color;\r\n            BLENDMODES_GRAB_TEXTURE_SAMPLER\r\n\r\n
+        \           v2f vert (appdata_t v)\r\n            {\r\n                v2f
+        o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n
+        \               o.vertex = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord
+        = TRANSFORM_TEX(v.texcoord, _MainTex);\r\n                BLENDMODES_COMPUTE_GRAB_POSITION(o,
+        o.vertex)\r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n                return
         o;\r\n            }\r\n\r\n            \r\n            fixed4 frag (v2f i)
         : SV_Target\r\n            {\r\n                fixed4 col = tex2D(_MainTex,
-        i.texcoord);\r\n                BLENDMODES_BLEND_PIXEL_GRAB(col, i)\r\n                UNITY_APPLY_FOG(i.fogCoord,
-        col);\r\n                \r\n                return col;\r\n            }\r\n
-        \       ENDCG\r\n    }\r\n}\r\n\r\n    Fallback \"Unlit/Transparent\"\r\n}\r\n"
+        i.texcoord) * _Color;\r\n                BLENDMODES_BLEND_PIXEL_GRAB(col,
+        i)\r\n                UNITY_APPLY_FOG(i.fogCoord, col);\r\n                \r\n
+        \               return col;\r\n            }\r\n        ENDCG\r\n    }\r\n}\r\n\r\n
+        \   Fallback \"Unlit/Transparent\"\r\n}\r\n"
     - filePath: BlendModes-UnlitTransparent-GrabMasked.shader
       fileContent: "\r\nShader \"Hidden/BlendModes/UnlitTransparent/GrabMasked\" {\r\nProperties
-        {\r\n    _MainTex (\"Base (RGB) Trans (A)\", 2D) = \"white\" {}\r\n    _BLENDMODES_StencilId
-        (\"Stencil ID\", Float) = 0\r\n        _BLENDMODES_BlendStencilComp (\"Blend
-        Stencil Comparison\", Float) = 0\r\n        _BLENDMODES_NormalStencilComp
-        (\"Normal Stencil Comparison\", Float) = 1\r\n}\r\n\r\nSubShader {\r\n    Tags
-        {\"Queue\"=\"Transparent\" \"IgnoreProjector\"=\"True\" \"RenderType\"=\"Transparent\"}\r\n
-        \   LOD 100\r\n\r\n    ZWrite On\r\n    Blend SrcAlpha OneMinusSrcAlpha\r\n\r\n
-        \   GrabPass { }\r\n\r\n    Pass {\r\n\r\n        Stencil { Ref [_BLENDMODES_StencilId]
-        Comp [_BLENDMODES_BlendStencilComp] }\r\n\r\n        CGPROGRAM\r\n            #pragma
+        {\r\n    _MainTex (\"Base (RGB) Trans (A)\", 2D) = \"white\" {}\r\n    _Color
+        (\"Tint Color\", Color) = (1,1,1,1)\r\n    _BLENDMODES_StencilId (\"Stencil
+        ID\", Float) = 0\r\n        _BLENDMODES_BlendStencilComp (\"Blend Stencil
+        Comparison\", Float) = 0\r\n        _BLENDMODES_NormalStencilComp (\"Normal
+        Stencil Comparison\", Float) = 1\r\n}\r\n\r\nSubShader {\r\n    Tags {\"Queue\"=\"Transparent\"
+        \"IgnoreProjector\"=\"True\" \"RenderType\"=\"Transparent\"}\r\n    LOD 100\r\n\r\n
+        \   ZWrite On\r\n    Blend SrcAlpha OneMinusSrcAlpha\r\n\r\n    GrabPass {
+        }\r\n\r\n    Pass {\r\n\r\n        Stencil { Ref [_BLENDMODES_StencilId] Comp
+        [_BLENDMODES_BlendStencilComp] }\r\n\r\n        CGPROGRAM\r\n            #pragma
         vertex vert\r\n            #pragma fragment frag\r\n            #pragma target
         2.0\r\n            #pragma multi_compile_fog\r\n            \r\n            #pragma
         multi_compile BLENDMODES_MODE_DARKEN BLENDMODES_MODE_MULTIPLY BLENDMODES_MODE_COLORBURN
@@ -9415,39 +9424,42 @@ MonoBehaviour:
         : SV_POSITION;\r\n                float2 texcoord : TEXCOORD0;\r\n                UNITY_FOG_COORDS(1)\r\n
         \               BLENDMODES_GRAB_POSITION(2)\r\n                UNITY_VERTEX_OUTPUT_STEREO\r\n
         \           };\r\n\r\n            sampler2D _MainTex;\r\n            float4
-        _MainTex_ST;\r\n            BLENDMODES_GRAB_TEXTURE_SAMPLER\r\n\r\n            v2f
-        vert (appdata_t v)\r\n            {\r\n                v2f o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n
-        \               UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n                o.vertex
-        = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord = TRANSFORM_TEX(v.texcoord,
-        _MainTex);\r\n                BLENDMODES_COMPUTE_GRAB_POSITION(o, o.vertex)\r\n
-        \               UNITY_TRANSFER_FOG(o,o.vertex);\r\n                return
-        o;\r\n            }\r\n\r\n            \r\n            fixed4 frag (v2f i)
-        : SV_Target\r\n            {\r\n                fixed4 col = tex2D(_MainTex,
-        i.texcoord);\r\n                BLENDMODES_BLEND_PIXEL_GRAB(col, i)\r\n                UNITY_APPLY_FOG(i.fogCoord,
-        col);\r\n                \r\n                return col;\r\n            }\r\n
-        \       ENDCG\r\n    }\r\n    Pass {\r\n\r\n        Stencil { Ref [_BLENDMODES_StencilId]
-        Comp [_BLENDMODES_NormalStencilComp] }\r\n\r\n        CGPROGRAM\r\n            #pragma
-        vertex vert\r\n            #pragma fragment frag\r\n            #pragma target
-        2.0\r\n            #pragma multi_compile_fog\r\n            \r\n            \r\n\r\n
-        \           #include \"UnityCG.cginc\"\r\n            #include \"../../../Shaders/BlendModesCG.cginc\"\r\n\r\n
-        \           struct appdata_t {\r\n                float4 vertex : POSITION;\r\n
-        \               float2 texcoord : TEXCOORD0;\r\n                \r\n                UNITY_VERTEX_INPUT_INSTANCE_ID\r\n
-        \           };\r\n\r\n            struct v2f {\r\n                float4 vertex
-        : SV_POSITION;\r\n                float2 texcoord : TEXCOORD0;\r\n                UNITY_FOG_COORDS(1)\r\n
-        \               \r\n                UNITY_VERTEX_OUTPUT_STEREO\r\n            };\r\n\r\n
-        \           sampler2D _MainTex;\r\n            float4 _MainTex_ST;\r\n            \r\n\r\n
+        _MainTex_ST;\r\n            fixed4 _Color;\r\n            BLENDMODES_GRAB_TEXTURE_SAMPLER\r\n\r\n
         \           v2f vert (appdata_t v)\r\n            {\r\n                v2f
         o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n
         \               o.vertex = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord
-        = TRANSFORM_TEX(v.texcoord, _MainTex);\r\n                \r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n
+        = TRANSFORM_TEX(v.texcoord, _MainTex);\r\n                BLENDMODES_COMPUTE_GRAB_POSITION(o,
+        o.vertex)\r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n                return
+        o;\r\n            }\r\n\r\n            \r\n            fixed4 frag (v2f i)
+        : SV_Target\r\n            {\r\n                fixed4 col = tex2D(_MainTex,
+        i.texcoord) * _Color;\r\n                BLENDMODES_BLEND_PIXEL_GRAB(col,
+        i)\r\n                UNITY_APPLY_FOG(i.fogCoord, col);\r\n                \r\n
+        \               return col;\r\n            }\r\n        ENDCG\r\n    }\r\n
+        \   Pass {\r\n\r\n        Stencil { Ref [_BLENDMODES_StencilId] Comp [_BLENDMODES_NormalStencilComp]
+        }\r\n\r\n        CGPROGRAM\r\n            #pragma vertex vert\r\n            #pragma
+        fragment frag\r\n            #pragma target 2.0\r\n            #pragma multi_compile_fog\r\n
+        \           \r\n            \r\n\r\n            #include \"UnityCG.cginc\"\r\n
+        \           #include \"../../../Shaders/BlendModesCG.cginc\"\r\n\r\n            struct
+        appdata_t {\r\n                float4 vertex : POSITION;\r\n                float2
+        texcoord : TEXCOORD0;\r\n                \r\n                UNITY_VERTEX_INPUT_INSTANCE_ID\r\n
+        \           };\r\n\r\n            struct v2f {\r\n                float4 vertex
+        : SV_POSITION;\r\n                float2 texcoord : TEXCOORD0;\r\n                UNITY_FOG_COORDS(1)\r\n
+        \               \r\n                UNITY_VERTEX_OUTPUT_STEREO\r\n            };\r\n\r\n
+        \           sampler2D _MainTex;\r\n            float4 _MainTex_ST;\r\n            fixed4
+        _Color;\r\n            \r\n\r\n            v2f vert (appdata_t v)\r\n            {\r\n
+        \               v2f o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n
+        \               UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n                o.vertex
+        = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord = TRANSFORM_TEX(v.texcoord,
+        _MainTex);\r\n                \r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n
         \               return o;\r\n            }\r\n\r\n            \r\n            fixed4
         frag (v2f i) : SV_Target\r\n            {\r\n                fixed4 col =
-        tex2D(_MainTex, i.texcoord);\r\n                \r\n                UNITY_APPLY_FOG(i.fogCoord,
+        tex2D(_MainTex, i.texcoord) * _Color;\r\n                \r\n                UNITY_APPLY_FOG(i.fogCoord,
         col);\r\n                \r\n                return col;\r\n            }\r\n
         \       ENDCG\r\n    }\r\n}\r\n\r\n    Fallback \"Unlit/Transparent\"\r\n}\r\n"
     - filePath: BlendModes-UnlitTransparent-Overlay.shader
       fileContent: "\r\nShader \"Hidden/BlendModes/UnlitTransparent/Overlay\" {\r\nProperties
-        {\r\n    _MainTex (\"Base (RGB) Trans (A)\", 2D) = \"white\" {}\r\n    _BLENDMODES_OverlayTexture(\"Overlay
+        {\r\n    _MainTex (\"Base (RGB) Trans (A)\", 2D) = \"white\" {}\r\n    _Color
+        (\"Tint Color\", Color) = (1,1,1,1)\r\n    _BLENDMODES_OverlayTexture(\"Overlay
         Texture\", 2D) = \"white\" {}\r\n        _BLENDMODES_OverlayColor(\"Overlay
         Color\", Color) = (1,1,1,1)\r\n}\r\n\r\nSubShader {\r\n    Tags {\"Queue\"=\"Transparent\"
         \"IgnoreProjector\"=\"True\" \"RenderType\"=\"Transparent\"}\r\n    LOD 100\r\n\r\n
@@ -9470,57 +9482,58 @@ MonoBehaviour:
         : SV_POSITION;\r\n                float2 texcoord : TEXCOORD0;\r\n                UNITY_FOG_COORDS(1)\r\n
         \               BLENDMODES_OVERLAY_TEX_COORD(2)\r\n                UNITY_VERTEX_OUTPUT_STEREO\r\n
         \           };\r\n\r\n            sampler2D _MainTex;\r\n            float4
-        _MainTex_ST;\r\n            BLENDMODES_OVERLAY_VARIABLES\r\n\r\n            v2f
-        vert (appdata_t v)\r\n            {\r\n                v2f o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n
-        \               UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n                o.vertex
-        = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord = TRANSFORM_TEX(v.texcoord,
-        _MainTex);\r\n                BLENDMODES_TRANSFORM_OVERLAY_TEX(o.texcoord,
+        _MainTex_ST;\r\n            fixed4 _Color;\r\n            BLENDMODES_OVERLAY_VARIABLES\r\n\r\n
+        \           v2f vert (appdata_t v)\r\n            {\r\n                v2f
+        o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n
+        \               o.vertex = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord
+        = TRANSFORM_TEX(v.texcoord, _MainTex);\r\n                BLENDMODES_TRANSFORM_OVERLAY_TEX(o.texcoord,
         o)\r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n                return
         o;\r\n            }\r\n\r\n            \r\n            fixed4 frag (v2f i)
         : SV_Target\r\n            {\r\n                fixed4 col = tex2D(_MainTex,
-        i.texcoord);\r\n                BLENDMODES_BLEND_PIXEL_OVERLAY(col, i)\r\n
-        \               UNITY_APPLY_FOG(i.fogCoord, col);\r\n                \r\n
+        i.texcoord) * _Color;\r\n                BLENDMODES_BLEND_PIXEL_OVERLAY(col,
+        i)\r\n                UNITY_APPLY_FOG(i.fogCoord, col);\r\n                \r\n
         \               return col;\r\n            }\r\n        ENDCG\r\n    }\r\n}\r\n\r\n
         \   Fallback \"Unlit/Transparent\"\r\n}\r\n"
     - filePath: BlendModes-UnlitTransparent-OverlayMasked.shader
       fileContent: "\r\nShader \"Hidden/BlendModes/UnlitTransparent/OverlayMasked\"
         {\r\nProperties {\r\n    _MainTex (\"Base (RGB) Trans (A)\", 2D) = \"white\"
-        {}\r\n    _BLENDMODES_OverlayTexture(\"Overlay Texture\", 2D) = \"white\"
-        {}\r\n        _BLENDMODES_OverlayColor(\"Overlay Color\", Color) = (1,1,1,1)_BLENDMODES_StencilId
-        (\"Stencil ID\", Float) = 0\r\n        _BLENDMODES_BlendStencilComp (\"Blend
-        Stencil Comparison\", Float) = 0\r\n        _BLENDMODES_NormalStencilComp
-        (\"Normal Stencil Comparison\", Float) = 1\r\n}\r\n\r\nSubShader {\r\n    Tags
-        {\"Queue\"=\"Transparent\" \"IgnoreProjector\"=\"True\" \"RenderType\"=\"Transparent\"}\r\n
-        \   LOD 100\r\n\r\n    ZWrite On\r\n    Blend SrcAlpha OneMinusSrcAlpha\r\n\r\n
-        \   \r\n\r\n    Pass {\r\n\r\n        Stencil { Ref [_BLENDMODES_StencilId]
-        Comp [_BLENDMODES_BlendStencilComp] }\r\n\r\n        CGPROGRAM\r\n            #pragma
-        vertex vert\r\n            #pragma fragment frag\r\n            #pragma target
-        2.0\r\n            #pragma multi_compile_fog\r\n            \r\n            #pragma
-        multi_compile BLENDMODES_MODE_DARKEN BLENDMODES_MODE_MULTIPLY BLENDMODES_MODE_COLORBURN
-        BLENDMODES_MODE_LINEARBURN BLENDMODES_MODE_DARKERCOLOR BLENDMODES_MODE_LIGHTEN
-        BLENDMODES_MODE_SCREEN BLENDMODES_MODE_COLORDODGE BLENDMODES_MODE_LINEARDODGE
-        BLENDMODES_MODE_LIGHTERCOLOR BLENDMODES_MODE_OVERLAY BLENDMODES_MODE_SOFTLIGHT
-        BLENDMODES_MODE_HARDLIGHT BLENDMODES_MODE_VIVIDLIGHT BLENDMODES_MODE_LINEARLIGHT
-        BLENDMODES_MODE_PINLIGHT BLENDMODES_MODE_HARDMIX BLENDMODES_MODE_DIFFERENCE
-        BLENDMODES_MODE_EXCLUSION BLENDMODES_MODE_SUBTRACT BLENDMODES_MODE_DIVIDE
-        BLENDMODES_MODE_HUE BLENDMODES_MODE_SATURATION BLENDMODES_MODE_COLOR BLENDMODES_MODE_LUMINOSITY\r\n\r\n
-        \           #include \"UnityCG.cginc\"\r\n            #include \"../../../Shaders/BlendModesCG.cginc\"\r\n\r\n
-        \           struct appdata_t {\r\n                float4 vertex : POSITION;\r\n
-        \               float2 texcoord : TEXCOORD0;\r\n                \r\n                UNITY_VERTEX_INPUT_INSTANCE_ID\r\n
+        {}\r\n    _Color (\"Tint Color\", Color) = (1,1,1,1)\r\n    _BLENDMODES_OverlayTexture(\"Overlay
+        Texture\", 2D) = \"white\" {}\r\n        _BLENDMODES_OverlayColor(\"Overlay
+        Color\", Color) = (1,1,1,1)_BLENDMODES_StencilId (\"Stencil ID\", Float) =
+        0\r\n        _BLENDMODES_BlendStencilComp (\"Blend Stencil Comparison\", Float)
+        = 0\r\n        _BLENDMODES_NormalStencilComp (\"Normal Stencil Comparison\",
+        Float) = 1\r\n}\r\n\r\nSubShader {\r\n    Tags {\"Queue\"=\"Transparent\"
+        \"IgnoreProjector\"=\"True\" \"RenderType\"=\"Transparent\"}\r\n    LOD 100\r\n\r\n
+        \   ZWrite On\r\n    Blend SrcAlpha OneMinusSrcAlpha\r\n\r\n    \r\n\r\n    Pass
+        {\r\n\r\n        Stencil { Ref [_BLENDMODES_StencilId] Comp [_BLENDMODES_BlendStencilComp]
+        }\r\n\r\n        CGPROGRAM\r\n            #pragma vertex vert\r\n            #pragma
+        fragment frag\r\n            #pragma target 2.0\r\n            #pragma multi_compile_fog\r\n
+        \           \r\n            #pragma multi_compile BLENDMODES_MODE_DARKEN BLENDMODES_MODE_MULTIPLY
+        BLENDMODES_MODE_COLORBURN BLENDMODES_MODE_LINEARBURN BLENDMODES_MODE_DARKERCOLOR
+        BLENDMODES_MODE_LIGHTEN BLENDMODES_MODE_SCREEN BLENDMODES_MODE_COLORDODGE
+        BLENDMODES_MODE_LINEARDODGE BLENDMODES_MODE_LIGHTERCOLOR BLENDMODES_MODE_OVERLAY
+        BLENDMODES_MODE_SOFTLIGHT BLENDMODES_MODE_HARDLIGHT BLENDMODES_MODE_VIVIDLIGHT
+        BLENDMODES_MODE_LINEARLIGHT BLENDMODES_MODE_PINLIGHT BLENDMODES_MODE_HARDMIX
+        BLENDMODES_MODE_DIFFERENCE BLENDMODES_MODE_EXCLUSION BLENDMODES_MODE_SUBTRACT
+        BLENDMODES_MODE_DIVIDE BLENDMODES_MODE_HUE BLENDMODES_MODE_SATURATION BLENDMODES_MODE_COLOR
+        BLENDMODES_MODE_LUMINOSITY\r\n\r\n            #include \"UnityCG.cginc\"\r\n
+        \           #include \"../../../Shaders/BlendModesCG.cginc\"\r\n\r\n            struct
+        appdata_t {\r\n                float4 vertex : POSITION;\r\n                float2
+        texcoord : TEXCOORD0;\r\n                \r\n                UNITY_VERTEX_INPUT_INSTANCE_ID\r\n
         \           };\r\n\r\n            struct v2f {\r\n                float4 vertex
         : SV_POSITION;\r\n                float2 texcoord : TEXCOORD0;\r\n                UNITY_FOG_COORDS(1)\r\n
         \               BLENDMODES_OVERLAY_TEX_COORD(2)\r\n                UNITY_VERTEX_OUTPUT_STEREO\r\n
         \           };\r\n\r\n            sampler2D _MainTex;\r\n            float4
-        _MainTex_ST;\r\n            BLENDMODES_OVERLAY_VARIABLES\r\n\r\n            v2f
-        vert (appdata_t v)\r\n            {\r\n                v2f o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n
-        \               UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n                o.vertex
-        = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord = TRANSFORM_TEX(v.texcoord,
-        _MainTex);\r\n                BLENDMODES_TRANSFORM_OVERLAY_TEX(o.texcoord,
+        _MainTex_ST;\r\n            fixed4 _Color;\r\n            BLENDMODES_OVERLAY_VARIABLES\r\n\r\n
+        \           v2f vert (appdata_t v)\r\n            {\r\n                v2f
+        o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n
+        \               o.vertex = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord
+        = TRANSFORM_TEX(v.texcoord, _MainTex);\r\n                BLENDMODES_TRANSFORM_OVERLAY_TEX(o.texcoord,
         o)\r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n                return
         o;\r\n            }\r\n\r\n            \r\n            fixed4 frag (v2f i)
         : SV_Target\r\n            {\r\n                fixed4 col = tex2D(_MainTex,
-        i.texcoord);\r\n                BLENDMODES_BLEND_PIXEL_OVERLAY(col, i)\r\n
-        \               UNITY_APPLY_FOG(i.fogCoord, col);\r\n                \r\n
+        i.texcoord) * _Color;\r\n                BLENDMODES_BLEND_PIXEL_OVERLAY(col,
+        i)\r\n                UNITY_APPLY_FOG(i.fogCoord, col);\r\n                \r\n
         \               return col;\r\n            }\r\n        ENDCG\r\n    }\r\n
         \   Pass {\r\n\r\n        Stencil { Ref [_BLENDMODES_StencilId] Comp [_BLENDMODES_NormalStencilComp]
         }\r\n\r\n        CGPROGRAM\r\n            #pragma vertex vert\r\n            #pragma
@@ -9532,24 +9545,25 @@ MonoBehaviour:
         \           };\r\n\r\n            struct v2f {\r\n                float4 vertex
         : SV_POSITION;\r\n                float2 texcoord : TEXCOORD0;\r\n                UNITY_FOG_COORDS(1)\r\n
         \               \r\n                UNITY_VERTEX_OUTPUT_STEREO\r\n            };\r\n\r\n
-        \           sampler2D _MainTex;\r\n            float4 _MainTex_ST;\r\n            \r\n\r\n
-        \           v2f vert (appdata_t v)\r\n            {\r\n                v2f
-        o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n
-        \               o.vertex = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord
-        = TRANSFORM_TEX(v.texcoord, _MainTex);\r\n                \r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n
+        \           sampler2D _MainTex;\r\n            float4 _MainTex_ST;\r\n            fixed4
+        _Color;\r\n            \r\n\r\n            v2f vert (appdata_t v)\r\n            {\r\n
+        \               v2f o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n
+        \               UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n                o.vertex
+        = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord = TRANSFORM_TEX(v.texcoord,
+        _MainTex);\r\n                \r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n
         \               return o;\r\n            }\r\n\r\n            \r\n            fixed4
         frag (v2f i) : SV_Target\r\n            {\r\n                fixed4 col =
-        tex2D(_MainTex, i.texcoord);\r\n                \r\n                UNITY_APPLY_FOG(i.fogCoord,
+        tex2D(_MainTex, i.texcoord) * _Color;\r\n                \r\n                UNITY_APPLY_FOG(i.fogCoord,
         col);\r\n                \r\n                return col;\r\n            }\r\n
         \       ENDCG\r\n    }\r\n}\r\n\r\n    Fallback \"Unlit/Transparent\"\r\n}\r\n"
     - filePath: BlendModes-UnlitTransparent-UnifiedGrab.shader
       fileContent: "\r\nShader \"Hidden/BlendModes/UnlitTransparent/UnifiedGrab\"
         {\r\nProperties {\r\n    _MainTex (\"Base (RGB) Trans (A)\", 2D) = \"white\"
-        {}\r\n    \r\n}\r\n\r\nSubShader {\r\n    Tags {\"Queue\"=\"Transparent\"
-        \"IgnoreProjector\"=\"True\" \"RenderType\"=\"Transparent\"}\r\n    LOD 100\r\n\r\n
-        \   ZWrite On\r\n    Blend SrcAlpha OneMinusSrcAlpha\r\n\r\n    GrabPass {
-        \"_BLENDMODES_UnifiedGrabTexture\" }\r\n\r\n    Pass {\r\n\r\n        \r\n\r\n
-        \       CGPROGRAM\r\n            #pragma vertex vert\r\n            #pragma
+        {}\r\n    _Color (\"Tint Color\", Color) = (1,1,1,1)\r\n    \r\n}\r\n\r\nSubShader
+        {\r\n    Tags {\"Queue\"=\"Transparent\" \"IgnoreProjector\"=\"True\" \"RenderType\"=\"Transparent\"}\r\n
+        \   LOD 100\r\n\r\n    ZWrite On\r\n    Blend SrcAlpha OneMinusSrcAlpha\r\n\r\n
+        \   GrabPass { \"_BLENDMODES_UnifiedGrabTexture\" }\r\n\r\n    Pass {\r\n\r\n
+        \       \r\n\r\n        CGPROGRAM\r\n            #pragma vertex vert\r\n            #pragma
         fragment frag\r\n            #pragma target 2.0\r\n            #pragma multi_compile_fog\r\n
         \           \r\n            #pragma multi_compile BLENDMODES_MODE_DARKEN BLENDMODES_MODE_MULTIPLY
         BLENDMODES_MODE_COLORBURN BLENDMODES_MODE_LINEARBURN BLENDMODES_MODE_DARKERCOLOR
@@ -9567,7 +9581,7 @@ MonoBehaviour:
         : SV_POSITION;\r\n                float2 texcoord : TEXCOORD0;\r\n                UNITY_FOG_COORDS(1)\r\n
         \               BLENDMODES_GRAB_POSITION(2)\r\n                UNITY_VERTEX_OUTPUT_STEREO\r\n
         \           };\r\n\r\n            sampler2D _MainTex;\r\n            float4
-        _MainTex_ST;\r\n            BLENDMODES_UNIFIED_GRAB_TEXTURE_SAMPLER\r\n\r\n
+        _MainTex_ST;\r\n            fixed4 _Color;\r\n            BLENDMODES_UNIFIED_GRAB_TEXTURE_SAMPLER\r\n\r\n
         \           v2f vert (appdata_t v)\r\n            {\r\n                v2f
         o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n
         \               o.vertex = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord
@@ -9575,15 +9589,16 @@ MonoBehaviour:
         o.vertex)\r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n                return
         o;\r\n            }\r\n\r\n            \r\n            fixed4 frag (v2f i)
         : SV_Target\r\n            {\r\n                fixed4 col = tex2D(_MainTex,
-        i.texcoord);\r\n                BLENDMODES_BLEND_PIXEL_UNIFIED_GRAB(col, i)\r\n
-        \               UNITY_APPLY_FOG(i.fogCoord, col);\r\n                \r\n
+        i.texcoord) * _Color;\r\n                BLENDMODES_BLEND_PIXEL_UNIFIED_GRAB(col,
+        i)\r\n                UNITY_APPLY_FOG(i.fogCoord, col);\r\n                \r\n
         \               return col;\r\n            }\r\n        ENDCG\r\n    }\r\n}\r\n\r\n
         \   Fallback \"Unlit/Transparent\"\r\n}\r\n"
     - filePath: BlendModes-UnlitTransparent-UnifiedGrabMasked.shader
       fileContent: "\r\nShader \"Hidden/BlendModes/UnlitTransparent/UnifiedGrabMasked\"
         {\r\nProperties {\r\n    _MainTex (\"Base (RGB) Trans (A)\", 2D) = \"white\"
-        {}\r\n    _BLENDMODES_StencilId (\"Stencil ID\", Float) = 0\r\n        _BLENDMODES_BlendStencilComp
-        (\"Blend Stencil Comparison\", Float) = 0\r\n        _BLENDMODES_NormalStencilComp
+        {}\r\n    _Color (\"Tint Color\", Color) = (1,1,1,1)\r\n    _BLENDMODES_StencilId
+        (\"Stencil ID\", Float) = 0\r\n        _BLENDMODES_BlendStencilComp (\"Blend
+        Stencil Comparison\", Float) = 0\r\n        _BLENDMODES_NormalStencilComp
         (\"Normal Stencil Comparison\", Float) = 1\r\n}\r\n\r\nSubShader {\r\n    Tags
         {\"Queue\"=\"Transparent\" \"IgnoreProjector\"=\"True\" \"RenderType\"=\"Transparent\"}\r\n
         \   LOD 100\r\n\r\n    ZWrite On\r\n    Blend SrcAlpha OneMinusSrcAlpha\r\n\r\n
@@ -9607,7 +9622,7 @@ MonoBehaviour:
         : SV_POSITION;\r\n                float2 texcoord : TEXCOORD0;\r\n                UNITY_FOG_COORDS(1)\r\n
         \               BLENDMODES_GRAB_POSITION(2)\r\n                UNITY_VERTEX_OUTPUT_STEREO\r\n
         \           };\r\n\r\n            sampler2D _MainTex;\r\n            float4
-        _MainTex_ST;\r\n            BLENDMODES_UNIFIED_GRAB_TEXTURE_SAMPLER\r\n\r\n
+        _MainTex_ST;\r\n            fixed4 _Color;\r\n            BLENDMODES_UNIFIED_GRAB_TEXTURE_SAMPLER\r\n\r\n
         \           v2f vert (appdata_t v)\r\n            {\r\n                v2f
         o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n
         \               o.vertex = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord
@@ -9615,8 +9630,8 @@ MonoBehaviour:
         o.vertex)\r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n                return
         o;\r\n            }\r\n\r\n            \r\n            fixed4 frag (v2f i)
         : SV_Target\r\n            {\r\n                fixed4 col = tex2D(_MainTex,
-        i.texcoord);\r\n                BLENDMODES_BLEND_PIXEL_UNIFIED_GRAB(col, i)\r\n
-        \               UNITY_APPLY_FOG(i.fogCoord, col);\r\n                \r\n
+        i.texcoord) * _Color;\r\n                BLENDMODES_BLEND_PIXEL_UNIFIED_GRAB(col,
+        i)\r\n                UNITY_APPLY_FOG(i.fogCoord, col);\r\n                \r\n
         \               return col;\r\n            }\r\n        ENDCG\r\n    }\r\n
         \   Pass {\r\n\r\n        Stencil { Ref [_BLENDMODES_StencilId] Comp [_BLENDMODES_NormalStencilComp]
         }\r\n\r\n        CGPROGRAM\r\n            #pragma vertex vert\r\n            #pragma
@@ -9628,13 +9643,14 @@ MonoBehaviour:
         \           };\r\n\r\n            struct v2f {\r\n                float4 vertex
         : SV_POSITION;\r\n                float2 texcoord : TEXCOORD0;\r\n                UNITY_FOG_COORDS(1)\r\n
         \               \r\n                UNITY_VERTEX_OUTPUT_STEREO\r\n            };\r\n\r\n
-        \           sampler2D _MainTex;\r\n            float4 _MainTex_ST;\r\n            \r\n\r\n
-        \           v2f vert (appdata_t v)\r\n            {\r\n                v2f
-        o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n
-        \               o.vertex = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord
-        = TRANSFORM_TEX(v.texcoord, _MainTex);\r\n                \r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n
+        \           sampler2D _MainTex;\r\n            float4 _MainTex_ST;\r\n            fixed4
+        _Color;\r\n            \r\n\r\n            v2f vert (appdata_t v)\r\n            {\r\n
+        \               v2f o;\r\n                UNITY_SETUP_INSTANCE_ID(v);\r\n
+        \               UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);\r\n                o.vertex
+        = UnityObjectToClipPos(v.vertex);\r\n                o.texcoord = TRANSFORM_TEX(v.texcoord,
+        _MainTex);\r\n                \r\n                UNITY_TRANSFER_FOG(o,o.vertex);\r\n
         \               return o;\r\n            }\r\n\r\n            \r\n            fixed4
         frag (v2f i) : SV_Target\r\n            {\r\n                fixed4 col =
-        tex2D(_MainTex, i.texcoord);\r\n                \r\n                UNITY_APPLY_FOG(i.fogCoord,
+        tex2D(_MainTex, i.texcoord) * _Color;\r\n                \r\n                UNITY_APPLY_FOG(i.fogCoord,
         col);\r\n                \r\n                return col;\r\n            }\r\n
         \       ENDCG\r\n    }\r\n}\r\n\r\n    Fallback \"Unlit/Transparent\"\r\n}\r\n"

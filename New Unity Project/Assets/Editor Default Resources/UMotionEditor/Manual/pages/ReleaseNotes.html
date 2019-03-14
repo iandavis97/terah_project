@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<div class="versionHeader">
-			<p class="versionText">Version: <b>1.16</b> </p>
+			<p class="versionText">Version: <b>1.17</b> </p>
 		</div>
 		<div class="leftContent">
 			<div class="leftContentInner">
@@ -243,7 +243,39 @@
         </br>
         </br>The beta version is incremented with every change related to the current beta generation (includes bug fixes, new features or changes to the manual). Beta versions are watermarked as "beta" in the Clip Editor and are not available via the Asset Store.</td>
     </tr>
-</table></br></br><h2 class="headline2" id="">UMotion V1.16</h2><h3 class="headline3" id="">New or Changed Features</h3><ul class="listMain">
+</table></br></br><h2 class="headline2" id="">UMotion V1.17</h2><h3 class="headline3" id="">New or Changed Features</h3><ul class="listMain">
+    <li class="listItem"><span class="listText">Clearing a GameObject from the Pose Editor but keeping the current pose in scene is now possible by clicking the dropdown arrow next to the "Clear" button.</span></li>
+    <li class="listItem"><span class="listText">Reworked the GameObject locking mechanism ("UMotion Lock") to better incoperate with Unity's new prefab workflow (introduced in Unity 2018.3).</span></li>
+    <li class="listItem"><span class="listText">When syncing UMotion with Unity Timeline, the animated GameObject isn't temporarly removed from Unity Timeline anymore.</span></li>
+    <li class="listItem"><span class="listText">It is not possible to create a prefab of a GameObject that is locked by UMotion anymore.</span></li>
+</ul><h3 class="headline3" id="">Bug Fixes</h3><ul class="listMain">
+    <li class="listItem"><span class="listText">Fixed an exception that is thrown when a GameObject that is a child in new prefab (Unity 2018.3 or above) is applied to the Pose Editor.</span></li>
+    <li class="listItem"><span class="listText">Fixed an exception that is thrown when Unity is started and the project contains a prefab with a UMotionLock component.</span></li>
+    <li class="listItem"><span class="listText">Fixed that the FBX exporter doesn't export the clip settings correctly (e.g. loop, start frame, end frame,...).</span></li>
+    <li class="listItem"><span class="listText">Fixed that modal windows aren't automatically closed when the parent window is closed.</span></li>
+    <li class="listItem"><span class="listText">Fixed an exception that is thrown when clicking on the File menu (Clip Editor) and there are backup files with an invalid name in the backup directory.</span></li>
+</ul><h3 class="headline3" id="">Manual Changes</h3><ul class="listMain">
+    <li class="listItem"><span class="listText">"Unity Timeline Integration" chapter: Updated text to indicate that GameObjects aren't removed from Timeline anymore.</span></li>
+    <li class="listItem"><span class="listText">Updated the "Pose Editor" chapter based on the latest implementation changes.</span></li>
+</ul></br></br><h2 class="headline2" id="">UMotion V1.16p03</h2><h3 class="headline3" id="">New or Changed Features</h3><p class="textBlock">None</p><h3 class="headline3" id="">Bug Fixes</h3><ul class="listMain">
+    <li class="listItem"><span class="listText">Fixed that when an *.FBX file is exported again by UMotion the Animator Controller looses the reference to animation clips contained in that *.FBX file.</span></li>
+    <li class="listItem"><span class="listText">Fixed a regression (introduced in V1.16p02) causing IK on generic bones to not beeing exported to *.anim correctly.</span></li>
+    <li class="listItem"><span class="listText">Fixed that UMotion's animation preview doesn't preview the root position of a generic animation correctly if the root transform is scaled.</span></li>
+    <li class="listItem"><span class="listText">Fixed that the interpolation of rotation curves of generic animations is slightly different when exported to *.anim (than in UMotion).</span></li>
+    <li class="listItem"><span class="listText">Fixed that euler/quaternion continuity for generic bones that used multiple layers or constraints wasn't ensured when exported to *.anim.</span></li>
+    <li class="listItem"><span class="listText">Fixed wrong method name in GUICompatibilityUtility.cs.</span></li>
+    <li class="listItem"><span class="listText">Fixed an exception that is thrown when a corrupted humanoid character is applied to the pose editor.</span></li>
+</ul><h3 class="headline3" id="">Manual Changes</h3><p class="textBlock">None</p></br></br><h2 class="headline2" id="">UMotion V1.16p02</h2><h3 class="headline3" id="">New or Changed Features</h3><p class="textBlock">None</p><h3 class="headline3" id="">Bug Fixes</h3><ul class="listMain">
+    <li class="listItem"><span class="listText">Fixed that rotation curves of a generic animation aren't exported correctly to *.anim when an IK constraint is applied to a sibling or a parent in the hierarchy.</span></li>
+    <li class="listItem"><span class="listText">Fixed an exception when clicking on "OK" in the "Add Mirror Mapping" dialog when the "Mirror Mapping" dialog has already been closed.</span></li>
+</ul><h3 class="headline3" id="">Manual Changes</h3><p class="textBlock">None</p></br></br><h2 class="headline2" id="">UMotion V1.16p01</h2><h3 class="headline3" id="">New or Changed Features</h3><p class="textBlock">None</p><h3 class="headline3" id="">Bug Fixes</h3><ul class="listMain">
+    <li class="listItem"><span class="listText">Fixed compile errors in Unity 2019.1 when the Unity Timeline package isn't installed.</span></li>
+    <li class="listItem"><span class="listText">A broken animation clip can now be detected and automatically deleted to prevent exceptions caused by that clip.</span></li>
+    <li class="listItem"><span class="listText">The animation export now skips animation clips that are faulty instead of generating unhandled exceptions.</span></li>
+    <li class="listItem"><span class="listText">Fixed that the *.FBX exporter on Mac OS exports wrong values for rotation curves under some circumstances.</span></li>
+    <li class="listItem"><span class="listText">Fixed that auto key ("generate") creates keys when keys are dragged in the Dopesheet.</span></li>
+    <li class="listItem"><span class="listText">Changed all materials in the example scene to use an "Unlit" shader so that they are displayed correctly across each render pipeline.</span></li>
+</ul><h3 class="headline3" id="">Manual Changes</h3><p class="textBlock">None</p></br></br><h2 class="headline2" id="">UMotion V1.16</h2><h3 class="headline3" id="">New or Changed Features</h3><ul class="listMain">
     <li class="listItem"><span class="listText">Line numbers are now displayed in exception stack traces.</span></li>
     <li class="listItem"><span class="listText">Added a warning messages to the animation importer when a bone/transform that is animated in the imported animation is locked in the UMotion project. Furthermore a dialog appears that asks if the locked bones/transforms should be automatically re-configured to show the animation.</span></li>
     <li class="listItem"><span class="listText">Improved the text that is displayed in the "Channels" section of the Pose Editor when a locked bone/transform is selected.</span></li>

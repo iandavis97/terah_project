@@ -4,6 +4,15 @@ Copyright © Pixel Crushers
 RELEASE NOTES
 -------------
 
+Version 1.9.6:
+[February 10, 2019]
+- Changed: Shortened folder names.
+- Added: InputDeviceMethods utility component to access InputDeviceManager in inspector.
+- Improved: If faction member's Eyes transform is unassigned, checks Mecanim avatar.
+- Fixed: MessageSystem no longer throws error if sending message from object that's being destroyed.
+- Fixed: RuntimeTypeUtility API change to address iOS issue.
+
+
 Version 1.9.5:
 [January 29, 2019]
 - Updated assembly definition files to include Wrappers; renamed Common to PixelCrushers.

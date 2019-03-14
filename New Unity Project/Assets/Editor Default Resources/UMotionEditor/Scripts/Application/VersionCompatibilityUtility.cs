@@ -93,6 +93,30 @@ namespace UMotionEditor
             }
         }
 
+        public static bool Unity2018_3_OrNewer
+        {
+            get
+            {
+                #if UNITY_2018_3_OR_NEWER
+                return true;
+                #else
+                return false;
+                #endif
+            }
+        }
+
+        public static bool Unity2019_1_Or_Newer
+        {
+            get
+            {
+                #if UNITY_2019_1_OR_NEWER
+                return true;
+                #else
+                return false;
+                #endif
+            }
+        }
+
         public static bool HasDepthSortingBug
         {
             get

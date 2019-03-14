@@ -2,9 +2,6 @@
 This folder contains support files to integrate the Dialogue System 
 into ORK Framework.
 
-The subfolders are:
-
-- Example: An example scene.
-- Scripts: Scripts for integrating ORK.
-
+Since ORK Framework doesn't have a prebuilt example, an example scene 
+is no longer included with this integration package.
 */

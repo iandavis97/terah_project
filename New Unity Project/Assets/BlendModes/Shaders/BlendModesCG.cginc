@@ -109,7 +109,7 @@ inline float3 ApplyHsbc(float3 color, fixed4 hsbc)
 #   define BLENDMODES_BLEND_PIXEL_OVERLAY(color, out) \
         fixed4 overlayColor = tex2D(_BLENDMODES_OverlayTexture, out.BLENDMODES_OverlayTexCoord) * _BLENDMODES_OverlayColor; \
         fixed3 blendColor = BLENDMODES_BLEND_COLORS(color.rgb, overlayColor.rgb); \
-        color.rgb = lerp(color.rgb, blendColor, _BLENDMODES_OverlayColor.a); 
+        color.rgb = lerp(color.rgb, blendColor, overlayColor.a * _BLENDMODES_OverlayColor.a); 
 
 ///////////////////////////////////////////////////////////////////////
 //  Blend function selector based on enabled shader keyword.

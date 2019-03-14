@@ -146,7 +146,9 @@ namespace BlendModes
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void PreloadShaderFamilies ()
         {
-            Load().GetShaderFamilies();
+            var shaderResources = Load();
+            if (!shaderResources) return;
+            shaderResources.GetShaderFamilies();
         }
     }
 }

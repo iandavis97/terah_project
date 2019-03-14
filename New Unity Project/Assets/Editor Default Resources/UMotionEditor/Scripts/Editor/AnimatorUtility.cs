@@ -255,6 +255,15 @@ namespace UMotionEditor
             #endif
         }
 
+        public static bool IsPrefab(GameObject gameObject)
+        {
+            #if UNITY_2018_3_OR_NEWER
+            return (PrefabUtility.GetPrefabAssetType(gameObject) != PrefabAssetType.NotAPrefab);
+            #else
+            return (PrefabUtility.GetPrefabType(gameObject) != PrefabType.None);
+            #endif
+        }
+
 		//********************************************************************************
 		// Private Methods
 		//********************************************************************************

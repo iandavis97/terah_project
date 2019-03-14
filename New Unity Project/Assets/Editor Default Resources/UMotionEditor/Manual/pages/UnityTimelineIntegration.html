@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<div class="versionHeader">
-			<p class="versionText">Version: <b>1.16</b> </p>
+			<p class="versionText">Version: <b>1.17</b> </p>
 		</div>
 		<div class="leftContent">
 			<div class="leftContentInner">
@@ -234,7 +234,7 @@
     <li class="listItem"><span class="listText">If you created a new project in the first step, UMotion will now guide you through setting up the project so that the animation can be edited.</span></li>
 </ul><img src="../images/ClipEditorSyncTimeline.png" class="image"></img>
 <p class="imageText">Clip Editor - Synchronize with Unity Timeline</p><p class="textBlock">UMotion is now synchronized with Unity Timeline and you can start editing the animation clip.</p><h3 class="headline3" id="">Things to consider:</h3><ul class="listMain">
-    <li class="listItem"><span class="listText">UMotion temporarily removes the binded GameObject from the related animation track in Unity Timeline. This is necessary so that UMotion can correctly play animations on that GameObject. As soon as synchronization is stopped the GameObject is re-assigned to the animation track.</span></li>
+    <li class="listItem"><span class="listText">UMotion temporarily deactivates the binded GameObject from the related animation track in Unity Timeline. This is necessary so that UMotion can correctly play animations on that GameObject. As soon as synchronization is stopped the GameObject is activated again.</span></li>
     <li class="listItem"><span class="listText">Only the currently edited animation clip of the same animation track can be previewed. Clips on other tracks are still previewed as usual.</span></li>
     <li class="listItem"><span class="listText">While editing an animation clip, the blend settings for that timeline clip are ignored.</span></li>
     <li class="listItem"><span class="listText">The extrapolation settings of the currently edited timeline clip are ignored. Use UMotion's <a href="PlaybackNavigation.html" class="link">Playback Navigation</a> settings to e.g. enable looping in preview mode.</span></li>

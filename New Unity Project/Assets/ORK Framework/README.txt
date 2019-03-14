@@ -183,6 +183,42 @@ http://docs.unity3d.com/Manual/TroubleShootingIPhone.html
 ORK Version Changelog
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 2.23.0:
+- new: Flying Texts: Changing the rotation and scale of the flying text's game object (e.g. using a 'Change Rotation' or 'Change Scale' node in the move event) will now affect the text's rotation and scale. Rotation is only supported on the Z-axis when using the legacy GUI (new UI supports rotation on all axes).
+- new: Input Keys: Unity Input Manager: 'Up/Down Full Axis' setting available when using 'Is Joypad Axis'. Optionally interpret 'Up' and 'Down' input handling as full axis value of 1/-1. E.g. use this when using a 'Down' input handling coming from a joypad axis as menu input, as otherwise the axis value recognized during 'Down' input would be too low.
+- new: Animations: Mecanim Parameters: 'Use Hash ID' setting available. Using the hash ID of a Mecanim parameter's name to access the parameter is now optional. Accessing parameters via hash IDs is faster - disable this setting in case you get a warning like 'Parameter Hash 123456789 does not exist.'. By default enabled.
+- new: Formulas: Grid Move Range: 'Grid Move Range' node available in 'Combatant' nodes. Uses a combatant's grid move range as a value.
+- new: Formulas: Check Grid Move Range: 'Check Grid Move Range' node available in 'Combatant' nodes. Checks a combatant's grid move range.
+- new: Camera Positions: 'Ignore Scale' setting available when using 'Local Space'. Optionally ignore the target's scale when placing the camera in local space.
+- new: Status Values: Consumable: 'Animate Damage' setting available. Playing damage animation when a 'Consumable' type status value is reduced by user/target changes of abilities or items is now optional. By default enabled. Please note that 'Use Costs' of abilities never play damage animations.
+- new: Attack Attributes: 'Flying Text Colors' settings available. Optionally override the text and shadow/outline colors of damage and refresh flying texts for status value changes with the associated sub attack attribute.
+- new: Abilities, Items, Weapons, Armors: Variables: 'Use Update Variables' settings available. Optionally add variable changes that are used each time the ability/item/equipment variables are changed. E.g. use this to update variable values that are calculated from formulas based on other variables.
+- new: Ability Developments, Classes: 'Class Change Forget' and 'Class Change Learn' settings available for learning abilities and ability trees. Forgetting/learning abilities and ability trees when changing class can now be set up per ability/tree that is learned. The settings are only used by abilities/trees learned from a class (i.e. class ability development). It'll only be used by class changes that actually use 'Forget Old Abilities' or 'Learn Abilities'.
+- new: Formulas: Battle Statistic: 'Battle Statistic' node available in 'Combatant' nodes. Uses a combatant's battle statistic value (either total or from another combatant). E.g. use the total damage a combatant dealt.
+- new: Battle Settings: 'Combatant Battle Statistics' settings available. Optionally collect battle statistics like damage received and damage dealt for each combatant. This can be used in formulas and the battle AI.
+- new: Battle AI: Get Battle Statistic: 'Get Battle Statistic' node available in 'Combatant' nodes. Uses the combatant with the highest or lowest defined battle statistic value (either total or from the user) as found target. E.g. use the combatant that dealt the most damage to the user.
+- new: Grid Battles: Examine Grid: Combatant Info Dialogue: '2nd Call Closes' settings available when using a call key. Optionally close the combatant info dialogue when using the call key a 2nd time (can also be limited to being called for the same combatant).
+- new: Save Games: 'File Data Path' save game method available. Saves the save file in 'Application.dataPath'.
+- new: Save Games: 'Save Folder' setting available for 'File Persistent Data Path' and 'File Data Path' save methods. Stores the save games in the defined folder in the data path.
+- new: Menu Screens: 'Only When Opening' setting available for 'Open Game Event' settings. The open event will only be executed if the menu screen is opened on its own, not coming from another menu screen.
+- new: Menu Screens: Ability Tree: 'One Per Ability' setting available in 'Ability Box Settings'. Optionally only display one menu item per ability, e.g. showing the highest available level (learned or to learn).
+- new: Menu Screens: Equipment, Inventory, Inventory Exchange: 'Remove On Drop' setting available when using 'Drop To World'. Optionally remove items instead of dropping them into the game world to prevent spawning item prefabs.
+- new: Shortcut Settings: 'HUD Check Timeout' setting available. Defines the time in seconds between checking a shortcut's usable state in HUDs. The check includes searching for available targets, which can have an impact on performance (especially during grid battles) when used each frame (i.e. a timeout of 0).
+- new: Event System: Selected Data Choice: 'Selected Data Choice' node available in 'UI > Dialogue' nodes. Shows a choice dialogue to select a value from selected data (e.g. an ability or item), the selected value will be stored in another selected data list (using a defined key).
+- new: Event System: Clear Battle Statistics: 'Clear Battle Statistics' node available in 'Battle > Statistics' nodes. Clears/resets the values of a combatant's battle statistics.
+- new: Event System: Change Battle Statistic Value: 'Change Battle Statistic Value' node available in 'Battle > Statistics' nodes. Changes a combatant's battle statistic value.
+- new: Event System: Change Status Value: 'Source Combatant' settings available. Optionally use a combatant as source for the status value change to collect damage dealt/received data.
+- new: Event System: Clear Move AI Target: 'Clear Move AI Target' node available in 'Movement > Move AI' nodes. Removes a combatant's move AI current target and returns to idle mode.
+- change: Battle Grids: Performance improvements on various grid operations, especially checking for possible targets of an action (e.g. selected in the battle menu or in shortcut HUDs).
+- change: Move AI: The move AI will now reset its target and returns to idle/waypoint mode when the target's game object is destroyed.
+- change: Menu Screens: Ability Tree: Learned abilities will no longer show multiple menu items, as they all referred to the same ability (showing the same level).
+- change: Save Games: The 'File' save game method has been renamed to 'File Persistent Data Path'.
+- change: Abilities, Items: Set Attack Attribute, Ignore Defence Attribute: The settings have been changed to add individual attributes/sub-attributes instead of displaying all available attributes and enabling them.
+- change: Equipment: Set Defence Attribute: The settings have been changed to add individual attributes/sub-attributes instead of displaying all available attributes and enabling them.
+- change: Status Effects: Set Attack/Defence Attribute: The settings have been changed to add individual attributes/sub-attributes instead of displaying all available attributes and enabling them.
+- fix: Move AIs: Simple Move: Using the 'Default' move component ('SimpleMove' component) was initially moving the combatant when added/spawned regardless of the move AI's state.
+
+
 Version 2.22.0a/b:
 - fix: Data Update: Fixed an issue with the data update for flying texts in ORK Framework 2.22.0.
 
