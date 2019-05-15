@@ -4,6 +4,26 @@ Copyright © Pixel Crushers
 RELEASE NOTES
 -------------
 
+Version 1.9.8:
+[March 31, 2019]
+- Text Tables:
+	- Fixed: Adding new field showed blank line until refresh.
+	- Added: Sort & search features.
+- Save System: Added Restore State On Start checkbox to savers; Added DeleteSavedGameInSlot method to SaveSystemMethods.
+
+
+Version 1.9.7:
+[March 18, 2019]
+- Text Table: Performance improvement when editing large tables.
+- UI: Panels remember last selection instead of reverting to first selectable. Added UIPanel.monitorSelection bool to temporarily disable this functionality.
+- Save System:
+	- Position Saver now updates NavMeshAgent if present.
+	- Assign Unique Keys menu item now also disambiguates existing duplicates.
+	- Fixed error message "Some objects were not cleaned up" when stopping playmode when Save System doesn't have data serializer or data storer.
+- Opsive Character Controllers: Updated support for version 2.2.1; fixed bugs in saving inventory & attributes.
+- Emerald AI: Updated support for version 2.2.
+
+
 Version 1.9.6:
 [February 10, 2019]
 - Changed: Shortened folder names.

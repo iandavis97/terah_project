@@ -183,6 +183,65 @@ http://docs.unity3d.com/Manual/TroubleShootingIPhone.html
 ORK Version Changelog
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 2.24.1:
+- new Unity 2019: ORK Framework now supports Unity 2019 (use ORK for Unity 2018).
+- new: Combatants: Portraits: 'Portrait Sets' settings available. Portraits are now arranged in sets - the combatant randomly selects a set when being initialized in the game. This can be used to have different portraits for individual combatant instancess of the same combatant.
+- new: Cursor Settings: 'Grid Battle Cursors' settings available. Optionally use different mouse cursors during grid cell selections (placement, orientation, move command and examine selections).
+- new: Menu Screens: Inventory, Inventory Exchange: 'Empty Money' setting available when 'Add Money' is enabled. Adding money without any quantity to the item list is now optional. By default enabled.
+- new: Event System: Combatant Portrait Set: 'Combatant Portrait Set' node available in 'Combatant > Combatant' nodes. Changes a combatant's used portrait set to a random or defined portrait set index.
+- change: Battle Settings: Battle Camera: The 'Battle Camera' settings have been moved into their own sub-section in 'Battle System > Battle Camera' in the ORK editor.
+- change: Battle Settings: Target Settings: The 'Target Settings' have been moved into their own sub-section in 'Battle System > Target Settings' in the ORK editor.
+- change: Menu Settings: Cursor Settings: The 'Cursor Settings' have been moved into their own sub-section in 'Menus > Cursor Settings' in the ORK editor.
+
+
+Version 2.24.0:
+- new: Editor: Assets: You can now use assets from other sources, e.g. asset bundles or placed in a 'Resources' folder. Previous settings will be updated automatically and use the 'Reference' asset source, i.e. the ORK project stores the direct reference to the asset (as it has been before).
+- new: Game Settings: Asset Settings: 'Asset Settings' available. Define base asset settings that are used in the project, e.g. the default path for asset bundles. Also allows changing asset sources throughout the entire project, e.g. changing all 'Reference' sources to 'Asset Bundle' (if the used asset is part of an asset bundle).
+- new: Game Controls: Interaction Settings: 'Layer Mask' and 'Distance' settings available. Define the layer and distance used for click interaction raycasts. Make sure to check this setting when updating your project and your click interactions no longer work.
+- new: Camera Controls: Top Down Border: 'Reset Rotation Key' and 'Reset Zoom Key' settings available. Resets the zoom or rotation to the original values using input keys.
+- new: Formulas, Battle AIs, Event System: Debug: 'Debug' node available. Prints a text to the Unity console (either as 'Log', 'Warning' or 'Error').
+- new: Formulas, Battle AIs, Event System: Select Combatant: 'Is Enemy' setting available in 'Select Combatant' nodes when using filters. Optionally only select combatants that are allies or enemies of a defined user combatant.
+- new: Scene Objects: 'No Tooltip' setting available. Prevents a scene object from being used by 'Tooltip' type HUDs. E.g. use this if you use a scene object only for cursor changes on game objects in the scene.
+- new: Attack Attributes: 'Traits Display Settings' available. Define values for identifying strength, weakness and recovery attack sub-attributes. By default, strength is between 0 and 100, weakness above 100 and recovery below 0.
+- new: Defence Attributes: 'Traits Display Settings' available. Define values for identifying strength, weakness and recovery defence sub-attributes. By default, strength is above 100, weakness between 0-100 and recovery below 0.
+- new: Abilities: 'On Selection' selection available for the 'Auto Consume' setting. Consumes the use costs when selecting the ability action (i.e. when adding it to the system).
+- new: Items: 'Auto Consume' setting available. Defines if and when the item is consumed automatically (i.e. without calculating the outcome).
+- new: Items, Weapons, Armors: 'Init Game Event' setting available. Optionally use a game event when an instance of an item is initialized (i.e. first created). The item is available in the game event as selected data with the key 'action'.
+- new: Weapons, Armors: Description: New text codes available to add durability and maximum durability of an equipment to the description text.
+- new: Battle Settings: Battle Camera: 'Target Battle Arena' setting available in the different 'Look At' settings. Optionally use the battle arena as target for the camera change instead of the targeted combatant.
+- new: Grid Highlights: Blink Settings: 'Blink Only Prefab' setting available. Optionally only blink the highlight prefab instead of cell prefab and highlight prefab.
+- new: Grid Highlights: Grid Formation: 'Grid Formation' highlight settings available. Optionally highlight the cells that are part of a grid formation and the combatant's formation position cell while player combatants select actions.
+- new: Combatant Groups: Battle Spot: 'Battle Spot' settings available for individual combatants of a combatant group. Optionally override the default battle spots defined in 'Battle System > Battle Spots' for a group's combatant. This battle spot will be overridden by battle spots defined in 'Battle' components.
+- new: Combatants: Death Settings: 'Remove From Battle' setting available when using 'Keep Prefab' on death. Optionally not remove enemy combatants from battle upon death to allow them being revived and take part in battle again. Only available when enabling 'Keep Prefab' to not destroy the combatant's spawned game object upon death.
+- new: GUI Boxes: Text Typing: 'Hide Ok/Cancel' setting available. Optionally hide the ok and cancel buttons while the text is typing.
+- new: HUDs: Interaction: 'Interaction Source' setting available. Select where the displayed interaction is coming from, either the 'Interaction Controller' attached to the player or from a game object below the cursor (or both).
+- new: HUDs: Combatant, Turn Order, Latest Turn: Attack Attribute: 'Show Traits' setting available. Optionally display all attack (sub-)attributes identified as a selected trait, i.e. strength (value between 0-100), weakness (value above 100), immunity (value being 0) or recovery (value below 0). The values for identifying strength, weakness and recovery can be adjusted in the attack attribute's settings.
+- new: HUDs: Combatant, Turn Order, Latest Turn: Defence Attribute: 'Show Traits' setting available. Optionally display all defence (sub-)attributes identified as a selected trait, i.e. strength (value above 100), weakness (value between 0-100), immunity (value being 0) or recovery (value below 0). The values for identifying strength, weakness and recovery can be adjusted in the defence attribute's settings.
+- new: HUDs: Combatant, Turn Order, Latest Turn: Attack/Defence Attribute: New text codes available to display the name, description and icon of the attack/defence attribute (in addition to the already available text codes for the displayed sub-attributes).
+- new: HUDs: Tooltip: New text codes available to display buy/sell prices.
+- new: Event System: Remove From Item Box: 'Remove From Item Box' node available in 'Combatant > Inventory' nodes. Removes items that are stored in an item box.
+- new: Event System: Store Item Box: 'Store Item Box' node available in 'Combatant > Inventory' nodes. Stores the data of an item box into a defined file or PlayerPrefs variable (string). The data is stored as an XML-formatted string.
+- new: Event System: Load Item Box: 'Load Item Box' node available in 'Combatant > Inventory' nodes. Loads the data of an item box from a file or PlayerPrefs variable (string). The data is loaded from an XML-formatted string.
+- new: Event System: Store Variables: 'Store Variables' node available in 'Value > Variables' nodes. Stores the variables from a defind source (e.g. global variables) into a file or PlayerPrefs variable (string). The data is stored as an XML-formatted string.
+- new: Event System: Load Variables: 'Load Variables' node available in 'Value > Variables' nodes. Loads the data stored in a file or PlayerPrefs variable (string) into a defined variable source. The data is loaded from an XML-formatted string.
+- new: Event System: Selected Data Choice: 'Enable Tooltip' setting available. Optionally shows tooltip HUDs for displayed content (e.g. items or abilities).
+- new: Event System: Add Loot: 'Use Selected Data' settings available. Optionally add items, equipment, money or other loot stored in selected data.
+- new: Event System: Add To Item Box, Remove From Item Box: 'Use Selected Data' settings available. Optionally add/remove items, equipment, money or other items stored in selected data.
+- change: Editor: Formulas, Battle AI, Event System: Loading empty nodes in the editor (e.g. coming from having custom nodes and removing their code) will now be replaced by comment nodes to prevent errors.
+- change: Event Interaction: You can now override prefabs and audio clips of a game event regardless of if they're already set up in the event or not.
+- change: Battle Settings: Battle Camera: Canceling target selection will reset the battle camera back to showing the menu user (if 'Look At Menu User' is used).
+- change: Grid Highlights: Highlights only using line renderers (i.e. not using prefab or blink highlights) no longer replace prefab/blink highlights from other highlights. E.g. the move range highlight (using line renderer) will no longer block combatant highlights (using prefab or blinking).
+- change: Menu Screens: Equipment: Dragging an equipment on an equipment part it can't be equipped on now plays the 'Fail' audio clip.
+- fix: Menu Screens: Inventory Exchange: Fixed an issue where using 'Tabs' to display item types could prevent the first tab to be used when clicking on it.
+- fix: Save Games: Item Drops: Fixed an issue where item drops (e.g. from killed enemies or dropping items from the inventory) could be multiplied when loading a game with additive scene loading (i.e. multiple scenes where loaded).
+- fix: Battles: Auto Join: Fixed an issue with setting scene IDs and respawning combatants from multiple combatant spawners when using teleport battles.
+- fix: Attack/Defence Attributes: Immunity Flying Texts: Fixed an issue where the immunity flying texts could be displayed for displaying texts like use costs.
+- fix: Move To Interaction: Fixed an issue where using 'Move To Interaction' caused an error when no player was spawned and an interaction was clicked.
+- fix: Status Requirements: Death: Fixed an issue where using 'Death' status requirement wasn't automatically checked upon death or revival of a combatant (e.g. when used in the combatant's 'Conditional Prefabs').
+- fix: Event System: Use Battle Event: Fixed an issue wher enabling 'Can Use' could lead to not progressing the battle event if the action couldn't be used.
+- fix: Editor, Battle Grid Component: Changing grid settings (and saving them) in the editor where not used when creating grids in scenes.
+
+
 Version 2.23.0:
 - new: Flying Texts: Changing the rotation and scale of the flying text's game object (e.g. using a 'Change Rotation' or 'Change Scale' node in the move event) will now affect the text's rotation and scale. Rotation is only supported on the Z-axis when using the legacy GUI (new UI supports rotation on all axes).
 - new: Input Keys: Unity Input Manager: 'Up/Down Full Axis' setting available when using 'Is Joypad Axis'. Optionally interpret 'Up' and 'Down' input handling as full axis value of 1/-1. E.g. use this when using a 'Down' input handling coming from a joypad axis as menu input, as otherwise the axis value recognized during 'Down' input would be too low.
