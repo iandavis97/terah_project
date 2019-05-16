@@ -170,8 +170,9 @@ GameObject:
   - component: {fileID: 14300000}
   - component: {fileID: 5400000}
   - component: {fileID: 11400004}
-  - component: {fileID: 11438544}
   - component: {fileID: 11464458}
+  - component: {fileID: 114463916424054644}
+  - component: {fileID: 114649266492734640}
   m_Layer: 1
   m_Name: Player
   m_TagString: Untagged
@@ -500,6 +501,8 @@ MonoBehaviour:
     inSceneChange: 2
     inPause: 2
     inBattle: 0
+    targetSelection: 2
+    performingAction: 2
     inMenu: 2
     screenID: 
   checkObjectVariables: 0
@@ -534,6 +537,8 @@ MonoBehaviour:
     inSceneChange: 2
     inPause: 2
     inBattle: 2
+    targetSelection: 2
+    performingAction: 2
     inMenu: 2
     screenID: 
   checkObjectVariables: 0
@@ -575,84 +580,6 @@ EditorExtensionImpl:
 --- !u!1002 &11400009
 EditorExtensionImpl:
   serializedVersion: 6
---- !u!114 &11438544
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5145a52ccbad050458190335535faa5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  factionManager: {fileID: 0}
-  factionDatabase: {fileID: 11400000, guid: f9f815b826b5ca94997e2b2146f6658f, type: 2}
-  factionID: 0
-  pad:
-    happiness: 0
-    pleasure: 0
-    arousal: 0
-    dominance: 0
-    excitabilityThreshold: 20
-  impressionability: 0
-  traitAlignmentImportance: 50
-  arousalImportance: 50
-  deedImpactThreshold: 5
-  acclimatizationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 20
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  powerDifferenceCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: -10
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 0.1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 10
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  maxMemories: 50
-  shortTermMemoryDuration: 300
-  longTermMemoryDuration: 3600
-  memoryCleanupFrequency: 2
-  sortMemories: 0
-  shortTermMemory: []
-  longTermMemory: []
-  eyes: {fileID: 0}
-  sightLayerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  debugEvalFunc: 0
 --- !u!114 &11464458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -983,6 +910,316 @@ Transform:
   m_Father: {fileID: 400004}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114463916424054644
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 551b61e0cdb620e42b947d40888a3cb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factionManager: {fileID: 0}
+  factionDatabase: {fileID: 11400000, guid: f9f815b826b5ca94997e2b2146f6658f, type: 2}
+  factionID: 0
+  pad:
+    happiness: 100
+    pleasure: 100
+    arousal: 100
+    dominance: 100
+    excitabilityThreshold: 20
+  impressionability: 0
+  traitAlignmentImportance: 50
+  arousalImportance: 50
+  deedImpactThreshold: 5
+  acclimatizationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 20
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  powerDifferenceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: -10
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0.1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 10
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxMemories: 50
+  shortTermMemoryDuration: 300
+  longTermMemoryDuration: 3600
+  memoryCleanupFrequency: 2
+  sortMemories: 0
+  shortTermMemory: []
+  longTermMemory: []
+  eyes: {fileID: 0}
+  sightLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  debugEvalFunc: 0
+  eventInteractions:
+    witnessDeed: {fileID: 0}
+    shareRumors: {fileID: 0}
+    enterAura: {fileID: 0}
+    greet: {fileID: 0}
+    gossip: {fileID: 0}
+--- !u!114 &114649266492734640
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6397ae673539cc84b93111f249e76e61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emotionModelTemplate: {fileID: 11400000, guid: ea14d8a8ea499404ebc367e5c7e35320,
+    type: 2}
+  emotionDefinitions:
+  - name: Admiration
+    pleasureMin: 22
+    pleasureMax: 76
+    arousalMin: -61
+    arousalMax: 23
+    dominanceMin: -45
+    dominanceMax: 55
+  - name: Gloating
+    pleasureMin: -39
+    pleasureMax: 55
+    arousalMin: -34
+    arousalMax: 56
+    dominanceMin: -6
+    dominanceMax: 94
+  - name: Gratification
+    pleasureMin: -4
+    pleasureMax: 82
+    arousalMin: -64
+    arousalMax: 28
+    dominanceMin: -2
+    dominanceMax: 84
+  - name: Gratitude
+    pleasureMin: 45
+    pleasureMax: 93
+    arousalMin: -67
+    arousalMax: 49
+    dominanceMin: -50
+    dominanceMax: 60
+  - name: Happy for
+    pleasureMin: 64
+    pleasureMax: 96
+    arousalMin: -34
+    arousalMax: 68
+    dominanceMin: -12
+    dominanceMax: 86
+  - name: Hope
+    pleasureMin: -11
+    pleasureMax: 55
+    arousalMin: -20
+    arousalMax: 80
+    dominanceMin: -75
+    dominanceMax: 30
+  - name: Joy
+    pleasureMin: 64
+    pleasureMax: 100
+    arousalMin: -11
+    arousalMax: 97
+    dominanceMin: 8
+    dominanceMax: 98
+  - name: Love
+    pleasureMin: 60
+    pleasureMax: 100
+    arousalMin: -44
+    arousalMax: 72
+    dominanceMin: -22
+    dominanceMax: 82
+  - name: Pride
+    pleasureMin: 48
+    pleasureMax: 97
+    arousalMin: -28
+    arousalMax: 68
+    dominanceMin: 14
+    dominanceMax: 100
+  - name: Relief
+    pleasureMin: 52
+    pleasureMax: 94
+    arousalMin: -83
+    arousalMax: 35
+    dominanceMin: -47
+    dominanceMax: 59
+  - name: Satisfaction
+    pleasureMin: 39
+    pleasureMax: 91
+    arousalMin: -89
+    arousalMax: 5
+    dominanceMin: -12
+    dominanceMax: 82
+  - name: Anger
+    pleasureMin: -85
+    pleasureMax: -39
+    arousalMin: 21
+    arousalMax: 97
+    dominanceMin: -35
+    dominanceMax: 81
+  - name: Disappointment
+    pleasureMin: -88
+    pleasureMax: -42
+    arousalMin: -71
+    arousalMax: -37
+    dominanceMin: -90
+    dominanceMax: 8
+  - name: Distress
+    pleasureMin: -91
+    pleasureMax: -59
+    arousalMin: -83
+    arousalMax: 21
+    dominanceMin: -92
+    dominanceMax: -2
+  - name: Fear
+    pleasureMin: -93
+    pleasureMax: -55
+    arousalMin: -9
+    arousalMax: 100
+    dominanceMin: -100
+    dominanceMax: -19
+  - name: Fears confirmed
+    pleasureMin: -96
+    pleasureMax: -56
+    arousalMin: -17
+    arousalMax: 100
+    dominanceMin: -100
+    dominanceMax: -4
+  - name: Hate
+    pleasureMin: -78
+    pleasureMax: -26
+    arousalMin: -45
+    arousalMax: 45
+    dominanceMin: -17
+    dominanceMax: 73
+  - name: Pity
+    pleasureMin: -56
+    pleasureMax: 2
+    arousalMin: -61
+    arousalMax: 13
+    dominanceMin: -27
+    dominanceMax: 75
+  - name: Remorse
+    pleasureMin: -75
+    pleasureMax: -9
+    arousalMin: -55
+    arousalMax: 53
+    dominanceMin: -89
+    dominanceMax: 19
+  - name: Reproach
+    pleasureMin: -69
+    pleasureMax: -13
+    arousalMin: 9
+    arousalMax: 85
+    dominanceMin: 5
+    dominanceMax: 95
+  - name: Resentment
+    pleasureMin: -78
+    pleasureMax: -26
+    arousalMin: -51
+    arousalMax: 51
+    dominanceMin: -46
+    dominanceMax: 52
+  - name: Shame
+    pleasureMin: -88
+    pleasureMax: -44
+    arousalMin: -50
+    arousalMax: 60
+    dominanceMin: -100
+    dominanceMax: -17
+  - name: Buoyant
+    pleasureMin: 25
+    pleasureMax: 100
+    arousalMin: 25
+    arousalMax: 100
+    dominanceMin: 25
+    dominanceMax: 100
+  - name: Dependent
+    pleasureMin: 25
+    pleasureMax: 100
+    arousalMin: 25
+    arousalMax: 100
+    dominanceMin: -100
+    dominanceMax: -25
+  - name: Relaxed
+    pleasureMin: 25
+    pleasureMax: 100
+    arousalMin: -100
+    arousalMax: -25
+    dominanceMin: 25
+    dominanceMax: 100
+  - name: Docile
+    pleasureMin: 25
+    pleasureMax: 100
+    arousalMin: -100
+    arousalMax: -25
+    dominanceMin: -100
+    dominanceMax: -25
+  - name: Bored
+    pleasureMin: -100
+    pleasureMax: -25
+    arousalMin: -100
+    arousalMax: -25
+    dominanceMin: -100
+    dominanceMax: -25
+  - name: Disdainful
+    pleasureMin: -100
+    pleasureMax: -25
+    arousalMin: -100
+    arousalMax: -25
+    dominanceMin: 25
+    dominanceMax: 100
+  - name: Anxious
+    pleasureMin: -100
+    pleasureMax: -25
+    arousalMin: 25
+    arousalMax: 100
+    dominanceMin: -100
+    dominanceMax: -25
+  - name: Hostile
+    pleasureMin: -100
+    pleasureMax: -25
+    arousalMin: 25
+    arousalMax: 100
+    dominanceMin: 25
+    dominanceMax: 100
+  currentEmotion: -1
+  currentEmotionName: 
 --- !u!137 &137006466171689020
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

@@ -151,7 +151,7 @@ namespace Invector.vCharacterController
         /// Lock all the Input from the Player
         /// </summary>
         /// <param name="value"></param>
-        public void SetLockBasicInput(bool value)
+        public virtual void SetLockBasicInput(bool value)
         {
             lockInput = value;
             if (value)
@@ -168,7 +168,7 @@ namespace Invector.vCharacterController
         /// Show/Hide Cursor
         /// </summary>
         /// <param name="value"></param>
-        public void ShowCursor(bool value)
+        public virtual void ShowCursor(bool value)
         {
             Cursor.visible = value;
         }
@@ -177,7 +177,7 @@ namespace Invector.vCharacterController
         /// Lock/Unlock the cursor to the center of screen
         /// </summary>
         /// <param name="value"></param>
-        public void LockCursor(bool value)
+        public virtual void LockCursor(bool value)
         {
             if (!value)
                 Cursor.lockState = CursorLockMode.Locked;
@@ -189,7 +189,7 @@ namespace Invector.vCharacterController
         /// Lock the Camera Input
         /// </summary>
         /// <param name="value"></param>
-        public void SetLockCameraInput(bool value)
+        public virtual void SetLockCameraInput(bool value)
         {
             lockCameraInput = value;
         }
@@ -198,7 +198,7 @@ namespace Invector.vCharacterController
         /// If you're using the MoveCharacter method with a custom targetDirection, check this true to align the character with your custom targetDirection
         /// </summary>
         /// <param name="value"></param>
-        public void IgnoreCameraRotation(bool value)
+        public virtual void IgnoreCameraRotation(bool value)
         {
             ignoreCameraRotation = value;
         }
@@ -207,7 +207,7 @@ namespace Invector.vCharacterController
         /// Limits the character to walk only, useful for cutscenes and 'indoor' areas
         /// </summary>
         /// <param name="value"></param>
-        public void SetWalkByDefault(bool value)
+        public virtual void SetWalkByDefault(bool value)
         {
             cc.freeSpeed.walkByDefault = value;
             cc.strafeSpeed.walkByDefault = value;
@@ -339,13 +339,13 @@ namespace Invector.vCharacterController
                 tpCamera.ChangeState("Default", true);
         }
 
-        public void ChangeCameraState(string cameraState)
+        public virtual void ChangeCameraState(string cameraState)
         {
             changeCameraState = true;
             customCameraState = cameraState;
         }
 
-        public void ResetCameraState()
+        public virtual void ResetCameraState()
         {
             changeCameraState = false;
             customCameraState = string.Empty;
@@ -382,8 +382,7 @@ namespace Invector.vCharacterController
                     hud.Init(cc);
                 }
                 else  return;
-            }
-                
+            }                
 
             hud.UpdateHUD(cc);
         }

@@ -1,0 +1,92 @@
+fileFormatVersion: 2
+guid: 146acd5c75242ef4e8471ef99022921a
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: Stylized_Rock_01 - Copy/Stylized_Rock_01 - Copy
+    400000: Stylized_Rock_01 - Copy/Stylized_Rock_01 - Copy/Transform
+    2100000: mat.Stylized_Rock_01
+    2300000: Stylized_Rock_01 - Copy/Stylized_Rock_01 - Copy/MeshRenderer
+    2800000: Stylized_Rock_01_Base Color
+    2800002: Stylized_Rock_01_Normal
+    2800004: Stylized_Rock_01_Metallic
+    2800006: Stylized_Rock_01_Height
+    2800008: Stylized_Rock_01_Ambient Occlusion
+    3300000: Stylized_Rock_01 - Copy/Stylized_Rock_01 - Copy/MeshFilter
+    11400000: sbsar
+    11400002: graph0
+    13500000: Stylized_Rock_01 - Copy/Stylized_Rock_01 - Copy/SphereCollider
+    100100000: Stylized_Rock_01 - Copy
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 232528478, guid: 43a8bbf65be290d44ba52b94476242b9, type: 3}
+  mGraphInstanceData:
+  - graphLabel: Stylized_Rock_01
+    graphDescIndex: 0
+    generateAllOutputs: 0
+    generateMipMaps: 1
+    preset: " <sbspreset pkgurl=\"pkg://Stylized_Rock_01\" label=\"\" >\n  <presetinput
+      identifier=\"Stone_Color\" uid=\"3473140517\" type=\"3\" value=\"1,0.931034,0.561321,1\"
+      />\n  <presetinput identifier=\"Large_cracks_visibility\" uid=\"3474569412\"
+      type=\"0\" value=\"0\" />\n  <presetinput identifier=\"Small_cracks_visibility\"
+      uid=\"3474456636\" type=\"0\" value=\"0\" />\n  <presetinput identifier=\"Smoothness_adjustment\"
+      uid=\"3474456790\" type=\"0\" value=\"0.835\" />\n  <presetinput identifier=\"Stone_Hightlights_Strength\"
+      uid=\"3473081408\" type=\"0\" value=\"0.301\" />\n  <presetinput identifier=\"Moss_Amount\"
+      uid=\"3473133818\" type=\"0\" value=\"0\" />\n  <presetinput identifier=\"Dirt_Amount\"
+      uid=\"3473140252\" type=\"0\" value=\"0\" />\n </sbspreset>\n"
+    shaderName: Standard
+    outputNames: Base Color,Normal,Metallic,Height,Ambient Occlusion
+    texturePackingList:
+    - outputName: Base Color
+      alphaSource: Base Color
+    - outputName: Normal
+      alphaSource: Normal
+    - outputName: Roughness
+      alphaSource: Roughness
+    - outputName: Metallic
+      alphaSource: Smoothness
+    - outputName: Height
+      alphaSource: Height
+    - outputName: Ambient Occlusion
+      alphaSource: Ambient Occlusion
+    colorSpaceList:
+    - outputName: Base Color
+      bLinear: 0
+    - outputName: Normal
+      bLinear: 1
+    - outputName: Roughness
+      bLinear: 1
+    - outputName: Metallic
+      bLinear: 1
+    - outputName: Height
+      bLinear: 1
+    - outputName: Ambient Occlusion
+      bLinear: 1
+    inputTextureMap: []
+    targetSettingList:
+    - label: Default
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    - label: Standalone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    - label: iPhone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    material: {fileID: 2100000, guid: 146acd5c75242ef4e8471ef99022921a, type: 3}

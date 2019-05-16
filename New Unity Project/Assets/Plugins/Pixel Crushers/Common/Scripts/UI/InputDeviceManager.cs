@@ -1,7 +1,8 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 namespace PixelCrushers
@@ -55,6 +56,9 @@ namespace PixelCrushers
 
         [Tooltip("When paused and device is mouse, make sure cursor is visible.")]
         public bool enforceCursorOnPause = false;
+
+        [Tooltip("Enable GraphicRaycasters (which detect cursor clicks on UI elements) only when device is mouse.")]
+        public bool controlGraphicRaycasters = false;
 
         [Tooltip("If any of these keycodes are pressed, go back to the previous menu.")]
         public KeyCode[] backKeyCodes = new KeyCode[] { KeyCode.JoystickButton1 };
@@ -137,12 +141,27 @@ namespace PixelCrushers
                     DontDestroyOnLoad(gameObject);
                 }
             }
+#if !UNITY_5_3
+            SceneManager.sceneLoaded += OnSceneLoaded;
+#endif
+        }
+
+        public void OnDestroy()
+        {
+#if !UNITY_5_3
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+#endif
         }
 
         public void Start()
         {
             m_lastMousePosition = Input.mousePosition;
             SetInputDevice(inputDevice);
+            BrieflyIgnoreMouseMovement();
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
             BrieflyIgnoreMouseMovement();
         }
 
@@ -173,6 +192,7 @@ namespace PixelCrushers
 
         private void SetGraphicRaycasters(bool deviceUsesCursor)
         {
+            if (!controlGraphicRaycasters) return;
             var raycasters = FindObjectsOfType<UnityEngine.UI.GraphicRaycaster>();
             for (int i = 0; i < raycasters.Length; i++)
             {
@@ -340,14 +360,21 @@ namespace PixelCrushers
         public void SetCursor(bool visible)
         {
             if (!controlCursorState) return;
-#if UNITY_4_6 || UNITY_4_7 || UNITY_4_8
-            Screen.showCursor = visible;
-            Screen.lockCursor = !visible;
-#else
+            ForceCursor(visible);
+        }
+
+        public void ForceCursor(bool visible)
+        {
             Cursor.visible = visible;
             Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
-#endif
+            StartCoroutine(ForceCursorAfterOneFrameCoroutine(visible));
+        }
 
+        private IEnumerator ForceCursorAfterOneFrameCoroutine(bool visible)
+        {
+            yield return new WaitForEndOfFrame();
+            Cursor.visible = visible;
+            Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
         }
 
     }

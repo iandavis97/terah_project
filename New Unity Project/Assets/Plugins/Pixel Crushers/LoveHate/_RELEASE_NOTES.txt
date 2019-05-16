@@ -4,6 +4,70 @@ Copyright © Pixel Crushers
 RELEASE NOTES
 -------------
 
+Version 1.9.8:
+[March 31, 2019]
+- Text Tables:
+	- Fixed: Adding new field showed blank line until refresh.
+	- Added: Sort & search features.
+- Save System: Added Restore State On Start checkbox to savers; Added DeleteSavedGameInSlot method to SaveSystemMethods.
+
+
+Version 1.9.7:
+[March 18, 2019]
+- Text Table: Performance improvement when editing large tables.
+- UI: Panels remember last selection instead of reverting to first selectable. Added UIPanel.monitorSelection bool to temporarily disable this functionality.
+- Save System:
+	- Position Saver now updates NavMeshAgent if present.
+	- Assign Unique Keys menu item now also disambiguates existing duplicates.
+	- Fixed error message "Some objects were not cleaned up" when stopping playmode when Save System doesn't have data serializer or data storer.
+- Opsive Character Controllers: Updated support for version 2.2.1; fixed bugs in saving inventory & attributes.
+- Emerald AI: Updated support for version 2.2.
+
+
+Version 1.9.6:
+[February 10, 2019]
+- Changed: Shortened folder names.
+- Added: InputDeviceMethods utility component to access InputDeviceManager in inspector.
+- Improved: If faction member's Eyes transform is unassigned, checks Mecanim avatar.
+- Fixed: MessageSystem no longer throws error if sending message from object that's being destroyed.
+- Fixed: RuntimeTypeUtility API change to address iOS issue.
+
+
+Version 1.9.5:
+[January 29, 2019]
+- Updated assembly definition files to include Wrappers; renamed Common to PixelCrushers.
+- Fixed: MessageSystem bug when removing listeners while sending a message.
+- Fixed: UIPanel timing bug when animations cause outgoing panel to overlap incoming panel.
+- Improved: Editors now handle issues with outdated third party assemblies more gracefully.
+- Save System: Calling LoadGame() w/Save System > Save Current Scene unticked now also updates internal saved game cache.
+- Save System: ScenePortal.UsePortal() is now virtual.
+- TextTable: Large text areas now word wrapped.
+- ORK Framework: Updated for ORK 2.21.0.
+
+
+Version 1.9.4:
+- Added: CSV export/import.
+- Added: JSON export/import.
+- Fixed: String-to-float conversion in .NET4 is now culture invariant.
+
+
+Version 1.9.3
+- IMPORTANT CHANGE: On Unity 2018+, you must define scripting symbol USE_PHYSICS2D to use 2D physics.
+- Fixed: FactionMember.FindRumorInMemory wasn't matching target faction correctly.
+- Fixed: Faction Member inspector was showing 1 + memory count.
+- Fixed: Trigger Event and Collision Event components now handle >32 tags.
+- Improved: Updated for .NET Standard 2.0 compatibility.
+- Improved: FactionManager now delays check for faction database until Start.
+- Improved: Added Assign Unique Key menu item for Saver components.
+- Improved: Added Control Graphic Raycasters checkbox to Input Device Manager.
+- Improved: Timed Event now has option to time by # of frames.
+- Improved: Tag masks in Trigger Event & Collider Event now support >32 tags.
+- Save System: Added Assign Unique Keys menu item.
+- Save System: Animator Saver now saves animator parameters.
+- Save System: If Active Saver activates inactive target, it now also tells target's other savers to apply data.
+- ORK Framework: Fixed GetTemperament. Added GetEmotionalState.
+
+
 Version 1.9.2
 - Added: LoveHate static helper class.
 - Fixed: Removed editor warning in EditorNote.cs.

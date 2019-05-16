@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -233,6 +233,21 @@ namespace PixelCrushers.LoveHate
 
         public bool FindResources()
         {
+            // Find eyes for CanSee:
+            if (eyes == null)
+            {
+                try
+                {
+                    var animator = GetComponent<Animator>();
+                    if (animator != null && animator.GetBoneTransform(HumanBodyBones.Head))
+                    {
+                        eyes = animator.GetBoneTransform(HumanBodyBones.Head);
+                    }
+                }
+                catch (Exception) { }
+            }
+
+            // Find faction manager and faction database:
             if (factionManager == null)
             {
                 factionManager = FindObjectOfType<FactionManager>();
@@ -454,7 +469,7 @@ namespace PixelCrushers.LoveHate
             {
                 var rumor = longTermMemory[i];
                 if (rumor.actorFactionID == actorFactionID &&
-                    rumor.targetFactionID == actorFactionID &&
+                    rumor.targetFactionID == targetFactionID &&
                     string.Equals(rumor.tag, deedTag))
                 {
                     return rumor;

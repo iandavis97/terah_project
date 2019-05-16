@@ -65,7 +65,8 @@ namespace PixelCrushers.LoveHate.ORKFrameworkSupport
 		                                    EventObjectSetting variableObject, string objectID,
 		                                    StringValue key)
 		{
-			if (value is string || value is bool || value is int || value is float || value is Vector3)
+            //--- Allow any value. Convert to string if not a recognized type:
+			//--- if (value is string || value is bool || value is int || value is float || value is Vector3)
 			{
 				if (VariableOrigin.Local.Equals(origin))
 				{
@@ -123,6 +124,10 @@ namespace PixelCrushers.LoveHate.ORKFrameworkSupport
 			{
 				handler.Set(key.GetValue(), (Vector3) value);
 			}
+            else if (value != null)
+            {
+                handler.Set(key.GetValue(), value.ToString());
+            }
 		}
 
 	}

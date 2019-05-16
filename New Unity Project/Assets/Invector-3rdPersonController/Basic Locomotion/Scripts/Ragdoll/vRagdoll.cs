@@ -176,6 +176,7 @@ namespace Invector.vCharacterController
                 _ragdollContainer = new GameObject("RagdollContainer " + gameObject.name);
             _ragdollContainer.hideFlags = HideFlags.HideInHierarchy;
         }
+
         void LateUpdate()
         {
             if (animator == null) return;

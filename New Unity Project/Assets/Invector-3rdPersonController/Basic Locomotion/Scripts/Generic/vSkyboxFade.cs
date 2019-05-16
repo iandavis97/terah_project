@@ -24,6 +24,9 @@ namespace Invector
             //defaultSkyboxSettings = new SkyboxFadeSettings(skybox);
             currentFadeSettings = defaultSkyboxSettings.Copy();
             currentFadeSettings = new SkyboxFadeSettings(skybox);
+            skybox.SetColor("_Tint", defaultSkyboxSettings.tint);
+            skybox.SetFloat("_Exposure", defaultSkyboxSettings.exposure);
+            skybox.SetFloat("_Rotation", defaultSkyboxSettings.rotation);
         }
 
         private void OnApplicationQuit()
@@ -31,7 +34,7 @@ namespace Invector
             skybox.SetColor("_Tint", defaultSkyboxSettings.tint);
             skybox.SetFloat("_Exposure", defaultSkyboxSettings.exposure);
             skybox.SetFloat("_Rotation", defaultSkyboxSettings.rotation);
-        }
+        }                
 
         public void Fade(string _fadeName)
         {

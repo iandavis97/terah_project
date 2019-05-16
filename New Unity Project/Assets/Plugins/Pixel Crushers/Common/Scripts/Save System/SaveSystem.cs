@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections;
@@ -50,6 +50,10 @@ namespace PixelCrushers
 
         private static int m_currentSceneIndex = NoSceneIndex;
 
+        private static AsyncOperation m_currentAsyncOperation = null;
+
+        private static bool m_isQuitting = false;
+
         /// <summary>
         /// When loading a game, load the scene that the game was saved in.
         /// </summary>
@@ -96,7 +100,7 @@ namespace PixelCrushers
         {
             get
             {
-                if (m_instance == null)
+                if (m_instance == null && !m_isQuitting)
                 {
                     m_instance = new GameObject("Save System", typeof(SaveSystem)).GetComponent<SaveSystem>();
                 }
@@ -111,7 +115,7 @@ namespace PixelCrushers
                 if (m_serializer == null)
                 {
                     m_serializer = instance.GetComponent<DataSerializer>();
-                    if (m_serializer == null)
+                    if (m_serializer == null && !m_isQuitting)
                     {
                         Debug.Log("Save System: No DataSerializer found on " + instance.name + ". Adding JsonDataSerializer.", instance);
                         m_serializer = instance.gameObject.AddComponent<JsonDataSerializer>();
@@ -128,7 +132,7 @@ namespace PixelCrushers
                 if (m_storer == null)
                 {
                     m_storer = instance.GetComponent<SavedGameDataStorer>();
-                    if (m_storer == null)
+                    if (m_storer == null && !m_isQuitting)
                     {
                         Debug.Log("Save System: No SavedGameDataStorer found on " + instance.name + ". Adding PlayerPrefsSavedGameDataStorer.", instance);
                         m_storer = instance.gameObject.AddComponent<PlayerPrefsSavedGameDataStorer>();
@@ -148,6 +152,25 @@ namespace PixelCrushers
                 }
                 return m_sceneTransitionManager;
             }
+        }
+
+        /// <summary>
+        /// Current asynchronous scene load operation, or null if none. Loading scenes can use this
+        /// value to update a progress bar.
+        /// </summary>
+        public static AsyncOperation currentAsyncOperation
+        {
+            get { return m_currentAsyncOperation; }
+            set { m_currentAsyncOperation = value; }
+        }
+
+        /// <summary>
+        /// The saved game data recorded by the last call to SaveToSlot,
+        /// LoadScene, or RecordSavedGameData.
+        /// </summary>
+        public static SavedGameData currentSavedGameData
+        {
+            get { return m_savedGameData; }
         }
 
         /// <summary>
@@ -216,6 +239,7 @@ namespace PixelCrushers
 
         private void OnApplicationQuit()
         {
+            m_isQuitting = true;
             BeforeSceneChange();
         }
 
@@ -270,7 +294,12 @@ namespace PixelCrushers
         private static IEnumerator LoadSceneInternalTransitionCoroutine(string sceneName)
         {
             yield return instance.StartCoroutine(sceneTransitionManager.LeaveScene());
-            yield return UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+            m_currentAsyncOperation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+            while (m_currentAsyncOperation != null && !m_currentAsyncOperation.isDone)
+            {
+                yield return null;
+            }
+            m_currentAsyncOperation = null;
             instance.StartCoroutine(sceneTransitionManager.EnterScene());
         }
 #else
@@ -477,6 +506,8 @@ namespace PixelCrushers
         /// <param name="savedGameData">Saved game data.</param>
         public static void ApplySavedGameData(SavedGameData savedGameData)
         {
+            if (savedGameData == null) return;
+            m_savedGameData = savedGameData;
             if (m_savers.Count <= 0) return;
             for (int i = m_savers.Count - 1; i >= 0; i--) // A saver may remove itself from list during apply.
             {
@@ -541,7 +572,11 @@ namespace PixelCrushers
         /// <param name="savedGameData"></param>
         public static void LoadGame(SavedGameData savedGameData)
         {
-            if (saveCurrentScene)
+            if (savedGameData == null)
+            {
+                if (Debug.isDebugBuild) Debug.LogWarning("SaveSystem.LoadGame received null saved game data. Not loading.");
+            }
+            else if (saveCurrentScene)
             {
                 instance.StartCoroutine(LoadSceneCoroutine(savedGameData, null));
             }

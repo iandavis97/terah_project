@@ -64,6 +64,7 @@ namespace Invector.vCharacterController
                 _damage.damageValue = (int)(value * damageMultiplier);
 
                 ragdoll.ApplyDamage(damage);
+                onReceiveDamage.Invoke(_damage);
                 Invoke("ResetAddDamage", 0.1f);
             }
         }

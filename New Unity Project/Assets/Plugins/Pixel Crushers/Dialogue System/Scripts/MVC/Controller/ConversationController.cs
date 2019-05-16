@@ -1,4 +1,4 @@
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System;
@@ -58,6 +58,12 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
+        /// Set true to choice randomly from the next list of valid NPC subtitles instead of
+        /// using the first one in the list.
+        /// </summary>
+        public bool randomizeNextEntry { get; set; }
+
+        /// <summary>
         /// Gets the conversant info for this conversation.
         /// </summary>
         /// <value>
@@ -99,6 +105,7 @@ namespace PixelCrushers.DialogueSystem
             this.m_model = model;
             this.m_view = view;
             this.m_endConversationHandler = endConversationHandler;
+            this.randomizeNextEntry = false;
             model.InformParticipants(DialogueSystemMessages.OnConversationStart);
             view.FinishedSubtitleHandler += OnFinishedSubtitle;
             view.SelectedResponseHandler += OnSelectedResponse;
@@ -208,11 +215,13 @@ namespace PixelCrushers.DialogueSystem
         /// <param name='e'>
         /// Event args.
         /// </param>
-        private void OnFinishedSubtitle(object sender, EventArgs e)
+        public void OnFinishedSubtitle(object sender, EventArgs e)
         {
+            var randomize = randomizeNextEntry;
+            randomizeNextEntry = false;
             if (state.hasNPCResponse)
             {
-                GotoState(m_model.GetState(state.firstNPCResponse.destinationEntry));
+                GotoState(m_model.GetState(randomize ? state.GetRandomNPCEntry() : state.firstNPCResponse.destinationEntry));
             }
             else if (state.hasPCResponses)
             {
@@ -243,7 +252,7 @@ namespace PixelCrushers.DialogueSystem
         /// <param name='e'>
         /// Selected response event args.
         /// </param>
-        private void OnSelectedResponse(object sender, SelectedResponseEventArgs e)
+        public void OnSelectedResponse(object sender, SelectedResponseEventArgs e)
         {
             GotoState(m_model.GetState(e.DestinationEntry));
         }
@@ -258,6 +267,20 @@ namespace PixelCrushers.DialogueSystem
                 if (state.pcResponses.Length > 0)
                 {
                     m_view.SelectResponse(new SelectedResponseEventArgs(state.pcResponses[0]));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Follows the last PC response in the current state.
+        /// </summary>
+        public void GotoLastResponse()
+        {
+            if (state != null)
+            {
+                if (state.pcResponses.Length > 0)
+                {
+                    m_view.SelectResponse(new SelectedResponseEventArgs(state.pcResponses[state.pcResponses.Length - 1]));
                 }
             }
         }

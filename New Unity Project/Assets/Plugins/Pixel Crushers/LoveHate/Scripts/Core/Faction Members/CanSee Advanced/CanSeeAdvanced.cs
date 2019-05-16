@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 
@@ -115,12 +115,14 @@ namespace PixelCrushers.LoveHate
             var layerMask = factionMember.sightLayerMask;
             if (dimension == Dimension.Is2D)
             {
+#if USE_PHYSICS2D || !UNITY_2018_1_OR_NEWER
                 RaycastHit2D[] hits = Physics2D.LinecastAll(rayStart, rayEnd, layerMask);
                 for (int i = 0; i < hits.Length; i++)
                 {
                     if (hits[i].transform == transform) continue;
                     return (hits[i].transform == target);
                 }
+#endif
                 return false;
             }
             else

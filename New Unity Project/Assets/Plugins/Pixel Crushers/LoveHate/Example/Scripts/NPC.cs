@@ -54,7 +54,9 @@ namespace PixelCrushers.LoveHate.Example
 			return selfPerceivedPowerLevel;
 		}
 
-		private void OnCollisionEnter2D(Collision2D coll)
+#if USE_PHYSICS2D || !UNITY_2018_1_OR_NEWER
+
+        private void OnCollisionEnter2D(Collision2D coll)
 		{
 			if (coll.gameObject.CompareTag("Player"))
 			{
@@ -62,7 +64,7 @@ namespace PixelCrushers.LoveHate.Example
 			}
 		}
 
-		private void OnCollisionExit2D(Collision2D coll)
+        private void OnCollisionExit2D(Collision2D coll)
 		{
 			if (coll.gameObject.CompareTag("Player"))
 			{
@@ -70,7 +72,9 @@ namespace PixelCrushers.LoveHate.Example
 			}
 		}
 
-		public void Idle()
+#endif
+
+        public void Idle()
 		{
 			StopAllCoroutines();
 		}

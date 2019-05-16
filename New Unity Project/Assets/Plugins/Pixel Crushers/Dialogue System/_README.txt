@@ -1,7 +1,7 @@
 /*
 ------------------------------
   Dialogue System for Unity  
-        Version 2.0.4
+       Version 2.1.5
         
   Copyright © Pixel Crushers
 ------------------------------
@@ -26,13 +26,15 @@ Getting Started:
 o Follow the 5 minute quick start guide in the Getting Started section of the manual.
 o Read the documentation and/or watch the tutorial videos.
 o Play the scene in the Demo folder.
+o On Unity 2018+, if you want to use 2D physics you must define scripting symbol USE_PHYSICS2D.
+  (Tools > Pixel Crushers > Common > Misc > Enable Physics 2D Support)
 
 
 Documentation:
 --------------
 o Video tutorials & online manual: Tools > Pixel Crushers > Dialogue System > Help.
-o Online documentation: http://www.pixelcrushers.com/dialogue_system/manual2x/html/
-o Download a copy: http://www.pixelcrushers.com/dialogue_system/manual2x/Documentation.zip
+o Online documentation: https://www.pixelcrushers.com/dialogue_system/manual2x/html/
+o Download a copy: https://www.pixelcrushers.com/dialogue_system/manual2x/Documentation.zip
   If you download a copy for offline use, do not unzip it into your Assets folder! It 
   contains Doxygen-generated JavaScript files; if these are in the Assets folder, Unity 
   will try to compile them and fail. Unzip it outside of your Assets folder.

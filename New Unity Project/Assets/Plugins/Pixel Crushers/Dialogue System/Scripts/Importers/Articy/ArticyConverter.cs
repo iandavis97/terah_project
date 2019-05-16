@@ -1,5 +1,5 @@
 #if USE_ARTICY
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 using System.Collections.Generic;
 using System.IO;
@@ -44,7 +44,7 @@ namespace PixelCrushers.DialogueSystem.Articy
         }
 
         /// <summary>
-        /// This static utility method creates a converter and uses it run the conversion.
+        /// This static utility method creates a converter and uses it to run the conversion.
         /// </summary>
         /// <param name='articyData'>
         /// Articy data.
@@ -79,8 +79,8 @@ namespace PixelCrushers.DialogueSystem.Articy
         private int itemID;
         private int locationID;
         private static List<string> fullVariableNames = new List<string>(); // Make static to expose ConvertExpression().
-        private Conversation documentConversation;
-        private DialogueEntry lastDocumentEntry;
+        //private Conversation documentConversation;
+        //private DialogueEntry lastDocumentEntry;
 
         #endregion
 
@@ -121,21 +121,23 @@ namespace PixelCrushers.DialogueSystem.Articy
             if (conversation == null) return;
             conversationStack.Add(conversation);
 
-            var conversationArticyId = conversation.LookupValue(ArticyIdFieldTitle);
-            var articyDialogue = articyData.dialogues.ContainsKey(conversationArticyId) ? articyData.dialogues[conversationArticyId] : null; // May be null if a flow fragment.
-            if (articyDialogue != null && articyDialogue.isDocument)
-            {
-                documentConversation = conversation;
-                lastDocumentEntry = conversation.GetFirstDialogueEntry();
-            }
+            //--- No longer used. Caused double links.
+            //var conversationArticyId = conversation.LookupValue(ArticyIdFieldTitle);
+            //var articyDialogue = articyData.dialogues.ContainsKey(conversationArticyId) ? articyData.dialogues[conversationArticyId] : null; // May be null if a flow fragment.
+            //if (articyDialogue != null && articyDialogue.isDocument)
+            //{
+            //    documentConversation = conversation;
+            //    lastDocumentEntry = conversation.GetFirstDialogueEntry();
+            //}
         }
 
         private void PopConversation()
         {
             if (conversationStack.Count < 1) return;
             conversationStack.RemoveAt(conversationStack.Count - 1);
-            documentConversation = null;
-            lastDocumentEntry = null;
+
+            //documentConversation = null;
+            //lastDocumentEntry = null;
         }
 
         private Conversation GetConversationStackTop()
@@ -226,8 +228,8 @@ namespace PixelCrushers.DialogueSystem.Articy
             actorID = 0;
             itemID = 0;
             locationID = 0;
-            documentConversation = null;
-            lastDocumentEntry = null;
+            //documentConversation = null;
+            //lastDocumentEntry = null;
             fullVariableNames.Clear();
             ResetArticyIdIndex();
             this.template = template;
@@ -271,6 +273,11 @@ namespace PixelCrushers.DialogueSystem.Articy
                             if (!string.IsNullOrEmpty(articyEntity.previewImage)) Field.SetValue(actor.fields, "Pictures", string.Format("[{0}]", articyEntity.previewImage), FieldType.Text);
                             SetFeatureFields(actor.fields, articyEntity.features);
                             ConvertLocalizableText(actor.fields, "Name", articyEntity.displayName);
+                            if (prefs.UseTechnicalNames)
+                            {
+                                Field.SetValue(actor.fields, "Name", articyEntity.technicalName, FieldType.Text);
+                                Field.SetValue(actor.fields, "Display Name", articyEntity.displayName.DefaultText, FieldType.Text);
+                            }
                             database.actors.Add(actor);
                             break;
                         case EntityCategory.Item:
@@ -281,8 +288,14 @@ namespace PixelCrushers.DialogueSystem.Articy
                             Field.SetValue(item.fields, ArticyTechnicalNameFieldTitle, articyEntity.technicalName, FieldType.Text);
                             Field.SetValue(item.fields, "Description", articyEntity.text.DefaultText, FieldType.Text);
                             Field.SetValue(item.fields, "Is Item", ((category == EntityCategory.Item) ? "True" : "False"), FieldType.Boolean);
+                            if (prefs.UseTechnicalNames) Field.SetValue(item.fields, "Display Name", articyEntity.displayName.DefaultText, FieldType.Text);
                             SetFeatureFields(item.fields, articyEntity.features);
                             ConvertLocalizableText(item.fields, "Name", articyEntity.displayName);
+                            if (prefs.UseTechnicalNames)
+                            {
+                                Field.SetValue(item.fields, "Name", articyEntity.technicalName, FieldType.Text);
+                                Field.SetValue(item.fields, "Display Name", articyEntity.displayName.DefaultText, FieldType.Text);
+                            }
                             database.items.Add(item);
                             break;
                         default:
@@ -311,8 +324,14 @@ namespace PixelCrushers.DialogueSystem.Articy
                     Field.SetValue(location.fields, ArticyIdFieldTitle, articyLocation.id, FieldType.Text);
                     Field.SetValue(location.fields, ArticyTechnicalNameFieldTitle, articyLocation.technicalName, FieldType.Text);
                     Field.SetValue(location.fields, "Description", articyLocation.text.DefaultText, FieldType.Text);
+                    if (prefs.UseTechnicalNames) Field.SetValue(location.fields, "Display Name", articyLocation.displayName.DefaultText, FieldType.Text);
                     SetFeatureFields(location.fields, articyLocation.features);
                     ConvertLocalizableText(location.fields, "Name", articyLocation.displayName);
+                    if (prefs.UseTechnicalNames)
+                    {
+                        Field.SetValue(location.fields, "Display Name", articyLocation.technicalName, FieldType.Text);
+                        Field.SetValue(location.fields, "Display Name", articyLocation.displayName.DefaultText, FieldType.Text);
+                    }
                     database.locations.Add(location);
                 }
             }
@@ -375,7 +394,8 @@ namespace PixelCrushers.DialogueSystem.Articy
 
         private string ConvertSpecialTechnicalNames(string technicalName)
         {
-            if (string.Equals(technicalName, "Success_Description") ||
+            if (string.Equals(technicalName, "Response_Menu_Sequence") ||
+                string.Equals(technicalName, "Success_Description") ||
                 string.Equals(technicalName, "Failure_Description") ||
                 string.Equals(technicalName, "Entry_Count") ||
                 Regex.Match(technicalName, @"^Entry_[0-9]").Success)
@@ -496,6 +516,10 @@ namespace PixelCrushers.DialogueSystem.Articy
             conversationID++;
             var conversationTitle = string.Empty;
             conversationTitle += articyDialogue.displayName.DefaultText;
+            if (articyDialogue.isDocument && !string.IsNullOrEmpty(prefs.DocumentsSubmenu))
+            {
+                conversationTitle = prefs.DocumentsSubmenu + "/" + conversationTitle;
+            }
             Conversation conversation = template.CreateConversation(conversationID, conversationTitle);
             Field.SetValue(conversation.fields, ArticyIdFieldTitle, articyDialogue.id, FieldType.Text);
             Field.SetValue(conversation.fields, "Description", articyDialogue.text.DefaultText, FieldType.Text);
@@ -628,6 +652,8 @@ namespace PixelCrushers.DialogueSystem.Articy
             BuildDialogueEntriesFromNode(articyData.hierarchy.node, 0);
             onProgressCallback("Connecting dialogue nodes", 0.5f);
             ProcessConnections();
+            onProgressCallback("Checking if jumps are group nodes", 0.6f);
+            CheckJumpsForGroupNodes();
         }
 
         private const int MaxRecursionDepth = 1000;
@@ -897,14 +923,15 @@ namespace PixelCrushers.DialogueSystem.Articy
             ConvertPinExpressionsToConditionsAndScripts(entry, fragment.pins);
             RecordPins(fragment.pins, entry);
 
-            // Handle documents:
-            if (documentConversation != null && lastDocumentEntry != null && !DoesLinkExist(lastDocumentEntry.outgoingLinks, entry))
-            {
-                Debug.Log("Adding link in conv " + documentConversation.Title + " entry " + lastDocumentEntry.id + " to entry " + entry.conversationID + ":" + entry.id);
-                var link = new Link(lastDocumentEntry.conversationID, lastDocumentEntry.id, entry.conversationID, entry.id);
-                lastDocumentEntry.outgoingLinks.Add(link);
-                lastDocumentEntry = entry;
-            }
+            // No longer used:
+            //// Handle documents:
+            //if (documentConversation != null && lastDocumentEntry != null && !DoesLinkExist(lastDocumentEntry.outgoingLinks, entry))
+            //{
+            //    Debug.Log("Adding link in conv " + documentConversation.Title + " entry " + lastDocumentEntry.id + " to entry " + entry.conversationID + ":" + entry.id);
+            //    var link = new Link(lastDocumentEntry.conversationID, lastDocumentEntry.id, entry.conversationID, entry.id);
+            //    lastDocumentEntry.outgoingLinks.Add(link);
+            //    lastDocumentEntry = entry;
+            //}
         }
 
         private bool DoesLinkExist(List<Link> outgoingLinks, DialogueEntry destination)
@@ -983,7 +1010,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             jumpEntry.canvasRect = new Rect(jump.position.x, jump.position.y, DialogueEntry.CanvasRectWidth, DialogueEntry.CanvasRectHeight);
             SetFeatureFields(jumpEntry.fields, jump.features);
             ConvertLocalizableText(jumpEntry, "Title", jump.displayName);
-            jumpEntry.isGroup = true;
+            jumpEntry.isGroup = true; // We'll set isGroup correctly in a final pass in CheckJumpsForGroupNodes.
             jumpEntry.currentSequence = "None()";
             ConvertPinExpressionsToConditionsAndScripts(jumpEntry, jump.pins);
             RecordPins(jump.pins, jumpEntry);
@@ -999,6 +1026,32 @@ namespace PixelCrushers.DialogueSystem.Articy
                 flowEntry.currentSequence = "None()";
                 ConvertPinExpressionsToConditionsAndScripts(flowEntry, flowFragment.pins);
                 RecordPins(flowFragment.pins, flowEntry);
+            }
+        }
+
+        /// <summary>
+        /// Jumps that link only to other jumps or group nodes should be group nodes themselves.
+        /// This method sets the isGroup property correctly for all jump entries.
+        /// </summary>
+        private void CheckJumpsForGroupNodes()
+        {
+            var jumpEntries = new HashSet<DialogueEntry>(jumpsToProcess.Values);
+            foreach (var jumpEntry in jumpEntries)
+            {
+                if (jumpEntry == null) continue;
+                jumpEntry.isGroup = true;
+                for (int i = 0; i < jumpEntry.outgoingLinks.Count; i++)
+                {
+                    var destEntry = database.GetDialogueEntry(jumpEntry.outgoingLinks[i]);
+                    if (destEntry == null) continue;
+                    var linksToJump = jumpEntries.Contains(jumpEntry);
+                    var linksToGroup = destEntry.isGroup;
+                    if (!(linksToJump || linksToGroup))
+                    {
+                        jumpEntry.isGroup = false;
+                        break;
+                    }
+                }
             }
         }
 
@@ -1073,9 +1126,10 @@ namespace PixelCrushers.DialogueSystem.Articy
             entry.currentDialogueText = string.Empty;
             entry.currentMenuText = string.Empty;
             entry.currentSequence = "None()";
-            entry.isGroup = true;
+            entry.isGroup = false; // Since groups are processed one level ahead, don't make this a group: entry.isGroup = true;
             entry.conditionsString = string.Empty;
             entry.userScript = AddToUserScript(entry.userScript, ConvertExpression(instruction.expression));
+            ConvertPinExpressionsToConditionsAndScripts(entry, instruction.pins);
             RecordPins(instruction.pins, entry);
         }
 
@@ -1148,6 +1202,28 @@ namespace PixelCrushers.DialogueSystem.Articy
         /// <returns>A Lua version of the expression.</returns>
         /// <param name='expression'>articy expresso expression.</param>
         public static string ConvertExpression(string expression)
+        {
+            if (string.IsNullOrEmpty(expression)) return expression;
+
+            // If already Lua, return it:
+            if (expression.Contains("Variable[")) return expression;
+
+            // If no semicolon, convert single expression:
+            if (!expression.Contains(";")) return ConvertSingleExpression(expression);
+
+            var s = string.Empty;
+            var singleExpressions = expression.Split(';'); // TO DO: Handle semicolons nested inside string literals.
+            for (int i = 0; i < singleExpressions.Length; i++)
+            {
+                var singleExpression = singleExpressions[i];
+                if (string.IsNullOrEmpty(singleExpression)) continue;
+                if (s.Length > 0) s += ";\n";
+                s += ConvertSingleExpression(singleExpression);
+            }
+            return s;
+        }
+
+        public static string ConvertSingleExpression(string expression)
         {
             if (string.IsNullOrEmpty(expression)) return expression;
 
@@ -1510,15 +1586,35 @@ namespace PixelCrushers.DialogueSystem.Articy
             string textureName = actor.textureName;
             if (!string.IsNullOrEmpty(textureName))
             {
-                string filename = Path.GetFileNameWithoutExtension(textureName).Replace('\\', '/');
-                if (Application.isPlaying)
+                actor.portrait = LoadTexture(textureName);
+            }
+
+            // Alternate portraits:
+            var s = actor.LookupValue("SUBTABLE__AlternatePortraits");
+            if (!string.IsNullOrEmpty(s))
+            {
+                var alternatePortraitIDs = s.Split(';');
+                foreach (var alternatePortraitID in alternatePortraitIDs)
                 {
-                    actor.portrait = DialogueManager.LoadAsset(filename, typeof(Texture2D)) as Texture2D;
+                    if (articyData.assets.ContainsKey(alternatePortraitID))
+                    {
+                        var portrait = LoadTexture(articyData.assets[alternatePortraitID].displayName.DefaultText);
+                        if (portrait != null) actor.alternatePortraits.Add(portrait);
+                    }
                 }
-                else
-                {
-                    actor.portrait = Resources.Load(filename, typeof(Texture2D)) as Texture2D;
-                }
+            }
+        }
+
+        private Texture2D LoadTexture(string originalPath)
+        {
+            string filename = Path.GetFileNameWithoutExtension(originalPath).Replace('\\', '/');
+            if (Application.isPlaying)
+            {
+                return DialogueManager.LoadAsset(filename, typeof(Texture2D)) as Texture2D;
+            }
+            else
+            {
+                return Resources.Load(filename, typeof(Texture2D)) as Texture2D;
             }
         }
 

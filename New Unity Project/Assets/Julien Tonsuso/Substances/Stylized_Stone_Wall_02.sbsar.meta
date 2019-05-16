@@ -1,0 +1,92 @@
+fileFormatVersion: 2
+guid: fd4c61a08d959c244ab98e9336b4c759
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: Stylized_Stone_Wall_02/Stylized_Stone_Wall_02
+    400000: Stylized_Stone_Wall_02/Stylized_Stone_Wall_02/Transform
+    2100000: mat.Stylized_Stone_Wall_02
+    2300000: Stylized_Stone_Wall_02/Stylized_Stone_Wall_02/MeshRenderer
+    2800000: Stylized_Stone_Wall_02_Base Color
+    2800002: Stylized_Stone_Wall_02_Normal
+    2800004: Stylized_Stone_Wall_02_Metallic
+    2800006: Stylized_Stone_Wall_02_Height
+    2800008: Stylized_Stone_Wall_02_Ambient Occlusion
+    3300000: Stylized_Stone_Wall_02/Stylized_Stone_Wall_02/MeshFilter
+    11400000: sbsar
+    11400002: graph0
+    13500000: Stylized_Stone_Wall_02/Stylized_Stone_Wall_02/SphereCollider
+    100100000: Stylized_Stone_Wall_02
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 232528478, guid: 43a8bbf65be290d44ba52b94476242b9, type: 3}
+  mGraphInstanceData:
+  - graphLabel: Stylized_Stone_Wall_02
+    graphDescIndex: 0
+    generateAllOutputs: 0
+    generateMipMaps: 1
+    preset: " <sbspreset pkgurl=\"pkg://Stylized_Stone_Wall_02\" label=\"\" >\n  <presetinput
+      identifier=\"$outputsize\" uid=\"702849572\" type=\"8\" value=\"10,10\" />\n
+      \ <presetinput identifier=\"Plaster_Color\" uid=\"1602345877\" type=\"3\" value=\"1,0.950385,0.882075,1\"
+      />\n  <presetinput identifier=\"Plaster_Amount\" uid=\"1602345115\" type=\"0\"
+      value=\"0.09\" />\n  <presetinput identifier=\"Stone_Color\" uid=\"1602331872\"
+      type=\"3\" value=\"1,0.917384,0.778302,1\" />\n  <presetinput identifier=\"Pattern_2_Nb_X\"
+      uid=\"1602236975\" type=\"4\" value=\"13\" />\n  <presetinput identifier=\"Pattern_2_Nb_Y\"
+      uid=\"1602236507\" type=\"4\" value=\"13\" />\n  <presetinput identifier=\"Pattern_2_Luminance_Variation-Contrast\"
+      uid=\"1602233464\" type=\"0\" value=\"0\" />\n </sbspreset>\n"
+    shaderName: Standard
+    outputNames: Base Color,Normal,Metallic,Height,Ambient Occlusion
+    texturePackingList:
+    - outputName: Base Color
+      alphaSource: Base Color
+    - outputName: Normal
+      alphaSource: Normal
+    - outputName: Roughness
+      alphaSource: Roughness
+    - outputName: Metallic
+      alphaSource: Smoothness
+    - outputName: Height
+      alphaSource: Height
+    - outputName: Ambient Occlusion
+      alphaSource: Ambient Occlusion
+    colorSpaceList:
+    - outputName: Base Color
+      bLinear: 0
+    - outputName: Normal
+      bLinear: 1
+    - outputName: Roughness
+      bLinear: 1
+    - outputName: Metallic
+      bLinear: 1
+    - outputName: Height
+      bLinear: 1
+    - outputName: Ambient Occlusion
+      bLinear: 1
+    inputTextureMap: []
+    targetSettingList:
+    - label: Default
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 1024
+      textureHeight: 1024
+      textureFormat: 0
+      loadBehavior: 0
+    - label: Standalone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    - label: iPhone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    material: {fileID: 2100000, guid: fd4c61a08d959c244ab98e9336b4c759, type: 3}

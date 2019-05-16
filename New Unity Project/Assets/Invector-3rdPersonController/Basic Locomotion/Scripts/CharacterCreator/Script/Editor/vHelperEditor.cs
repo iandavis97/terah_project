@@ -70,7 +70,7 @@ namespace Invector
 
             GUILayout.BeginHorizontal("box");
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Basic Locomotion Version: 2.3.2", EditorStyles.boldLabel);
+            GUILayout.Label("Basic Locomotion Version: 2.3.3", EditorStyles.boldLabel);
             GUILayout.FlexibleSpace();
 
             if (GUILayout.Button("Check for Update"))
@@ -83,7 +83,7 @@ namespace Invector
 
             GUILayout.BeginHorizontal("box");
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Melee Combat Version: 2.3.2", EditorStyles.boldLabel);
+            GUILayout.Label("Melee Combat Version: 2.3.3", EditorStyles.boldLabel);
             GUILayout.FlexibleSpace();
 
             if (GUILayout.Button("Check for Update"))
@@ -95,7 +95,7 @@ namespace Invector
 
             GUILayout.BeginHorizontal("box");
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Shooter Version: 1.2.2", EditorStyles.boldLabel);
+            GUILayout.Label("Shooter Version: 1.2.3", EditorStyles.boldLabel);
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Check for Update"))
             {

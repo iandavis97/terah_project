@@ -1,0 +1,94 @@
+fileFormatVersion: 2
+guid: 17802f01cdcbf154480e2cbc261507fa
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: Stylized_Stone_Wall_03/Stylized_Stone_Wall_03
+    400000: Stylized_Stone_Wall_03/Stylized_Stone_Wall_03/Transform
+    2100000: mat.Stylized_Wall_03
+    2300000: Stylized_Stone_Wall_03/Stylized_Stone_Wall_03/MeshRenderer
+    2800000: Stylized_Wall_03_Base Color
+    2800002: Stylized_Wall_03_Normal
+    2800004: Stylized_Wall_03_Metallic
+    2800006: Stylized_Wall_03_Height
+    3300000: Stylized_Stone_Wall_03/Stylized_Stone_Wall_03/MeshFilter
+    11400000: sbsar
+    11400002: graph0
+    13500000: Stylized_Stone_Wall_03/Stylized_Stone_Wall_03/SphereCollider
+    100100000: Stylized_Stone_Wall_03
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 232528478, guid: 43a8bbf65be290d44ba52b94476242b9, type: 3}
+  mGraphInstanceData:
+  - graphLabel: Stylized_Wall_03
+    graphDescIndex: 0
+    generateAllOutputs: 0
+    generateMipMaps: 1
+    preset: " <sbspreset pkgurl=\"pkg://Stylized_Wall_03\" label=\"\" >\n  <presetinput
+      identifier=\"Large_cracks_strength\" uid=\"1453700936\" type=\"0\" value=\"0.524\"
+      />\n  <presetinput identifier=\"Large_Cracks_Scale\" uid=\"1453618686\" type=\"4\"
+      value=\"30\" />\n  <presetinput identifier=\"Highlight_edges_strength\" uid=\"1453698174\"
+      type=\"0\" value=\"0.638\" />\n  <presetinput identifier=\"brick_color\" uid=\"1453698342\"
+      type=\"3\" value=\"1,0.751348,0.617925,1\" />\n  <presetinput identifier=\"x_amount\"
+      uid=\"1453606194\" type=\"4\" value=\"6\" />\n  <presetinput identifier=\"y_amount\"
+      uid=\"1453606391\" type=\"4\" value=\"11\" />\n  <presetinput identifier=\"Brick_Roundness\"
+      uid=\"1453616897\" type=\"0\" value=\"0\" />\n  <presetinput identifier=\"Brick_Scale\"
+      uid=\"1453616737\" type=\"0\" value=\"0.74\" />\n  <presetinput identifier=\"grout_color\"
+      uid=\"1453699790\" type=\"3\" value=\"1,0.736602,0.438679,1\" />\n  <presetinput
+      identifier=\"Grout_amount\" uid=\"1453709114\" type=\"0\" value=\"0.358\" />\n
+      \ <presetinput identifier=\"Plaster_amount\" uid=\"1453697212\" type=\"0\" value=\"0.039\"
+      />\n  <presetinput identifier=\"plaster_details_strength\" uid=\"1453705370\"
+      type=\"0\" value=\"0.811\" />\n  <presetinput identifier=\"Plaster_contrast\"
+      uid=\"1453718060\" type=\"0\" value=\"0.95\" />\n </sbspreset>\n"
+    shaderName: Standard
+    outputNames: Base Color,Normal,Metallic,Height
+    texturePackingList:
+    - outputName: Base Color
+      alphaSource: Base Color
+    - outputName: Normal
+      alphaSource: Normal
+    - outputName: Roughness
+      alphaSource: Roughness
+    - outputName: Metallic
+      alphaSource: Smoothness
+    - outputName: Height
+      alphaSource: Height
+    colorSpaceList:
+    - outputName: Base Color
+      bLinear: 0
+    - outputName: Normal
+      bLinear: 1
+    - outputName: Roughness
+      bLinear: 1
+    - outputName: Metallic
+      bLinear: 1
+    - outputName: Height
+      bLinear: 1
+    inputTextureMap: []
+    targetSettingList:
+    - label: Default
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    - label: Standalone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    - label: iPhone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    material: {fileID: 2100000, guid: 17802f01cdcbf154480e2cbc261507fa, type: 3}

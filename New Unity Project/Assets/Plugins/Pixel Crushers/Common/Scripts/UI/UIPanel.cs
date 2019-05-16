@@ -1,9 +1,9 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
-using UnityEngine;
-using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace PixelCrushers
 {
@@ -43,14 +43,22 @@ namespace PixelCrushers
         public UnityEvent onClose = new UnityEvent();
         public UnityEvent onBackButtonDown = new UnityEvent();
 
-        private GameObject m_previousSelected = null;
-        private List<GameObject> selectables = new List<GameObject>();
+        protected GameObject m_previousSelected = null;
+        protected GameObject m_lastSelected = null;
+        protected List<GameObject> selectables = new List<GameObject>();
         private float m_timeNextCheck = 0;
         private float m_timeNextRefresh = 0;
 
-        private static List<UIPanel> panelStack = new List<UIPanel>();
+        /// <summary>
+        /// If false, turns off checking of current selection to make sure a valid selectable is selected.
+        /// You can temporarily set this false if you open a non-UIPanel window and don't want
+        /// any UIPanels to steal focus.
+        /// </summary>
+        public static bool monitorSelection = true;
 
-        private static UIPanel topPanel
+        protected static List<UIPanel> panelStack = new List<UIPanel>();
+
+        protected static UIPanel topPanel
         {
             get { return (panelStack.Count > 0) ? panelStack[panelStack.Count - 1] : null; }
         }
@@ -79,7 +87,7 @@ namespace PixelCrushers
             }
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             if (panelState == PanelState.Uninitialized)
             {
@@ -134,19 +142,32 @@ namespace PixelCrushers
             RefreshSelectablesList();
         }
 
-        private void OnEnable()
+        protected void PushToPanelStack()
         {
+            if (panelStack.Contains(this)) panelStack.Remove(this);
             panelStack.Add(this);
+
         }
 
-        private void OnDisable()
+        protected void PopFromPanelStack()
+        {
+            panelStack.Remove(this);
+        }
+
+        protected virtual void OnEnable()
+        {
+            PushToPanelStack();
+            RefreshAfterOneFrame();
+        }
+
+        protected virtual void OnDisable()
         {
             StopAllCoroutines();
             if (selectPreviousOnDisable && InputDeviceManager.autoFocus && UnityEngine.EventSystems.EventSystem.current != null && m_previousSelected != null && !selectables.Contains(m_previousSelected))
             {
                 UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(m_previousSelected);
             }
-            panelStack.Remove(this);
+            PopFromPanelStack();
         }
 
         public virtual void Open()
@@ -156,10 +177,15 @@ namespace PixelCrushers
             gameObject.SetActive(true);
             onOpen.Invoke();
             animatorMonitor.SetTrigger(showAnimationTrigger, OnVisible, false);
+
+            // With quick panel changes, panel may not reach OnEnable/OnDisable before being reused.
+            // Update panelStack here also to handle this case:
+            PushToPanelStack();
         }
 
         public virtual void Close()
         {
+            PopFromPanelStack();
             CancelInvoke();
             if (panelState == PanelState.Closed || panelState == PanelState.Closing) return;
             panelState = PanelState.Closing;
@@ -183,7 +209,7 @@ namespace PixelCrushers
             if (isOpen) Close(); else Open();
         }
 
-        private void OnVisible()
+        protected virtual void OnVisible()
         {
             panelState = PanelState.Open;
             RefreshSelectablesList();
@@ -197,13 +223,13 @@ namespace PixelCrushers
             }
         }
 
-        private void OnHidden()
+        protected virtual void OnHidden()
         {
             panelState = PanelState.Closed;
             gameObject.SetActive(false);
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             if (!(isOpen && topPanel == this)) return;
             if (InputDeviceManager.isBackButtonDown)
@@ -212,6 +238,7 @@ namespace PixelCrushers
             }
             else
             {
+                m_lastSelected = (UnityEngine.EventSystems.EventSystem.current != null) ? UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject : null;
                 if (Time.realtimeSinceStartup >= m_timeNextCheck && focusCheckFrequency > 0 && topPanel == this && InputDeviceManager.autoFocus)
                 {
                     m_timeNextCheck = Time.realtimeSinceStartup + focusCheckFrequency;
@@ -227,15 +254,24 @@ namespace PixelCrushers
 
         public void CheckFocus()
         {
+            if (!monitorSelection) return;
             if (!InputDeviceManager.autoFocus) return;
             if (UnityEngine.EventSystems.EventSystem.current == null) return;
             if (topPanel != this) return;
             var currentSelected = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
             if (currentSelected == null || !selectables.Contains(currentSelected))
             {
-                var firstSelectable = (firstSelected != null) ? firstSelected.GetComponent<UnityEngine.UI.Selectable>() : null;
-                var firstInteractive = firstSelectable != null && firstSelectable.IsActive() && firstSelectable.IsInteractable();
-                var selectableToFocus = firstInteractive ? firstSelected : GetFirstInteractableButton();
+                GameObject selectableToFocus = null;
+                if (m_lastSelected != null && selectables.Contains(currentSelected))
+                {
+                    selectableToFocus = m_lastSelected;
+                }
+                else
+                {
+                    var firstSelectable = (firstSelected != null) ? firstSelected.GetComponent<UnityEngine.UI.Selectable>() : null;
+                    var isFirstInteractive = firstSelectable != null && firstSelectable.IsActive() && firstSelectable.IsInteractable();
+                    selectableToFocus = isFirstInteractive ? firstSelected : GetFirstInteractableButton();
+                }
                 if (selectableToFocus != null)
                 {
                     UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(selectableToFocus);
@@ -243,7 +279,7 @@ namespace PixelCrushers
             }
         }
 
-        private GameObject GetFirstInteractableButton()
+        protected GameObject GetFirstInteractableButton()
         {
             foreach (var selectable in GetComponentsInChildren<UnityEngine.UI.Selectable>())
             {

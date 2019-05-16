@@ -1,4 +1,4 @@
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -56,6 +56,10 @@ namespace PixelCrushers.DialogueSystem
                 if (menuPanelNumberProperty.enumValueIndex == (int)MenuPanelNumber.Custom)
                 {
                     EditorGUILayout.PropertyField(standardUISettingsProperty.FindPropertyRelative("customMenuPanel"), true);
+                }
+                if (menuPanelNumberProperty.enumValueIndex != (int)MenuPanelNumber.Default)
+                {
+                    EditorGUILayout.PropertyField(standardUISettingsProperty.FindPropertyRelative("useMenuPanelFor"), true);
                 }
                 EditorGUILayout.PropertyField(standardUISettingsProperty.FindPropertyRelative("portraitAnimatorController"));
                 var setSubtitleColorProperty = standardUISettingsProperty.FindPropertyRelative("setSubtitleColor");

@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 
@@ -67,6 +67,14 @@ namespace PixelCrushers
             {
                 SaveSystem.RestartGame(defaultStartingSceneName);
             }
+        }
+
+        /// <summary>
+        /// Deletes the saved game in the specified slot.
+        /// </summary>
+        public void DeleteSavedGameInSlot(int slotNumber)
+        {
+            SaveSystem.DeleteSavedGameInSlot(slotNumber);
         }
 
         /// <summary>

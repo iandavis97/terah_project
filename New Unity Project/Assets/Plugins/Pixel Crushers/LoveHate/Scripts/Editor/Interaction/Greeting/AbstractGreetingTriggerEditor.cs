@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 // No custom editor is needed for AbstractGreetingTrigger since the
 // animation list was moved to  AbstractGreetingAnimationTrigger.

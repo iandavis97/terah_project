@@ -54,9 +54,11 @@ namespace ORKFramework.Events.Steps
 		[ORKEditorInfo(separator=true, labelText="Variable Key")]
 		public StringValue key = new StringValue();
 
-		
+        // variable key
+        [ORKEditorInfo(separator = true, labelText = "Debug")]
+        public bool debug;
 
-		public GetTemperamentStep()
+        public GetTemperamentStep()
 		{
 		}
 		
@@ -65,11 +67,20 @@ namespace ORKFramework.Events.Steps
 			var factionMember = OrkEventTools.GetEventObjectComponentInChildren<FactionMember>(actorObject, baseEvent);
 			if (factionMember == null)
 			{
-				Debug.LogWarning("Love/Hate: GetTemperament - Can't find faction member");
+				Debug.LogWarning("Love/Hate: GetTemperament - Can't find faction member on " + actorObject.GetInfoText());
 			}
 			else
 			{
 				var value = factionMember.pad.GetTemperament();
+                if (debug)
+                {
+                    var variableInfo = origin.ToString();
+                    if (origin == VariableOrigin.Global || origin == VariableOrigin.Local)
+                    {
+                        variableInfo += " " + key.GetValue();
+                    }
+                    Debug.Log("Love/Hate: GetTemperament - setting variable " + variableInfo + " to " + value + " (Temperament on " + factionMember + ")");
+                }
 				OrkEventTools.SetVariableValue(baseEvent, value, origin, useObject, variableObject, objectID, key);
 			}
 			baseEvent.StepFinished(next);

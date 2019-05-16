@@ -123,7 +123,7 @@ namespace Invector.vCharacterController
             }
         }
 
-        public void UpdateHeadTrack()
+        public virtual void UpdateHeadTrack()
         {
             if (animator == null) return;
 
@@ -253,7 +253,7 @@ namespace Invector.vCharacterController
         /// Set vLookTarget
         /// </summary>
         /// <param name="target"></param>
-        public void SetLookTarget(vLookTarget target, bool priority = false)
+        public virtual void SetLookTarget(vLookTarget target, bool priority = false)
         {
             if (!targetsInArea.Contains(target)) targetsInArea.Add(target);
             if (priority)
@@ -264,7 +264,7 @@ namespace Invector.vCharacterController
         /// Set Simple target
         /// </summary>
         /// <param name="target"></param>
-        public void SetLookTarget(Transform target)
+        public virtual void SetLookTarget(Transform target)
         {
             simpleTarget = target;
         }
@@ -274,19 +274,19 @@ namespace Invector.vCharacterController
         /// </summary>
         /// <param name="point">look point</param>
         /// <param name="time">time to stay looking</param>
-        public void SetTemporaryLookPoint(Vector3 point, float time = 1f)
+        public virtual void SetTemporaryLookPoint(Vector3 point, float time = 1f)
         {
             temporaryLookPoint = point;
             temporaryLookTime = time;
         }
 
-        public void RemoveLookTarget(vLookTarget target)
+        public virtual void RemoveLookTarget(vLookTarget target)
         {
             if (targetsInArea.Contains(target)) targetsInArea.Remove(target);
             if (currentLookTarget == target) currentLookTarget = null;
         }
 
-        public void RemoveLookTarget(Transform target)
+        public virtual void RemoveLookTarget(Transform target)
         {
             if (simpleTarget == target) simpleTarget = null;
         }
@@ -356,7 +356,7 @@ namespace Invector.vCharacterController
             }
         }
 
-        public void OnDetect(Collider other)
+        public virtual void OnDetect(Collider other)
         {
             if (tagsToDetect.Contains(other.gameObject.tag) && other.GetComponent<vLookTarget>() != null)
             {
@@ -371,7 +371,7 @@ namespace Invector.vCharacterController
             }
         }
 
-        public void OnLost(Collider other)
+        public virtual void OnLost(Collider other)
         {
             if (tagsToDetect.Contains(other.gameObject.tag) && other.GetComponentInParent<vLookTarget>() != null)
             {
@@ -388,7 +388,7 @@ namespace Invector.vCharacterController
             }
         }
 
-        public bool IgnoreHeadTrack()
+        public virtual bool IgnoreHeadTrack()
         {
             for (int index = 0; index < animator.layerCount; index++)
             {

@@ -49,7 +49,7 @@ namespace Invector.vCharacterController.TopDownShooter
             _rigidbody.velocity = Vector3.Lerp(_rigidbody.velocity, v, 20f * Time.deltaTime);
         }
 
-        public override void StrafeMovement()
+        protected override void StrafeMovement()
         {
             TopDownMovement();
         }

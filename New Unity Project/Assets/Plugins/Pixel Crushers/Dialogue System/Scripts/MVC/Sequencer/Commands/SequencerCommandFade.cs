@@ -1,4 +1,4 @@
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 
@@ -35,9 +35,9 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
         {
             // Get the values of the parameters:
             direction = GetParameter(0);
-            duration = GetParameterAsFloat(1, 0);
+            duration = GetParameterAsFloat(1, 1);
             color = Tools.WebColor(GetParameter(2, "#000000"));
-            if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: Fade({1}, {2}, {3})", new System.Object[] { DialogueDebug.Prefix, direction, duration, color }));
+            if (DialogueDebug.logInfo) Debug.Log(string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}: Sequencer: Fade({1}, {2}, {3})", new System.Object[] { DialogueDebug.Prefix, direction, duration, color }));
 
             if (duration > SmoothMoveCutoff)
             {
@@ -68,14 +68,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                 fadeIn = string.Equals(direction, "in", System.StringComparison.OrdinalIgnoreCase);
                 stay = string.Equals(direction, "stay", System.StringComparison.OrdinalIgnoreCase);
 
-                if (fadeIn)
-                {
-                    faderImage.color = new Color(color.r, color.g, color.b, 1);
-                }
-                else
-                {
-                    faderImage.color = new Color(color.r, color.g, color.b, 0);
-                }
+                faderImage.color = new Color(color.r, color.g, color.b, fadeIn ? 1 : 0);
             }
             else
             {
@@ -100,8 +93,15 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
 
         public void OnDestroy()
         {
-            if (faderCanvas != null) faderCanvas.gameObject.SetActive(stay);
-            if (faderImage != null) faderImage.gameObject.SetActive(stay);
+            if (faderCanvas != null)
+            {
+                faderCanvas.gameObject.SetActive(stay);
+            }
+            if (faderImage != null)
+            {
+                faderImage.gameObject.SetActive(stay);
+                faderImage.color = new Color(color.r, color.g, color.b, fadeIn ? 1 : 0);
+            }
         }
 
     }
