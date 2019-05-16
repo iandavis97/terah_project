@@ -172,6 +172,11 @@ namespace Invector.vCharacterController
 
         #region Crouch Methods
 
+        public virtual void UseAutoCrouch(bool value)
+        {
+            autoCrouch = value;
+        }
+
         protected virtual void AutoCrouch()
         {
             if (autoCrouch)

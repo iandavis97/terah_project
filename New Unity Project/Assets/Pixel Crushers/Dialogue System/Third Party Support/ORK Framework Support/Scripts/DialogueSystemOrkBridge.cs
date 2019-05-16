@@ -18,6 +18,7 @@ namespace PixelCrushers.DialogueSystem.ORKFrameworkSupport
 
         private bool started = false;
         private bool registeredSaveData = false;
+        private static bool s_registeredLua = false;
 
         #region Initialization
 
@@ -36,7 +37,7 @@ namespace PixelCrushers.DialogueSystem.ORKFrameworkSupport
         public virtual void OnDisable()
         {
             UnregisterSaveData();
-            UnregisterLuaFunctions();
+            //--- No need to unregister: UnregisterLuaFunctions();
         }
 
         public virtual void OnConversationStart(Transform actor)
@@ -67,6 +68,9 @@ namespace PixelCrushers.DialogueSystem.ORKFrameworkSupport
 
         protected virtual void RegisterLuaFunctions()
         {
+            if (s_registeredLua) return;
+            s_registeredLua = true;
+
             // Variables:
             Lua.RegisterFunction("ORKGetBool", null, SymbolExtensions.GetMethodInfo(() => ORKGetBool(string.Empty)));
             Lua.RegisterFunction("ORKGetFloat", null, SymbolExtensions.GetMethodInfo(() => ORKGetFloat(string.Empty)));
@@ -189,7 +193,7 @@ namespace PixelCrushers.DialogueSystem.ORKFrameworkSupport
             int intValue = (int)value;
             var statusValue = GetStatusValue(combatantName, statusValueName);
             if (statusValue == null) return;
-            statusValue.SetValue(intValue, false, true, true, true, true, true);
+            statusValue.SetValue(intValue, false, true, true, true, null);
         }
 
         #endregion

@@ -1,10 +1,10 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
-using UnityEngine;
-using UnityEditor;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEditor;
+using UnityEngine;
 
 namespace PixelCrushers.DialogueSystem
 {
@@ -19,7 +19,14 @@ namespace PixelCrushers.DialogueSystem
         private enum ValueSetMode
         {
             To,
-            Add
+            Add,
+            Subtract
+        }
+
+        private enum NetSetMode
+        {
+            Set,
+            NetSet
         }
 
         private class ScriptItem
@@ -41,11 +48,12 @@ namespace PixelCrushers.DialogueSystem
             public BooleanType booleanValue = BooleanType.True;
             public float floatValue = 0;
             public ValueSetMode valueSetMode = ValueSetMode.To;
+            public NetSetMode netSetMode = NetSetMode.Set;
+            public string[] scriptQuestEntryNames = new string[0];
         }
 
         private bool isOpen = false;
         private List<ScriptItem> scriptItems = new List<ScriptItem>();
-        private string[] scriptQuestEntryNames = new string[0];
         private string savedLuaCode = string.Empty;
         private bool append = true;
 
@@ -155,12 +163,24 @@ namespace PixelCrushers.DialogueSystem
         {
             EditorGUILayout.BeginHorizontal();
 
+#if USE_UNET
+            if (item.resourceType == ScriptWizardResourceType.Quest || item.resourceType == ScriptWizardResourceType.QuestEntry || item.resourceType == ScriptWizardResourceType.Variable)
+            {
+                item.netSetMode = (NetSetMode)EditorGUILayout.EnumPopup(item.netSetMode, GUILayout.Width(36));
+            }
+            else
+            {
+                item.netSetMode = NetSetMode.Set;
+                EditorGUILayout.LabelField("Set", GUILayout.Width(32));
+            }
+#else
             EditorGUILayout.LabelField("Set", GUILayout.Width(32));
+#endif
             ScriptWizardResourceType newResourceType = (ScriptWizardResourceType)EditorGUILayout.EnumPopup(item.resourceType, GUILayout.Width(96));
             if (newResourceType != item.resourceType)
             {
                 item.resourceType = newResourceType;
-                scriptQuestEntryNames = new string[0];
+                item.scriptQuestEntryNames = new string[0];
             }
 
             if (item.resourceType == ScriptWizardResourceType.Quest)
@@ -181,13 +201,13 @@ namespace PixelCrushers.DialogueSystem
                 if (newQuestNamesIndex != item.questNamesIndex)
                 {
                     item.questNamesIndex = newQuestNamesIndex;
-                    scriptQuestEntryNames = new string[0];
+                    item.scriptQuestEntryNames = new string[0];
                 }
-                if ((scriptQuestEntryNames.Length == 0) && (item.questNamesIndex < complexQuestNames.Length))
+                if ((item.scriptQuestEntryNames.Length == 0) && (item.questNamesIndex < complexQuestNames.Length))
                 {
-                    scriptQuestEntryNames = GetQuestEntryNames(complexQuestNames[item.questNamesIndex]);
+                    item.scriptQuestEntryNames = GetQuestEntryNames(complexQuestNames[item.questNamesIndex]);
                 }
-                item.questEntryIndex = EditorGUILayout.Popup(item.questEntryIndex, scriptQuestEntryNames);
+                item.questEntryIndex = EditorGUILayout.Popup(item.questEntryIndex, item.scriptQuestEntryNames);
                 EditorGUILayout.LabelField("to", GUILayout.Width(22));
                 //---Was: item.questState = (QuestState) EditorGUILayout.EnumPopup(item.questState, GUILayout.Width(96));
                 item.questState = QuestStateDrawer.LayoutQuestStatePopup(item.questState, 96);
@@ -347,9 +367,7 @@ namespace PixelCrushers.DialogueSystem
 
                         // Quest:
                         string questName = GetWizardQuestName(questNames, item.questNamesIndex);
-                        //sb.AppendFormat("Quest[\"{0}\"].State = \"{1}\"",
-                        //                DialogueLua.StringToTableIndex(questName),
-                        //                QuestLog.StateToString(item.questState));
+                        if (item.netSetMode == NetSetMode.NetSet) sb.Append("Net");
                         sb.AppendFormat("SetQuestState(\"{0}\", \"{1}\")",
                                         questName,
                                         QuestLog.StateToString(item.questState));
@@ -360,10 +378,7 @@ namespace PixelCrushers.DialogueSystem
 
                         // Quest Entry:
                         string questName = GetWizardQuestName(complexQuestNames, item.questNamesIndex);
-                        //sb.AppendFormat("Quest[\"{0}\"].Entry_{1}_State = \"{2}\"",
-                        //                DialogueLua.StringToTableIndex(questName),
-                        //                item.questEntryIndex + 1,
-                        //                QuestLog.StateToString(item.questState));
+                        if (item.netSetMode == NetSetMode.NetSet) sb.Append("Net");
                         sb.AppendFormat("SetQuestEntryState(\"{0}\", {1}, \"{2}\")",
                                         questName,
                                         item.questEntryIndex + 1,
@@ -374,32 +389,80 @@ namespace PixelCrushers.DialogueSystem
                     {
 
                         // Variable:
-                        string variableName = variableNames[item.variableNamesIndex];
+                        string variableName = (0 <= item.variableNamesIndex && item.variableNamesIndex < variableNames.Length) ? variableNames[item.variableNamesIndex] : "Alert";
                         switch (GetWizardVariableType(item.variableNamesIndex))
                         {
                             case FieldType.Boolean:
-                                sb.AppendFormat("Variable[\"{0}\"] = {1}",
-                                                DialogueLua.StringToTableIndex(variableName),
-                                                (item.booleanValue == BooleanType.True) ? "true" : "false");
-                                break;
-                            case FieldType.Number:
-                                if (item.valueSetMode == ValueSetMode.To)
+                                if (item.netSetMode == NetSetMode.NetSet)
                                 {
-                                    sb.AppendFormat("Variable[\"{0}\"] = {1}",
+                                    sb.AppendFormat("NetSetBool(\"{0}\", {1})",
                                                     DialogueLua.StringToTableIndex(variableName),
-                                                    item.floatValue);
+                                                    (item.booleanValue == BooleanType.True) ? "true" : "false");
                                 }
                                 else
                                 {
-                                    sb.AppendFormat("Variable[\"{0}\"] = Variable[\"{0}\"] + {1}",
+                                    sb.AppendFormat("Variable[\"{0}\"] = {1}",
                                                     DialogueLua.StringToTableIndex(variableName),
-                                                    item.floatValue);
+                                                    (item.booleanValue == BooleanType.True) ? "true" : "false");
+                                }
+                                break;
+                            case FieldType.Number:
+                                if (item.netSetMode == NetSetMode.NetSet)
+                                {
+                                    switch (item.valueSetMode)
+                                    {
+                                        case ValueSetMode.To:
+                                            sb.AppendFormat("NetSetNumber(\"{0}\", {1})",
+                                                            DialogueLua.StringToTableIndex(variableName),
+                                                            item.floatValue);
+                                            break;
+                                        case ValueSetMode.Add:
+                                            sb.AppendFormat("NetSetNumber(\"{0}\", Variable[\"{0}\"] + {1})",
+                                                            DialogueLua.StringToTableIndex(variableName),
+                                                            item.floatValue);
+                                            break;
+                                        case ValueSetMode.Subtract:
+                                            sb.AppendFormat("NetSetNumber(\"{0}\", Variable[\"{0}\"] - {1})",
+                                                            DialogueLua.StringToTableIndex(variableName),
+                                                            item.floatValue);
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    switch (item.valueSetMode)
+                                    {
+                                        case ValueSetMode.To:
+                                            sb.AppendFormat("Variable[\"{0}\"] = {1}",
+                                                            DialogueLua.StringToTableIndex(variableName),
+                                                            item.floatValue);
+                                            break;
+                                        case ValueSetMode.Add:
+                                            sb.AppendFormat("Variable[\"{0}\"] = Variable[\"{0}\"] + {1}",
+                                                            DialogueLua.StringToTableIndex(variableName),
+                                                            item.floatValue);
+                                            break;
+                                        case ValueSetMode.Subtract:
+                                            sb.AppendFormat("Variable[\"{0}\"] = Variable[\"{0}\"] - {1}",
+                                                            DialogueLua.StringToTableIndex(variableName),
+                                                            item.floatValue);
+                                            break;
+                                    }
                                 }
                                 break;
                             default:
-                                sb.AppendFormat("Variable[\"{0}\"] = \"{1}\"",
-                                                DialogueLua.StringToTableIndex(variableName),
-                                                item.stringValue);
+                                if (item.netSetMode == NetSetMode.NetSet)
+                                {
+                                    sb.AppendFormat("NetSetString(\"{0}\", \"{1}\")",
+                                                    DialogueLua.StringToTableIndex(variableName),
+                                                    item.stringValue);
+                                }
+                                else
+                                {
+                                    sb.AppendFormat("Variable[\"{0}\"] = \"{1}\"",
+                                                    DialogueLua.StringToTableIndex(variableName),
+                                                    item.stringValue);
+                                }
                                 break;
                         }
 
@@ -484,21 +547,29 @@ namespace PixelCrushers.DialogueSystem
                                     (item.booleanValue == BooleanType.True) ? "true" : "false");
                     break;
                 case FieldType.Number:
-                    if (item.valueSetMode == ValueSetMode.To)
+                    switch (item.valueSetMode)
                     {
-                        sb.AppendFormat("{0}[\"{1}\"].{2} = {3}",
-                                        tableName,
-                                        DialogueLua.StringToTableIndex(elementName),
-                                        DialogueLua.StringToTableIndex(fieldName),
-                                        item.floatValue);
-                    }
-                    else
-                    {
-                        sb.AppendFormat("{0}[\"{1}\"].{2} = {0}[\"{1}\"].{2} + {3}",
-                                        tableName,
-                                        DialogueLua.StringToTableIndex(elementName),
-                                        DialogueLua.StringToTableIndex(fieldName),
-                                        item.floatValue);
+                        case ValueSetMode.To:
+                            sb.AppendFormat("{0}[\"{1}\"].{2} = {3}",
+                                            tableName,
+                                            DialogueLua.StringToTableIndex(elementName),
+                                            DialogueLua.StringToTableIndex(fieldName),
+                                            item.floatValue);
+                            break;
+                        case ValueSetMode.Add:
+                            sb.AppendFormat("{0}[\"{1}\"].{2} = {0}[\"{1}\"].{2} + {3}",
+                                            tableName,
+                                            DialogueLua.StringToTableIndex(elementName),
+                                            DialogueLua.StringToTableIndex(fieldName),
+                                            item.floatValue);
+                            break;
+                        case ValueSetMode.Subtract:
+                            sb.AppendFormat("{0}[\"{1}\"].{2} = {0}[\"{1}\"].{2} - {3}",
+                                            tableName,
+                                            DialogueLua.StringToTableIndex(elementName),
+                                            DialogueLua.StringToTableIndex(fieldName),
+                                            item.floatValue);
+                            break;
                     }
                     break;
                 default:
@@ -617,7 +688,7 @@ namespace PixelCrushers.DialogueSystem
             if (newResourceType != item.resourceType)
             {
                 item.resourceType = newResourceType;
-                scriptQuestEntryNames = new string[0];
+                item.scriptQuestEntryNames = new string[0];
             }
 
             if (item.resourceType == ScriptWizardResourceType.Quest)
@@ -649,16 +720,16 @@ namespace PixelCrushers.DialogueSystem
                 if (newQuestNamesIndex != item.questNamesIndex)
                 {
                     item.questNamesIndex = newQuestNamesIndex;
-                    scriptQuestEntryNames = new string[0];
+                    item.scriptQuestEntryNames = new string[0];
                 }
-                if ((scriptQuestEntryNames.Length == 0) && (item.questNamesIndex < complexQuestNames.Length))
+                if ((item.scriptQuestEntryNames.Length == 0) && (item.questNamesIndex < complexQuestNames.Length))
                 {
-                    scriptQuestEntryNames = GetQuestEntryNames(complexQuestNames[item.questNamesIndex]);
+                    item.scriptQuestEntryNames = GetQuestEntryNames(complexQuestNames[item.questNamesIndex]);
                 }
 
                 rect = new Rect(x, y, 96, EditorGUIUtility.singleLineHeight);
                 x += rect.width + 2;
-                item.questEntryIndex = EditorGUI.Popup(rect, item.questEntryIndex, scriptQuestEntryNames);
+                item.questEntryIndex = EditorGUI.Popup(rect, item.questEntryIndex, item.scriptQuestEntryNames);
 
                 rect = new Rect(x, y, 22, rect.height);
                 x += rect.width + 2;

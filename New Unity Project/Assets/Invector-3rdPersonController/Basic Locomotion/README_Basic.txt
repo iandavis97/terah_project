@@ -23,9 +23,15 @@ PATREON: https://www.patreon.com/invector
 
 Invector Team - 2018
 
+Basic Locomotion v2.3.3 HOTFIX - 12/09/2018
+
+- Project optmization (less/optimized textures)
+- Add lots and lots of public virtual methods to expand user customization by code without modifying the core scripts
+
+-----------------------------------------------------------------------------------------------------
+
 Basic Locomotion v2.3.2 HOTFIX/AI TEMPLATE PREPARATION - 13/07/2018
 
-- Add menu to import project settings manually (2018.x)
 - Add optional bool to use or not .instance with the controller
 - Add SmoothDamp for States to the ThirdPersonCamera
 - Add OnStartAction and OnEndAction Events on vGenericAction script

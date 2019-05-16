@@ -1,5 +1,5 @@
 ﻿#if USE_ARTICY
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Text;
@@ -7,6 +7,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
+using System;
 
 namespace PixelCrushers.DialogueSystem.Articy.Articy_3_1
 {
@@ -30,8 +31,16 @@ namespace PixelCrushers.DialogueSystem.Articy.Articy_3_1
 
         public static ExportType LoadExportFromXmlFile(string xmlFilename, Encoding encoding)
         {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ExportType));
-            return xmlSerializer.Deserialize(new StreamReader(xmlFilename, encoding)) as ExportType;
+            try
+            {
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(ExportType));
+                return xmlSerializer.Deserialize(new StreamReader(xmlFilename, encoding)) as ExportType;
+            }
+            catch (InvalidOperationException e)
+            {
+                Debug.LogError("Error reading articy XML. Is there an inconsistency in your articy project such as a misnamed variable in a journey? Exception: " + e.Message);
+                return null;
+            }
         }
 
     }

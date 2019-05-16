@@ -1,0 +1,195 @@
+fileFormatVersion: 2
+guid: a76eaac081891a94bac5ded2dee0ae12
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: ConcretePainted/ConcretePainted
+    400000: ConcretePainted/ConcretePainted/Transform
+    2100000: mat.Concrete Painted
+    2100002: mat.Concrete
+    2100004: mat.Paint
+    2300000: ConcretePainted/ConcretePainted/MeshRenderer
+    2800000: Concrete_Base Color
+    2800002: Concrete_Normal
+    2800004: Concrete Painted_Base Color
+    2800006: Concrete Painted_Normal
+    2800008: Concrete Painted_Metallic
+    2800010: Concrete Painted_Height
+    2800012: Paint_Base Color
+    2800014: Paint_Normal
+    2800016: Paint_Height
+    3300000: ConcretePainted/ConcretePainted/MeshFilter
+    11400000: graph1
+    11400002: graph2
+    11400004: sbsar
+    11400006: graph0
+    13500000: ConcretePainted/ConcretePainted/SphereCollider
+    100100000: ConcretePainted
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 232528478, guid: 43a8bbf65be290d44ba52b94476242b9, type: 3}
+  mGraphInstanceData:
+  - graphLabel: Concrete
+    graphDescIndex: 0
+    generateAllOutputs: 0
+    generateMipMaps: 1
+    preset: " <sbspreset pkgurl=\"pkg://Concrete\" label=\"\" >\n  <presetinput identifier=\"C_Diffuse_Color_01Output_Color\"
+      uid=\"556792878\" type=\"3\" value=\"0.603774,0.512797,0.384478,1\" />\n  <presetinput
+      identifier=\"C_Diffuse_Color_02Output_Color\" uid=\"556792963\" type=\"3\" value=\"0.745283,0.508356,0.221476,1\"
+      />\n </sbspreset>\n"
+    shaderName: Standard
+    outputNames: Base Color,Normal
+    texturePackingList:
+    - outputName: Base Color
+      alphaSource: Base Color
+    - outputName: Normal
+      alphaSource: Normal
+    - outputName: Roughness
+      alphaSource: Roughness
+    - outputName: Height
+      alphaSource: Height
+    colorSpaceList:
+    - outputName: Base Color
+      bLinear: 0
+    - outputName: Normal
+      bLinear: 1
+    - outputName: Roughness
+      bLinear: 1
+    - outputName: Height
+      bLinear: 1
+    inputTextureMap: []
+    targetSettingList:
+    - label: Default
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    - label: Standalone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    - label: iPhone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    material: {fileID: 2100002, guid: a76eaac081891a94bac5ded2dee0ae12, type: 3}
+  - graphLabel: Concrete Painted
+    graphDescIndex: 1
+    generateAllOutputs: 0
+    generateMipMaps: 1
+    preset: " <sbspreset pkgurl=\"pkg://ConcretePainted\" label=\"\" >\n </sbspreset>\n"
+    shaderName: Standard
+    outputNames: Base Color,Normal,Metallic,Height
+    texturePackingList:
+    - outputName: Base Color
+      alphaSource: Base Color
+    - outputName: Normal
+      alphaSource: Normal
+    - outputName: Roughness
+      alphaSource: Roughness
+    - outputName: Metallic
+      alphaSource: Smoothness
+    - outputName: Height
+      alphaSource: Height
+    colorSpaceList:
+    - outputName: Base Color
+      bLinear: 0
+    - outputName: Normal
+      bLinear: 1
+    - outputName: Roughness
+      bLinear: 1
+    - outputName: Metallic
+      bLinear: 1
+    - outputName: Height
+      bLinear: 1
+    inputTextureMap: []
+    targetSettingList:
+    - label: Default
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    - label: Standalone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    - label: iPhone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    material: {fileID: 2100000, guid: a76eaac081891a94bac5ded2dee0ae12, type: 3}
+  - graphLabel: Paint
+    graphDescIndex: 2
+    generateAllOutputs: 0
+    generateMipMaps: 1
+    preset: " <sbspreset pkgurl=\"pkg://Paint\" label=\"\" >\n </sbspreset>\n"
+    shaderName: Standard
+    outputNames: Base Color,Normal,Height
+    texturePackingList:
+    - outputName: Base Color
+      alphaSource: Base Color
+    - outputName: Normal
+      alphaSource: Normal
+    - outputName: Roughness
+      alphaSource: Roughness
+    - outputName: Height
+      alphaSource: Height
+    colorSpaceList:
+    - outputName: Base Color
+      bLinear: 0
+    - outputName: Normal
+      bLinear: 1
+    - outputName: Roughness
+      bLinear: 1
+    - outputName: Height
+      bLinear: 1
+    inputTextureMap: []
+    targetSettingList:
+    - label: Default
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    - label: Standalone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    - label: iPhone
+      bOverride: 0
+      bLockRatio: 1
+      bHighQuality: 0
+      textureWidth: 256
+      textureHeight: 256
+      textureFormat: 0
+      loadBehavior: 0
+    material: {fileID: 2100004, guid: a76eaac081891a94bac5ded2dee0ae12, type: 3}

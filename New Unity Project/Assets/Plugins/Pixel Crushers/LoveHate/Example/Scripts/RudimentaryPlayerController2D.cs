@@ -47,7 +47,9 @@ namespace PixelCrushers.LoveHate.Example
 			moveToPosition = new Vector3(x, y, transform.position.z);
 		}
 
-		protected virtual void OnCollisionEnter2D(Collision2D coll)
+#if USE_PHYSICS2D || !UNITY_2018_1_OR_NEWER
+
+        protected virtual void OnCollisionEnter2D(Collision2D coll)
 		{
 			CheckTouchNPC(coll.gameObject.GetComponent<NPC>());
 		}
@@ -57,7 +59,9 @@ namespace PixelCrushers.LoveHate.Example
 			CheckUntouchNPC(coll.gameObject.GetComponent<NPC>());
 		}
 
-		protected void CheckTouchNPC(NPC npc)
+#endif
+
+        protected void CheckTouchNPC(NPC npc)
 		{
 			if (npc == null || currentTarget != null) return;
 			currentTarget = npc;

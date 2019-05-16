@@ -1,5 +1,5 @@
 #if USE_NLUA
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 // This version of DialogueLua uses NLua.
 
@@ -18,6 +18,12 @@ namespace PixelCrushers.DialogueSystem
     /// </summary>
     public static class DialogueLua
     {
+
+        // SimStatus values:
+        public const string SimStatus = "SimStatus";
+        public const string Untouched = "Untouched";
+        public const string WasDisplayed = "WasDisplayed";
+        public const string WasOffered = "WasOffered";
 
         /// <summary>
         /// Gets or sets a value indicating whether to record SimStatus in the Lua environment.
@@ -121,6 +127,35 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
+        /// Returns the SimStatus of a dialogue entry, or a blank string if Include Sim Status isn't ticked.
+        /// </summary>
+        public static string GetSimStatus(DialogueEntry dialogueEntry)
+        {
+            return (dialogueEntry != null) ? GetSimStatus(dialogueEntry.conversationID, dialogueEntry.id) : string.Empty;
+        }
+
+        /// <summary>
+        /// Returns the SimStatus of a dialogue entry, or a blank string if Include Sim Status isn't ticked.
+        /// </summary>
+        public static string GetSimStatus(int conversationID, int entryID)
+        {
+            if (includeSimStatus)
+            {
+                bool luaExceptionOccurred = false;
+                try
+                {
+                    return Lua.Run(string.Format("return Conversation[{0}].Dialog[{1}].SimStatus", new System.Object[] { conversationID, entryID }), false, true).asString;
+                }
+                catch (System.Exception)
+                {
+                    luaExceptionOccurred = true;
+                }
+                if (luaExceptionOccurred && DialogueDebug.logErrors) Debug.LogError(string.Format("{0}: The Lua exception above indicates a dialogue database inconsistency. Is an invalid conversation ID recorded in a dialogue entry? Is the database loaded?", new System.Object[] { DialogueDebug.Prefix }));
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
         /// Marks a dialogue entry as untouched, by setting the Lua variable 
         /// <c>Conversation[#].Dialog[#].SimStatus="Untouched"</c>, where <c>#</c> is the 
         /// conversation and/or dialogue entry ID. The ConversationModel marks entries 
@@ -131,7 +166,7 @@ namespace PixelCrushers.DialogueSystem
         /// </param>
         public static void MarkDialogueEntryUntouched(DialogueEntry dialogueEntry)
         {
-            MarkDialogueEntry(dialogueEntry, "Untouched");
+            MarkDialogueEntry(dialogueEntry, DialogueLua.Untouched);
         }
 
         /// <summary>
@@ -146,7 +181,7 @@ namespace PixelCrushers.DialogueSystem
         public static void MarkDialogueEntryDisplayed(DialogueEntry dialogueEntry)
         {
             if (!includeSimStatus) return;
-            MarkDialogueEntry(dialogueEntry, "WasDisplayed");
+            MarkDialogueEntry(dialogueEntry, DialogueLua.WasDisplayed);
         }
 
         /// <summary>
@@ -166,9 +201,9 @@ namespace PixelCrushers.DialogueSystem
                 try
                 {
                     string simStatus = Lua.Run(string.Format("return Conversation[{0}].Dialog[{1}].SimStatus", new System.Object[] { dialogueEntry.conversationID, dialogueEntry.id })).AsString;
-                    if (!string.Equals(simStatus, "WasDisplayed"))
+                    if (!string.Equals(simStatus, DialogueLua.WasDisplayed))
                     {
-                        MarkDialogueEntry(dialogueEntry, "WasOffered");
+                        MarkDialogueEntry(dialogueEntry, DialogueLua.WasOffered);
                     }
                 }
                 catch (System.Exception)

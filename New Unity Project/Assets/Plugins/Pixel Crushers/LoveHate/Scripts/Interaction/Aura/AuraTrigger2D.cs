@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -13,11 +13,13 @@ namespace PixelCrushers.LoveHate
     public class AuraTrigger2D : AbstractAuraTrigger
     {
 
+#if USE_PHYSICS2D || !UNITY_2018_1_OR_NEWER
         protected virtual void OnTriggerEnter2D(Collider2D other)
         {
             if (other == null) return;
             HandleOnTriggerEnter(other.gameObject);
         }
+#endif
 
         /// <summary>
         /// For optional UtopiaWorx Zone Controller integration.

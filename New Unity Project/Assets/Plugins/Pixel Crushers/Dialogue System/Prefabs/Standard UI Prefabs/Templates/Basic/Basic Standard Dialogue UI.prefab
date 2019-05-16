@@ -872,7 +872,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
   m_MinWidth: 128
-  m_MinHeight: -1
+  m_MinHeight: 24
   m_PreferredWidth: -1
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
@@ -1527,6 +1527,7 @@ MonoBehaviour:
     QTEIndicators:
     - {fileID: 155762}
     - {fileID: 191022}
+  addEventSystemIfNeeded: 1
 --- !u!114 &11424752
 MonoBehaviour:
   m_ObjectHideFlags: 1

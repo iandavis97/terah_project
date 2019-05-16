@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 
@@ -23,6 +23,10 @@ namespace PixelCrushers
         [Tooltip("Save when changing scenes to be able to restore saved state when returning to scene.")]
         [SerializeField]
         private bool m_saveAcrossSceneChanges = false;
+
+        [Tooltip("When starting, restore this saver's state from current saved game data. Normally the save system restores state when loading games or changing scenes without this checkbox.")]
+        [SerializeField]
+        private bool m_restoreStateOnStart = false;
 
         protected string m_runtimeKey = null;
 
@@ -62,6 +66,16 @@ namespace PixelCrushers
         }
 
         /// <summary>
+        /// Accesses the internal key value. Normally leave this untouched and 
+        /// access the key property instead.
+        /// </summary>
+        public string _internalKeyValue
+        {
+            get { return m_key; }
+            set { m_key = value; }
+        }
+
+        /// <summary>
         /// Save when changing scenes to be able to restore saved state when returning to scene.
         /// </summary>
         public virtual bool saveAcrossSceneChanges
@@ -70,9 +84,21 @@ namespace PixelCrushers
             set { m_saveAcrossSceneChanges = value; }
         }
 
+        public virtual bool restoreStateOnStart
+        {
+            get { return m_restoreStateOnStart; }
+            set { m_restoreStateOnStart = value; }
+        }
+
         public virtual void Awake() { }
 
-        public virtual void Start() { }
+        public virtual void Start()
+        {
+            if (restoreStateOnStart)
+            {
+                ApplyData(SaveSystem.currentSavedGameData.GetData(key));
+            }
+        }
 
         public virtual void Reset() { }
 

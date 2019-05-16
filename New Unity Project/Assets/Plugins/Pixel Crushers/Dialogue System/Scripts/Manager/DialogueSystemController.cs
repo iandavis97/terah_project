@@ -1,4 +1,4 @@
- // Copyright © Pixel Crushers. All rights reserved.
+ // Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections;
@@ -62,7 +62,7 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// If <c>true</c>, Unity will not destroy the game object when loading a new level.
         /// </summary>
-        [Tooltip("Retain this GameObject when changing levels.")]
+        [Tooltip("Retain this GameObject when changing levels. Note: If InputDeviceManager's Singleton checkbox is ticked or GameObject has SaveSystem, GameObject will still be marked Don't Destroy On Load.")]
         public bool dontDestroyOnLoad = true;
 
         /// <summary>
@@ -89,11 +89,33 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Set to higher levels for troubleshooting.")]
         public DialogueDebug.DebugLevel debugLevel = DialogueDebug.DebugLevel.Warning;
 
+        /// <summary>
+        /// Raised when the Dialogue System receives an UpdateTracker message
+        /// to update the quest tracker HUD and quest log window.
+        /// </summary>
         public event System.Action receivedUpdateTracker = delegate { };
 
+        /// <summary>
+        /// Raised when a conversation starts. Parameter is primary actor.
+        /// </summary>
         public event TransformDelegate conversationStarted = delegate { };
 
+        /// <summary>
+        /// Raised when a conversation ends. Parameter is primary actor.
+        /// </summary>
         public event TransformDelegate conversationEnded = delegate { };
+
+        /// <summary>
+        /// Raised when the Dialogue System has completely initialized, including
+        /// loadin the initial dialogue database and registering Lua functions.
+        /// </summary>
+        public event System.Action initializationComplete = delegate { };
+
+        /// <summary>
+        /// True when this Dialogue System Controller is fully initialized.
+        /// </summary>
+        public bool isInitialized { get { return m_isInitialized; } }
+        private bool m_isInitialized = false;
 
         private const string DefaultDialogueUIResourceName = "Default Dialogue UI";
 
@@ -103,6 +125,7 @@ namespace PixelCrushers.DialogueSystem
         private IDialogueUI m_originalDialogueUI = null;
         [HideInInspector] // Prevents accidental serialization if inspector is in Debug mode.
         private DisplaySettings m_originalDisplaySettings = null;
+        private bool m_overrodeDisplaySettings = false; // Inspector Debug mode will deserialize default into m_originalDisplaySettings, so use this bool instead of counting on m_originalDisplaySettings being null.
         private bool m_isOverrideUIPrefab = false;
         private ConversationController m_conversationController = null;
         private IsDialogueEntryValidDelegate m_isDialogueEntryValid = null;
@@ -113,6 +136,7 @@ namespace PixelCrushers.DialogueSystem
         private DialogueDebug.DebugLevel m_lastDebugLevelSet = DialogueDebug.DebugLevel.None;
         private List<ActiveConversationRecord> m_activeConversations = new List<ActiveConversationRecord>();
         private UILocalizationManager m_uiLocalizationManager = null;
+        private bool m_calledRandomizeNextEntry = false;
 
         public static bool applicationIsQuitting = false;
         public static string lastInitialDatabaseName = null;
@@ -251,6 +275,7 @@ namespace PixelCrushers.DialogueSystem
 
         public void OnDestroy()
         {
+            //--- No need to unregister. Static functions: UnregisterLuaFunctions();
             if (dontDestroyOnLoad && allowOnlyOneInstance) applicationIsQuitting = true;
         }
 
@@ -294,6 +319,19 @@ namespace PixelCrushers.DialogueSystem
                 {
                     if (this.transform.parent != null) this.transform.SetParent(null, false);
                     DontDestroyOnLoad(this.gameObject);
+                }
+                else
+                {
+                    var saveSystem = GetComponent<SaveSystem>();
+                    var inputDeviceManager = GetComponent<InputDeviceManager>();
+                    if (saveSystem != null)
+                    {
+                        if (DialogueDebug.logWarnings) Debug.LogWarning("Dialogue System: The Dialogue Manager's Don't Destroy On Load checkbox is UNticked, but the GameObject has a Save System which will mark it Don't Destroy On Load anyway. You may want to tick Don't Destroy On Load or move the Save System to another GameObject.", this);
+                    }
+                    else if (inputDeviceManager != null && inputDeviceManager.singleton)
+                    {
+                        if (DialogueDebug.logWarnings) Debug.LogWarning("Dialogue System: The Dialogue Manager's Don't Destroy On Load checkbox is UNticked, but the GameObject has an Input Device Manager whose Singleton checkbox is ticked, which will mark it Don't Destroy On Load anyway. You may want to tick Don't Destroy On Load or untick the Input Device Manager's Singleton checkbox.", this);
+                    }
                 }
                 allowLuaExceptions = false;
                 warnIfActorAndConversantSame = false;
@@ -372,6 +410,8 @@ namespace PixelCrushers.DialogueSystem
             if (preloadResources) PreloadResources();
             QuestLog.RegisterQuestLogFunctions();
             RegisterLuaFunctions();
+            m_isInitialized = true;
+            initializationComplete();
         }
 
         private void InitializeDisplaySettings()
@@ -640,13 +680,17 @@ namespace PixelCrushers.DialogueSystem
 
                 SetConversationUI(actor, conversant);
 
+                m_calledRandomizeNextEntry = false;
                 var model = new ConversationModel(m_databaseManager.masterDatabase, title, actor, conversant, allowLuaExceptions, isDialogueEntryValid, initialDialogueEntryID);
+                var needToSetRandomizeNextEntryAgain = m_calledRandomizeNextEntry; // Special case when START node leads to group node with RandomizeNextEntry().
+                m_calledRandomizeNextEntry = false;
                 if (!model.hasValidEntry) return;
                 if (model.firstState != null && model.firstState.subtitle != null && model.firstState.subtitle.dialogueEntry != null) lastConversationID = model.firstState.subtitle.dialogueEntry.conversationID;
                 var view = this.gameObject.AddComponent<ConversationView>();
                 view.Initialize(dialogueUI, GetNewSequencer(), displaySettings, OnDialogueEntrySpoken);
                 view.SetPCPortrait(model.GetPCTexture(), model.GetPCName());
                 m_conversationController = new ConversationController(model, view, displaySettings.inputSettings.alwaysForceResponseMenu, OnEndConversation);
+                if (needToSetRandomizeNextEntryAgain) RandomizeNextEntry();
                 var target = (actor != null) ? actor : this.transform;
                 if (actor != this.transform) gameObject.BroadcastMessage(DialogueSystemMessages.OnConversationStart, target, SendMessageOptions.DontRequireReceiver);
 
@@ -886,6 +930,7 @@ namespace PixelCrushers.DialogueSystem
                     m_originalDialogueUI = dialogueUI;
                     m_currentDialogueUI = null;
                 }
+                m_overrodeDisplaySettings = true;
                 m_originalDisplaySettings = displaySettings;
                 displaySettings = overrideDisplaySettings.displaySettings;
                 if (overrideDisplaySettings.displaySettings.dialogueUI == null) overrideDisplaySettings.displaySettings.dialogueUI = m_originalDisplaySettings.dialogueUI;
@@ -894,7 +939,10 @@ namespace PixelCrushers.DialogueSystem
 
         private void RestoreOriginalUI()
         {
-            if (m_originalDisplaySettings != null) displaySettings = m_originalDisplaySettings;
+            if (m_overrodeDisplaySettings && m_originalDisplaySettings != null)
+            {
+                displaySettings = m_originalDisplaySettings;
+            }
             if (m_originalDialogueUI != null)
             {
                 if (m_isOverrideUIPrefab)
@@ -908,6 +956,7 @@ namespace PixelCrushers.DialogueSystem
             m_isOverrideUIPrefab = false;
             m_originalDialogueUI = null;
             m_originalDisplaySettings = null;
+            m_overrodeDisplaySettings = false;
         }
 
         private void OnDialogueEntrySpoken(Subtitle subtitle)
@@ -999,6 +1048,9 @@ namespace PixelCrushers.DialogueSystem
                         break;
                     case ResponseTimeoutAction.ChooseCurrentResponse:
                         m_conversationController.GotoCurrentResponse();
+                        break;
+                    case ResponseTimeoutAction.ChooseLastResponse:
+                        m_conversationController.GotoLastResponse();
                         break;
                 }
             }
@@ -1150,6 +1202,7 @@ namespace PixelCrushers.DialogueSystem
         {
             if (dialogueUI != null && (displaySettings.alertSettings.allowAlertsDuringConversations || !isConversationActive))
             {
+                if (message.Contains("\\n")) message = message.Replace("\\n", "\n");
                 dialogueUI.ShowAlert(GetLocalizedText(message), duration);
             }
         }
@@ -1162,7 +1215,6 @@ namespace PixelCrushers.DialogueSystem
         /// </param>
         public void ShowAlert(string message)
         {
-            if (message.Contains("\\n")) message = message.Replace("\\n", "\n");
             var minSecs = displaySettings.alertSettings.minAlertSeconds;
             if (Mathf.Approximately(0, minSecs)) minSecs = displaySettings.subtitleSettings.minSubtitleSeconds;
             var charsPerSec = displaySettings.alertSettings.alertCharsPerSecond;
@@ -1180,7 +1232,7 @@ namespace PixelCrushers.DialogueSystem
             if (displaySettings.alertSettings.allowAlertsDuringConversations || !isConversationActive)
             {
                 string message = DialogueLua.GetVariable("Alert").asString;
-                if (!string.IsNullOrEmpty(message))
+                if (!string.IsNullOrEmpty(message) && !string.Equals(message, "nil"))
                 {
                     Lua.Run("Variable['Alert'] = ''");
                     ShowAlert(message);
@@ -1554,6 +1606,21 @@ namespace PixelCrushers.DialogueSystem
 
             Lua.RegisterFunction("ShowAlert", null, typeof(DialogueSystemController).GetMethod("LuaShowAlert"));
             Lua.RegisterFunction("HideAlert", null, typeof(DialogueSystemController).GetMethod("LuaHideAlert"));
+            Lua.RegisterFunction("RandomizeNextEntry", this, typeof(DialogueSystemController).GetMethod("RandomizeNextEntry"));
+            Lua.RegisterFunction("UpdateTracker", this, typeof(DialogueSystemController).GetMethod("SendUpdateTracker"));
+        }
+
+        private void UnregisterLuaFunctions()
+        {
+            Lua.UnregisterFunction("ShowAlert");
+            Lua.UnregisterFunction("HideAlert");
+            Lua.UnregisterFunction("RandomizeNextEntry");
+            Lua.UnregisterFunction("UpdateTracker");
+        }
+
+        public void SendUpdateTracker()
+        {
+            BroadcastMessage(DialogueSystemMessages.UpdateTracker, SendMessageOptions.DontRequireReceiver);
         }
 
         public static void LuaShowAlert(string message)
@@ -1564,6 +1631,12 @@ namespace PixelCrushers.DialogueSystem
         public static void LuaHideAlert()
         {
             DialogueManager.HideAlert();
+        }
+
+        public void RandomizeNextEntry()
+        {
+            m_calledRandomizeNextEntry = true;
+            if (conversationController != null) conversationController.randomizeNextEntry = true;
         }
 
         /// <summary>

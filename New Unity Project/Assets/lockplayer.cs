@@ -6,21 +6,19 @@ using ORKFramework.Behaviours;
 using Invector.vCharacterController;
 
 public class lockplayer : MonoBehaviour {
-    public vThirdPersonInput glorinput;
-	// Use this for initialization
+        private vThirdPersonInput m_input = null;	// Use this for initialization
 	void Start () {
-		
-	}
+            m_input = GetComponent<vThirdPersonInput>();	}
 	
 	// Update is called once per frame
 	void Update () {
         if (ORK.Control.InEvent || ORK.Control.InMenu || ORK.Control.Blocked)
         {
-            glorinput.lockInput = true;
+            m_input.lockInput = true;
         }
         else
         {
-            glorinput.lockInput = false;
+            m_input.lockInput = false;
         }  
 	}
 }

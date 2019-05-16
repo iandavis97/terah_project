@@ -1,4 +1,4 @@
-// Copyright © Pixel Crushers. All rights reserved.
+// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 
@@ -57,7 +57,7 @@ namespace PixelCrushers.DialogueSystem
             /// Specifies whether to should show NPC subtitles while presenting the player's follow-up
             /// responses.
             /// </summary>
-            [Tooltip("Show NPC subtitle reminder text while showing the player response menu.")]
+            [Tooltip("Show NPC subtitle reminder text while showing the player response menu. If you're using Standard Dialogue UI, the subtitle panel's Visiblity value takes precedenece over this.")]
             public bool showNPCSubtitlesWithResponses = true;
 
             /// <summary>
@@ -162,6 +162,11 @@ namespace PixelCrushers.DialogueSystem
                 /// Wait for the continue button only for NPC lines that don't precede response menus or PC auto-select responses.
                 /// </summary>
                 NotForPCOrBeforePCAutoresponseOrMenu,
+
+                /// <summary>
+                /// Wait for continue button for PC lines but not for NPC lines.
+                /// </summary>
+                OnlyForPC
             }
 
             /// <summary>
@@ -512,7 +517,12 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Auto-select current menu choice.
         /// </summary>
-        ChooseCurrentResponse
+        ChooseCurrentResponse,
+
+        /// <summary>
+        /// Auto-select the last menu choice.
+        /// </summary>
+        ChooseLastResponse
     };
 
     public enum EmTag

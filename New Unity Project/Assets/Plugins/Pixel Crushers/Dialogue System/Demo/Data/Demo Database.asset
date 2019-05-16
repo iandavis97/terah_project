@@ -102,20 +102,20 @@ MonoBehaviour:
     - title: Name
       value: Terminal
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
     - title: Pictures
       value: '[]'
       type: 3
-      typeString: 
+      typeString: CustomFieldType_Files
     - title: Description
       value: The control unit that the player can use to open the hangar airlock (killing
         the Emperor and innocent bystanders) or re-lock it (letting them all live).
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
     - title: IsPlayer
       value: False
       type: 2
-      typeString: 
+      typeString: CustomFieldType_Boolean
     portrait: {fileID: 2800000, guid: a491fca6456b0204080efb8fb6caa853, type: 3}
     alternatePortraits: []
   - id: 5
@@ -165,28 +165,32 @@ MonoBehaviour:
     - title: Name
       value: Get the Launch Codes
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
     - title: Description
       value: Your squad has infiltrated the evil Emperor's weapons factory to intercept
         launch codes to stop the mega-weapon aimed at your homeworld.
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
     - title: Success Description
       value: You get the launch codes and can redirect the weapon away from your homeworld.
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
     - title: Failure Description
       value: 
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
     - title: State
       value: unassigned
       type: 0
-      typeString: 
+      typeString: CustomFieldType_QuestState
+    - title: Is Item
+      value: False
+      type: 2
+      typeString: CustomFieldType_Boolean
     - title: Track
       value: True
       type: 2
-      typeString: 
+      typeString: CustomFieldType_Boolean
     - title: Trackable
       value: True
       type: 2
@@ -196,7 +200,7 @@ MonoBehaviour:
     - title: Name
       value: Enemy Attack
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
     - title: Pictures
       value: '[]'
       type: 3
@@ -205,19 +209,19 @@ MonoBehaviour:
       value: Sergeant Graves wants you to halt the enemy advance by taking out five
         of them.
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
     - title: Success Description
       value: You defeated the enemy soldiers.
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
     - title: Failure Description
       value: 
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
     - title: State
       value: unassigned
       type: 0
-      typeString: 
+      typeString: CustomFieldType_QuestState
     - title: Is Item
       value: False
       type: 2
@@ -237,11 +241,11 @@ MonoBehaviour:
     - title: Entry 1 State
       value: active
       type: 0
-      typeString: 
+      typeString: CustomFieldType_QuestState
     - title: Entry 1
       value: '[var=enemiesKilled]/5 killed'
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
   locations: []
   variables:
   - id: 0
@@ -980,7 +984,7 @@ MonoBehaviour:
         y: 144
         width: 160
         height: 30
-    canvasScrollPosition: {x: 207, y: 19}
+    canvasScrollPosition: {x: 0, y: 76}
     canvasZoom: 1
   - id: 2
     fields:
@@ -1941,7 +1945,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Sequence
-        value: None()
+        value: Delay({{end}})
         type: 0
         typeString: 
       conversationID: 4
@@ -2097,7 +2101,9 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Sequence
-        value: TextInput(Text Field UI,Password,password)
+        value: 'Camera(Terminal Camera Angle,,1);
+
+          TextInput(Text Field UI,Password,password)'
         type: 0
         typeString: 
       conversationID: 5
@@ -2296,7 +2302,9 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: Delay({{end}})
+        value: 'Camera(original,,1);
+
+          Delay({{end}})'
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 5
@@ -2442,7 +2450,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
-        value: None()
+        value: Camera(original,,1)
         type: 0
         typeString: CustomFieldType_Text
       conversationID: 5

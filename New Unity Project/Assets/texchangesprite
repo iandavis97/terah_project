@@ -1,0 +1,60 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using PixelCrushers.LoveHate;
+public class texchangenew : MonoBehaviour {
+public Texture2D texture1;
+public Texture2D texture2;
+public Texture2D texture3;
+public Texture2D texture4;
+public Texture2D texture5;
+public Texture2D texture6;
+public Texture2D texture7;
+public Texture2D texture8;
+public SpriteRenderer  m_Renderer;
+public GameObject Calyx;
+	// Use this for initialization
+	void Start () {
+        m_Renderer = gameObject.GetComponent<Renderer> ();
+       StartCoroutine(change()); 
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	}
+    IEnumerator change(){
+        var counter=0;
+        while(counter>=0){
+            if(Calyx.GetComponent<EmotionalState>().GetCurrentEmotionName()=="Joy"){ 
+              yield return new WaitForSeconds(0.1f);
+        m_Renderer.material.mainTexture = texture1;
+        yield return new WaitForSeconds(4.5f);
+         m_Renderer.material.mainTexture = texture2;
+        counter++;  
+            }
+	            else if(Calyx.GetComponent<EmotionalState>().GetCurrentEmotionName()=="Anger"){ 
+              yield return new WaitForSeconds(0.1f);
+        m_Renderer.material.mainTexture = texture3;
+        yield return new WaitForSeconds(4.5f);
+         m_Renderer.material.mainTexture = texture4;
+        counter++;  
+            }
+            else if(Calyx.GetComponent<EmotionalState>().GetCurrentEmotionName()=="Surprise"){ 
+              yield return new WaitForSeconds(0.1f);
+        m_Renderer.material.mainTexture = texture5;
+        yield return new WaitForSeconds(4.5f);
+         m_Renderer.material.mainTexture = texture6;
+        counter++;  
+            }
+                        else if(Calyx.GetComponent<EmotionalState>().GetCurrentEmotionName()=="Disgust"){ 
+              yield return new WaitForSeconds(0.1f);
+        m_Renderer.material.mainTexture = texture7;
+        yield return new WaitForSeconds(4.5f);
+         m_Renderer.material.mainTexture = texture8;
+        counter++;  
+            }
+            else{}
+        }
+    }
+}
+

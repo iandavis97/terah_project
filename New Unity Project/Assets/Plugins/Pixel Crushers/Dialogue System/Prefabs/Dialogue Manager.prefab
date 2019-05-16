@@ -67,8 +67,12 @@ MonoBehaviour:
   joystickAxisThreshold: 0.5
   keyButtonsToCheck: []
   keyCodesToCheck: 1b000000
+  alwaysAutoFocus: 0
+  detectMouseControl: 1
   mouseMoveThreshold: 0.1
+  controlCursorState: 1
   enforceCursorOnPause: 0
+  controlGraphicRaycasters: 0
   backKeyCodes: 4b010000
   backButtons:
   - Cancel

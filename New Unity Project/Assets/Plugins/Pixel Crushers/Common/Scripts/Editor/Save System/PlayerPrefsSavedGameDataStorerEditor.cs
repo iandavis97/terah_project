@@ -1,4 +1,4 @@
-﻿// Copyright © Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using UnityEditor;
@@ -98,6 +98,8 @@ namespace PixelCrushers
                 var key = baseKey + i;
                 if (PlayerPrefs.HasKey(key)) PlayerPrefs.DeleteKey(key);
             }
+            m_keys.Clear();
+            Repaint();
         }
 
     }
