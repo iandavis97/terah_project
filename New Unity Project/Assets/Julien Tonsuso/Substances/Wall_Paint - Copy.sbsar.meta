@@ -14,6 +14,7 @@ ScriptedImporter:
     11400002: graph0
     13500000: Wall_Paint - Copy/Wall_Paint - Copy/SphereCollider
     100100000: Wall_Paint - Copy
+    2186277476908879412: ImportLogs
   externalObjects: {}
   userData: 
   assetBundleName: 
@@ -71,4 +72,4 @@ ScriptedImporter:
       textureHeight: 256
       textureFormat: 0
       loadBehavior: 0
-    material: {instanceID: 0}
+    material: {fileID: 2100000, guid: f533540f2cf22bd4d91c32fdca409bff, type: 3}
