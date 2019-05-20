@@ -193,7 +193,7 @@ namespace PixelCrushers.DialogueSystem.ORKFrameworkSupport
             int intValue = (int)value;
             var statusValue = GetStatusValue(combatantName, statusValueName);
             if (statusValue == null) return;
-            statusValue.SetValue(intValue, false, true, true, true, null);
+            statusValue.SetValue(intValue, false, true, true, true, new StatusValueChangeSource(GetCombatant(combatantName)));
         }
 
         #endregion
