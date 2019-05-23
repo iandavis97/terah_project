@@ -9,6 +9,7 @@ using PixelCrushers.LoveHate.ORKFrameworkSupport;
 public class changearia : MonoBehaviour
 {
     public GameObject gameObject;
+    public AudioClip sfx;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,11 @@ public class changearia : MonoBehaviour
     }
 
     public void ChangeAria (string Emotion, string name){
+        //playing sound effect when ARIA changes
+        AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.clip = sfx;
+        audioSource.PlayOneShot(sfx,.75f);
+
         gameObject = GameObject.Find(name);
         switch (Emotion){
             case "Joy":
