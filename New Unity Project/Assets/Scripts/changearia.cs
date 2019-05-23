@@ -53,5 +53,8 @@ public class changearia : MonoBehaviour
                 break;
         }
 
+        //destroying AudioSource to keep from creating stacking copies
+        Destroy(audioSource);
+
     }
 }
