@@ -51,8 +51,7 @@ public class changearia : MonoBehaviour
             case "Fear":
                 GameObject.GetComponent<OrkFactionMember>().pad.Modify(0, -200, -200, 200);
                 break;
-                //destroying AudioSource to keep from creating stacking copies
-                Destroy(audioSource);
+ 
         }
 
         

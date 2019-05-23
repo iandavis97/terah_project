@@ -36,6 +36,32 @@ ModelImporter:
     100060: Cylinder.005
     100062: 'Lamp 10 '
     100064: 'lamp rig 10 '
+    100066: Circle_001
+    100068: Circle_002
+    100070: Circle_003
+    100072: Circle_004
+    100074: Circle_005
+    100076: Circle_007
+    100078: Cube_001
+    100080: Cube_002
+    100082: Cube_003
+    100084: Cube_004
+    100086: Cube_005
+    100088: Cube_006
+    100090: Cube_007
+    100092: Cube_008
+    100094: Cube_009
+    100096: Cube_011
+    100098: Cube_012
+    100100: Cube_014
+    100102: Cube_015
+    100104: Cube_016
+    100106: Cube_017
+    100108: Cylinder_001
+    100110: Cylinder_002
+    100112: Cylinder_003
+    100114: Cylinder_004
+    100116: Cylinder_005
     400000: Camera
     400002: //RootNode
     400004: Circle
@@ -69,6 +95,32 @@ ModelImporter:
     400060: Cylinder.005
     400062: 'Lamp 10 '
     400064: 'lamp rig 10 '
+    400066: Circle_001
+    400068: Circle_002
+    400070: Circle_003
+    400072: Circle_004
+    400074: Circle_005
+    400076: Circle_007
+    400078: Cube_001
+    400080: Cube_002
+    400082: Cube_003
+    400084: Cube_004
+    400086: Cube_005
+    400088: Cube_006
+    400090: Cube_007
+    400092: Cube_008
+    400094: Cube_009
+    400096: Cube_011
+    400098: Cube_012
+    400100: Cube_014
+    400102: Cube_015
+    400104: Cube_016
+    400106: Cube_017
+    400108: Cylinder_001
+    400110: Cylinder_002
+    400112: Cylinder_003
+    400114: Cylinder_004
+    400116: Cylinder_005
     2000000: Camera
     2100000: cylinder_metal
     2100002: Chair_sit
@@ -80,6 +132,36 @@ ModelImporter:
     2100014: cylinder_metal_2
     2100016: Wheel
     2100018: Wheel_2
+    2100020: Merged_Circle_007
+    2100022: Circle_007
+    2100024: Cube_017
+    2100026: Cube_014
+    2100028: Cube_016
+    2100030: Cube_015
+    2100032: Cylinder_005
+    2100034: Cylinder_004
+    2100036: Cylinder_003
+    2100038: Cylinder_002
+    2100040: Cylinder_001
+    2100042: Cube_012
+    2100044: Cube_011
+    2100046: Circle_005
+    2100048: Cube_009
+    2100050: Cube_008
+    2100052: Cube_007
+    2100054: Cube_006
+    2100056: Cube_005
+    2100058: Circle_004
+    2100060: Cube_004
+    2100062: Cube_003
+    2100064: Circle_003
+    2100066: Circle_002
+    2100068: Cube_002
+    2100070: Cube_001
+    2100072: Circle_001
+    2100074: Cylinder
+    2100076: Circle
+    2100078: Cube
     2300000: Circle
     2300002: Circle.001
     2300004: Circle.002
@@ -110,6 +192,33 @@ ModelImporter:
     2300054: Cylinder.004
     2300056: Cylinder.005
     2300058: 'lamp rig 10 '
+    2300060: //RootNode
+    2300062: Circle_001
+    2300064: Circle_002
+    2300066: Circle_003
+    2300068: Circle_004
+    2300070: Circle_005
+    2300072: Circle_007
+    2300074: Cube_001
+    2300076: Cube_002
+    2300078: Cube_003
+    2300080: Cube_004
+    2300082: Cube_005
+    2300084: Cube_006
+    2300086: Cube_007
+    2300088: Cube_008
+    2300090: Cube_009
+    2300092: Cube_011
+    2300094: Cube_012
+    2300096: Cube_014
+    2300098: Cube_015
+    2300100: Cube_016
+    2300102: Cube_017
+    2300104: Cylinder_001
+    2300106: Cylinder_002
+    2300108: Cylinder_003
+    2300110: Cylinder_004
+    2300112: Cylinder_005
     3300000: Circle
     3300002: Circle.001
     3300004: Circle.002
@@ -140,6 +249,33 @@ ModelImporter:
     3300054: Cylinder.004
     3300056: Cylinder.005
     3300058: 'lamp rig 10 '
+    3300060: //RootNode
+    3300062: Circle_001
+    3300064: Circle_002
+    3300066: Circle_003
+    3300068: Circle_004
+    3300070: Circle_005
+    3300072: Circle_007
+    3300074: Cube_001
+    3300076: Cube_002
+    3300078: Cube_003
+    3300080: Cube_004
+    3300082: Cube_005
+    3300084: Cube_006
+    3300086: Cube_007
+    3300088: Cube_008
+    3300090: Cube_009
+    3300092: Cube_011
+    3300094: Cube_012
+    3300096: Cube_014
+    3300098: Cube_015
+    3300100: Cube_016
+    3300102: Cube_017
+    3300104: Cylinder_001
+    3300106: Cylinder_002
+    3300108: Cylinder_003
+    3300110: Cylinder_004
+    3300112: Cylinder_005
     4300000: 'lamp rig 10 '
     4300002: Circle.007
     4300004: Cube.017
@@ -170,6 +306,33 @@ ModelImporter:
     4300054: Cylinder
     4300056: Circle
     4300058: Cube
+    4300060: Merged_Circle_007
+    4300062: Circle_007
+    4300064: Cube_017
+    4300066: Cube_014
+    4300068: Cube_016
+    4300070: Cube_015
+    4300072: Cylinder_005
+    4300074: Cylinder_004
+    4300076: Cylinder_003
+    4300078: Cylinder_002
+    4300080: Cylinder_001
+    4300082: Cube_012
+    4300084: Cube_011
+    4300086: Circle_005
+    4300088: Cube_009
+    4300090: Cube_008
+    4300092: Cube_007
+    4300094: Cube_006
+    4300096: Cube_005
+    4300098: Circle_004
+    4300100: Cube_004
+    4300102: Cube_003
+    4300104: Circle_003
+    4300106: Circle_002
+    4300108: Cube_002
+    4300110: Cube_001
+    4300112: Circle_001
     10800000: 'Lamp 10 '
     2186277476908879412: ImportLogs
   externalObjects: {}
@@ -203,9 +366,10 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 10
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -230,6 +394,9 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -244,7 +411,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
