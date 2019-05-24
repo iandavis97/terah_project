@@ -23,6 +23,7 @@ public class SetupChar : MonoBehaviour
     {
         this.gameObject.AddComponent<Rigidbody>();
         this.gameObject.AddComponent<changeariabutton>();
+        this.gameObject.AddComponent<SphereCollider>();
         this.gameObject.AddComponent<OrkFactionMember>();
         this.gameObject.AddComponent<EmotionalState>();
         this.gameObject.AddComponent<Usable>();
@@ -31,5 +32,7 @@ public class SetupChar : MonoBehaviour
         this.gameObject.AddComponent<deserializeload>();
         this.gameObject.AddComponent<EventInteraction>();
         this.gameObject.AddComponent<EventInteraction>();
+        this.gameObject.AddComponent<switchanimator>();
+        DestroyImmediate(this);
     }
 }
