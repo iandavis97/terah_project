@@ -24,6 +24,12 @@ public class changearia : MonoBehaviour
         
     }
 
+    private void OnDestroy()
+    {
+        Lua.UnregisterFunction("ChangeAria");
+
+    }
+
     public void ChangeAria (string Emotion, string name){
         
         //playing sound effect when ARIA changes
