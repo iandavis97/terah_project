@@ -100,7 +100,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
             if (faderImage != null)
             {
                 faderImage.gameObject.SetActive(stay);
-                faderImage.color = new Color(color.r, color.g, color.b, fadeIn ? 1 : 0);
+                faderImage.color = new Color(color.r, color.g, color.b, fadeIn ? 0 : 1);
             }
         }
 

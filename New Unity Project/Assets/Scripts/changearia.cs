@@ -44,55 +44,55 @@ public class changearia : MonoBehaviour
         switch (Emotion){
             case "Joy":
                 GameObject.GetComponent<OrkFactionMember>().pad.Modify(0, 200, 200, 200);
-                GameObject.GetComponent<DeedReporter>().ReportDeedByActor(GameObject2.GetComponent<OrkFactionMember>(), "Joy", GameObject.GetComponent<OrkFactionMember>()
+                GameObject2.GetComponent<DeedReporter>().ReportDeed("Joy", GameObject.GetComponent<OrkFactionMember>()
 );
                 break;
             case "Anger":
                 GameObject.GetComponent<OrkFactionMember>().pad.Modify(0, -200, 200, 200);
-                GameObject.GetComponent<DeedReporter>().ReportDeedByActor(GameObject2.GetComponent<OrkFactionMember>(), "Anger", GameObject.GetComponent<OrkFactionMember>()
+                GameObject2.GetComponent<DeedReporter>().ReportDeed("Anger", GameObject.GetComponent<OrkFactionMember>()
 );
                 break;
             case "Surprise":
                 GameObject.GetComponent<OrkFactionMember>().pad.Modify(0, 200, 200, -200);
-                GameObject.GetComponent<DeedReporter>().ReportDeedByActor(GameObject2.GetComponent<OrkFactionMember>(), "Surprise", GameObject.GetComponent<OrkFactionMember>()
+                GameObject2.GetComponent<DeedReporter>().ReportDeed("Surprise", GameObject.GetComponent<OrkFactionMember>()
 );
                 break;
             case "Disgust":
                 GameObject.GetComponent<OrkFactionMember>().pad.Modify(0, -200, 200, -200);
-                GameObject.GetComponent<DeedReporter>().ReportDeedByActor(GameObject2.GetComponent<OrkFactionMember>(), "Disgust", GameObject.GetComponent<OrkFactionMember>()
+                GameObject2.GetComponent<DeedReporter>().ReportDeed("Disgust", GameObject.GetComponent<OrkFactionMember>()
 );
                 break;
             case "Sadness":
                 GameObject.GetComponent<OrkFactionMember>().pad.Modify(0, -200, -200, -200);
-                GameObject.GetComponent<DeedReporter>().ReportDeedByActor(GameObject2.GetComponent<OrkFactionMember>(), "Sadness", GameObject.GetComponent<OrkFactionMember>()
+                GameObject2.GetComponent<DeedReporter>().ReportDeed("Sadness", GameObject.GetComponent<OrkFactionMember>()
 );
                 break;
             case "Fear":
                 GameObject.GetComponent<OrkFactionMember>().pad.Modify(0, -200, -200, 200);
-                GameObject.GetComponent<DeedReporter>().ReportDeedByActor(GameObject2.GetComponent<OrkFactionMember>(), "Fear", GameObject.GetComponent<OrkFactionMember>()
+                GameObject2.GetComponent<DeedReporter>().ReportDeed("Fear", GameObject.GetComponent<OrkFactionMember>()
 );
                 break;
             case "Flatter":
-GameObject.GetComponent<DeedReporter>().ReportDeedByActor(GameObject2.GetComponent<OrkFactionMember>(), "Flatter", GameObject.GetComponent<OrkFactionMember>()
+GameObject2.GetComponent<DeedReporter>().ReportDeed("Flatter", GameObject.GetComponent<OrkFactionMember>()
 ); break;
             case "Insult":
-                GameObject.GetComponent<DeedReporter>().ReportDeedByActor(GameObject2.GetComponent<OrkFactionMember>(), "Insult", GameObject.GetComponent<OrkFactionMember>()
+                GameObject2.GetComponent<DeedReporter>().ReportDeed("Insult", GameObject.GetComponent<OrkFactionMember>()
                 );
                 break;
             case "Gift":
-                GameObject.GetComponent<DeedReporter>().ReportDeedByActor(GameObject2.GetComponent<OrkFactionMember>(), "Gift", GameObject.GetComponent<OrkFactionMember>()
+                GameObject2.GetComponent<DeedReporter>().ReportDeed("Gift", GameObject.GetComponent<OrkFactionMember>()
                );
                 break;
             case "Annoy":
-                GameObject.GetComponent<DeedReporter>().ReportDeedByActor(GameObject2.GetComponent<OrkFactionMember>(), "Annoy", GameObject.GetComponent<OrkFactionMember>()
+                GameObject2.GetComponent<DeedReporter>().ReportDeed("Annoy", GameObject.GetComponent<OrkFactionMember>()
                );
                 break;
             case "Ignore":
-                GameObject.GetComponent<DeedReporter>().ReportDeedByActor(GameObject2.GetComponent<OrkFactionMember>(), "Ignore", GameObject.GetComponent<OrkFactionMember>()
+                GameObject2.GetComponent<DeedReporter>().ReportDeed("Ignore", GameObject.GetComponent<OrkFactionMember>()
                 );
                 break;
             case "Intimidate":
-                GameObject.GetComponent<DeedReporter>().ReportDeedByActor(GameObject2.GetComponent<OrkFactionMember>(), "Intimidate", GameObject.GetComponent<OrkFactionMember>()
+                GameObject2.GetComponent<DeedReporter>().ReportDeed("Intimidate", GameObject.GetComponent<OrkFactionMember>()
                );
                 break;
 

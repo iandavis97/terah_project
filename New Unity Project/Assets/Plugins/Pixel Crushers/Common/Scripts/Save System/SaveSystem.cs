@@ -108,7 +108,7 @@ namespace PixelCrushers
             }
         }
 
-        private static DataSerializer serializer
+        public static DataSerializer serializer
         {
             get
             {
@@ -125,7 +125,7 @@ namespace PixelCrushers
             }
         }
 
-        private static SavedGameDataStorer storer
+        public static SavedGameDataStorer storer
         {
             get
             {
@@ -282,7 +282,15 @@ namespace PixelCrushers
         {
             if (sceneTransitionManager == null)
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+                if (sceneName.StartsWith("index:"))
+                {
+                    var index = SafeConvert.ToInt(sceneName.Substring("index:".Length));
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(index);
+                }
+                else
+                {
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+                }
                 yield break;
             }
             else
@@ -294,7 +302,15 @@ namespace PixelCrushers
         private static IEnumerator LoadSceneInternalTransitionCoroutine(string sceneName)
         {
             yield return instance.StartCoroutine(sceneTransitionManager.LeaveScene());
-            m_currentAsyncOperation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+            if (sceneName.StartsWith("index:"))
+            {
+                var index = SafeConvert.ToInt(sceneName.Substring("index:".Length));
+                m_currentAsyncOperation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(index);
+            }
+            else
+            {
+                m_currentAsyncOperation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+            }
             while (m_currentAsyncOperation != null && !m_currentAsyncOperation.isDone)
             {
                 yield return null;
@@ -588,6 +604,8 @@ namespace PixelCrushers
 
         /// <summary>
         /// Loads a scene, optionally moving the player to a specified spawnpoint.
+        /// If the scene name starts with "index:" followed by an index number, this
+        /// method loads the scene by build index number.
         /// </summary>
         /// <param name="sceneNameAndSpawnpoint">Scene name, followed by an optional spawnpoint separated by '@'.</param>
         public static void LoadScene(string sceneNameAndSpawnpoint)

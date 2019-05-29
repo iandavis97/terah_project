@@ -264,7 +264,7 @@ namespace PixelCrushers.DialogueSystem
             CheckSubtitleAutoFocus(subtitle);
         }
 
-        private void CheckForSupercededSubtitle(CharacterType characterType)
+        protected void CheckForSupercededSubtitle(CharacterType characterType)
         {
             var otherSubtitle = (characterType == CharacterType.NPC) ? dialogue.pcSubtitle : dialogue.npcSubtitle;
             if (otherSubtitle.uiVisibility == UIVisibility.UntilSuperceded && otherSubtitle.isVisible)

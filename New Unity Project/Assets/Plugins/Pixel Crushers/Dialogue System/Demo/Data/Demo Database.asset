@@ -46,8 +46,8 @@ MonoBehaviour:
       type: 3
       typeString: 
     - title: Description
-      value: The player controls a lieutenant sent to assassinate the evil Emperor
-        and free the star system from tyranny.
+      value: The player controls a soldier sent to intercept the evil space emperor's
+        launch codes to prevent him from attacking your planet.
       type: 0
       typeString: 
     - title: IsPlayer
@@ -67,7 +67,8 @@ MonoBehaviour:
       type: 3
       typeString: 
     - title: Description
-      value: The squad's technical expert, Hart refuses to kill the innocent attendees.
+      value: Private Hart offers the quest to hack the emperor's computer to get the
+        launch codes.
       type: 0
       typeString: 
     - title: IsPlayer
@@ -87,8 +88,7 @@ MonoBehaviour:
       type: 3
       typeString: 
     - title: Description
-      value: The squad's heavy gunner, Graves wants to follow orders and kill the
-        Emperor.
+      value: Sergeant Graves offers the quest to hold back enemy forces.
       type: 0
       typeString: 
     - title: IsPlayer
@@ -108,8 +108,7 @@ MonoBehaviour:
       type: 3
       typeString: CustomFieldType_Files
     - title: Description
-      value: The control unit that the player can use to open the hangar airlock (killing
-        the Emperor and innocent bystanders) or re-lock it (letting them all live).
+      value: The computer interface through which the player can get the launch codes.
       type: 0
       typeString: CustomFieldType_Text
     - title: IsPlayer
@@ -129,8 +128,7 @@ MonoBehaviour:
       type: 3
       typeString: 
     - title: Description
-      value: This was one of the evil emperor's guards. He has a note with the terminal
-        password.
+      value: The evil emperor's guards. They have a note with the terminal password.
       type: 0
       typeString: 
     - title: IsPlayer
@@ -150,7 +148,7 @@ MonoBehaviour:
       type: 3
       typeString: CustomFieldType_Files
     - title: Description
-      value: 
+      value: This actor is used for enemies to bark (one-off gameplay lines).
       type: 0
       typeString: 
     - title: IsPlayer
@@ -984,7 +982,7 @@ MonoBehaviour:
         y: 144
         width: 160
         height: 30
-    canvasScrollPosition: {x: 0, y: 76}
+    canvasScrollPosition: {x: 215, y: 0}
     canvasZoom: 1
   - id: 2
     fields:
@@ -1645,7 +1643,7 @@ MonoBehaviour:
         y: 120
         width: 160
         height: 30
-    canvasScrollPosition: {x: 0, y: 0}
+    canvasScrollPosition: {x: 9, y: 0}
     canvasZoom: 1
   - id: 4
     fields:

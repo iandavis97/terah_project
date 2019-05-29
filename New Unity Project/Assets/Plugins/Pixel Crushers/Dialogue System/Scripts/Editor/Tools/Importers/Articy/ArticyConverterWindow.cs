@@ -704,6 +704,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             articyData = null;
             prefs.ConversionSettings.Clear();
             ConverterPrefsTools.DeleteEditorPrefs();
+            prefs = new ConverterPrefs();
         }
 
         /// <summary>

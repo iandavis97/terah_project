@@ -49,7 +49,8 @@ namespace PixelCrushers
             using (var stream = new MemoryStream(bytes))
             {
                 var binaryFormatter = CreateBinaryFormatter();
-                return (T) binaryFormatter.Deserialize(stream);
+                data = (T)binaryFormatter.Deserialize(stream);
+                return data;
             }
         }
 

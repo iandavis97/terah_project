@@ -893,6 +893,10 @@ namespace PixelCrushers.DialogueSystem
             {
                 return HandleAudioInternally(commandName, args);
             }
+            else if (string.Equals(commandName, "ClearSubtitleText"))
+            {
+                return HandleClearSubtitleText(commandName, args);
+            }
             else if (string.Equals(commandName, "MoveTo"))
             {
                 return TryHandleMoveToInternally(commandName, args);
@@ -1686,6 +1690,38 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
+        /// Handles the ClearSubtitleText(panel# | all) sequencer command.
+        /// </summary>
+        private bool HandleClearSubtitleText(string commandName, string[] args)
+        {
+            string panelID = SequencerTools.GetParameter(args, 1);
+            var all = string.Equals(panelID, "all", StringComparison.OrdinalIgnoreCase);
+            var panelNumber = all ? 0 : Tools.StringToInt(panelID);
+            if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: ClearSubtitleText({1})", new System.Object[] { DialogueDebug.Prefix, panelID }));
+            var standardDialogueUI = DialogueManager.dialogueUI as StandardDialogueUI;
+            if (standardDialogueUI != null)
+            {
+                if (all)
+                {
+                    for (int i = 0; i < standardDialogueUI.conversationUIElements.subtitlePanels.Length; i++)
+                    {
+                        if (standardDialogueUI.conversationUIElements.subtitlePanels[i] == null) continue;
+                        standardDialogueUI.conversationUIElements.subtitlePanels[i].ClearText();
+                    }
+                }
+                else if (0 <= panelNumber && panelNumber < standardDialogueUI.conversationUIElements.subtitlePanels.Length &&
+                    standardDialogueUI.conversationUIElements.subtitlePanels[panelNumber] != null)
+                {
+                    standardDialogueUI.conversationUIElements.subtitlePanels[panelNumber].ClearText();
+                }
+            }
+            return true;
+        }
+
+        private List<int> m_setDialoguePanelPreviouslyOpenSubtitlePanels = null;
+        private List<int> m_setDialoguePanelPreviouslyOpenMenuPanels = null;
+
+        /// <summary>
         /// Handles the "SetDialoguePanel(true|false)" action.
         /// 
         /// Arguments:
@@ -1704,7 +1740,55 @@ namespace PixelCrushers.DialogueSystem
             var dialogueUI = DialogueManager.dialogueUI as AbstractDialogueUI;
             if (dialogueUI != null)
             {
-                if (show) dialogueUI.dialogueControls.Show(); else dialogueUI.dialogueControls.Hide();
+                var standardDialogueUI = dialogueUI as StandardDialogueUI;
+                if (show)
+                {
+                    // Show dialogue panel:
+                    dialogueUI.dialogueControls.Show();
+
+                    // Also re-open any recorded previously-open panels:
+                    if (standardDialogueUI != null)
+                    {
+                        if (m_setDialoguePanelPreviouslyOpenSubtitlePanels != null)
+                        {
+                            for (int i = 0; i < m_setDialoguePanelPreviouslyOpenSubtitlePanels.Count; i++)
+                            {
+                                standardDialogueUI.conversationUIElements.subtitlePanels[i].Open();
+                            }
+                        }
+                        if (m_setDialoguePanelPreviouslyOpenMenuPanels != null)
+                        {
+                            for (int i = 0; i < m_setDialoguePanelPreviouslyOpenMenuPanels.Count; i++)
+                            {
+                                standardDialogueUI.conversationUIElements.menuPanels[i].Open();
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // Record currently open panels:
+                    if (standardDialogueUI != null)
+                    {
+                        if (m_setDialoguePanelPreviouslyOpenMenuPanels == null) m_setDialoguePanelPreviouslyOpenMenuPanels = new List<int>();
+                        if (m_setDialoguePanelPreviouslyOpenSubtitlePanels == null) m_setDialoguePanelPreviouslyOpenSubtitlePanels = new List<int>();
+                        m_setDialoguePanelPreviouslyOpenMenuPanels.Clear();
+                        m_setDialoguePanelPreviouslyOpenSubtitlePanels.Clear();
+                        for (int i = 0; i < standardDialogueUI.conversationUIElements.subtitlePanels.Length; i++)
+                        {
+                            if (standardDialogueUI.conversationUIElements.subtitlePanels[i] == null) continue;
+                            if (standardDialogueUI.conversationUIElements.subtitlePanels[i].isOpen) m_setDialoguePanelPreviouslyOpenSubtitlePanels.Add(i);
+                        }
+                        for (int i = 0; i < standardDialogueUI.conversationUIElements.menuPanels.Length; i++)
+                        {
+                            if (standardDialogueUI.conversationUIElements.menuPanels[i] == null) continue;
+                            if (standardDialogueUI.conversationUIElements.menuPanels[i].isOpen) m_setDialoguePanelPreviouslyOpenMenuPanels.Add(i);
+                        }
+                    }
+
+                    // Then hide dialogue panel:
+                    dialogueUI.dialogueControls.Hide();
+                }
             }
             return true;
         }

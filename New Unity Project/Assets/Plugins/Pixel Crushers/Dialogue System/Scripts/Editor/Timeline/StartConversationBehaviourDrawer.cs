@@ -8,6 +8,8 @@ namespace PixelCrushers.DialogueSystem
     [CustomPropertyDrawer(typeof(StartConversationBehaviour))]
     public class StartConversationBehaviourDrawer : PropertyDrawer
     {
+        private DialogueEntryPicker entryPicker = null;
+
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             int fieldCount = 3;
@@ -29,7 +31,18 @@ namespace PixelCrushers.DialogueSystem
             if (jumpToSpecificEntryProp.boolValue)
             {
                 singleFieldRect.y += EditorGUIUtility.singleLineHeight;
-                EditorGUI.PropertyField(singleFieldRect, entryIDProp);
+                if (entryPicker == null)
+                {
+                    entryPicker = new DialogueEntryPicker(conversationProp.stringValue);
+                }
+                if (entryPicker.isValid)
+                {
+                    entryIDProp.intValue = entryPicker.Draw(singleFieldRect, "Entry ID", entryIDProp.intValue);
+                }
+                else
+                {
+                    EditorGUI.PropertyField(singleFieldRect, entryIDProp);
+                }
             }
         }
     }

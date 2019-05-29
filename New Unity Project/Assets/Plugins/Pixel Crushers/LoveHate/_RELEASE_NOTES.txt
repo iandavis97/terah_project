@@ -4,6 +4,16 @@ Copyright © Pixel Crushers
 RELEASE NOTES
 -------------
 
+Version 1.9.9:
+[May 17, 2019]
+- Added: FactionDatabase.personalityTraitChanged event.
+- Text Tables:
+	- Added right-click context menu to insert/delete fields.
+	- CSV import retains in order from file, now handles blank lines gracefully.
+	- Editor window remembers last tab.
+- Save System: Eliminated message on Destructible Saver about missing Save System when exiting playmode.
+
+
 Version 1.9.8:
 [March 31, 2019]
 - Text Tables:

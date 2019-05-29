@@ -82,6 +82,7 @@ namespace PixelCrushers
         private bool isTextAreaStyleInitialized = false;
         
         private const string EncodingTypeEditorPrefsKey = "PixelCrushers.EncodingType";
+        private const string ToolbarSelectionPrefsKey = "PixelCrushers.TextTableEditor.Toolbar";
 
         #endregion
 
@@ -94,6 +95,7 @@ namespace PixelCrushers
             m_needRefreshLists = true;
             Undo.undoRedoPerformed += Repaint;
             if (m_textTableInstanceID != 0) Selection.activeObject = EditorUtility.InstanceIDToObject(m_textTableInstanceID);
+            m_toolbarSelection = EditorPrefs.GetInt(ToolbarSelectionPrefsKey, 0);
             OnSelectionChange();
         }
 
@@ -101,6 +103,7 @@ namespace PixelCrushers
         {
             s_instance = null;
             Undo.undoRedoPerformed -= Repaint;
+            EditorPrefs.SetInt(ToolbarSelectionPrefsKey, m_toolbarSelection);
         }
 
         private void OnSelectionChange()
@@ -343,6 +346,8 @@ namespace PixelCrushers
                 }
 
                 m_fieldList.DoLayoutList();
+
+                CheckMouseEvents();
             }
             finally
             {
@@ -469,6 +474,45 @@ namespace PixelCrushers
             fieldKeysProperty.DeleteArrayElementAtIndex(m_selectedFieldListElement);
             fieldKeysProperty.InsertArrayElementAtIndex(list.index);
             fieldKeysProperty.GetArrayElementAtIndex(list.index).intValue = value;
+        }
+
+        private void CheckMouseEvents()
+        {
+            if (Event.current.type == EventType.MouseDown && Event.current.button == 1) // Right-click
+            {
+                var index = (int)((Event.current.mousePosition.y / (EditorGUIUtility.singleLineHeight + 4)) - 1);
+                if (0 <= index && index < m_fieldList.count)
+                {
+                    var menu = new GenericMenu();
+                    menu.AddItem(new GUIContent("Insert Field"), false, InsertFieldListElement, index);
+                    menu.AddItem(new GUIContent("Delete Field"), false, DeleteFieldListElement, index);
+                    menu.ShowAsContext();
+                }
+            }
+        }
+
+        private void InsertFieldListElement(object data)
+        {
+            int index = (int)data;
+            m_serializedObject.ApplyModifiedProperties();
+            m_textTable.InsertField(index, "Field " + m_textTable.nextFieldID);
+            m_serializedObject.Update();
+            RebuildFieldCache();
+            Repaint();
+        }
+
+        private void DeleteFieldListElement(object data)
+        {
+            int index = (int)data;
+            var info = m_fieldCache[index];
+            if (EditorUtility.DisplayDialog("Delete Field", "Delete '" + info.fieldNameProperty.stringValue + "'?", "OK", "Cancel"))
+            {
+                m_serializedObject.ApplyModifiedProperties();
+                m_textTable.RemoveField(info.fieldNameProperty.stringValue);
+                m_serializedObject.Update();
+                RebuildFieldCache();
+                Repaint();
+            }
         }
 
         private bool IsAnyFieldSelected()
@@ -824,19 +868,25 @@ namespace PixelCrushers
         {
             var content = CSVUtility.ReadCSVFile(csvFilename, GetEncodingType());
             if (content == null || content.Count < 1 || content[0].Count < 2) return;
+            var fieldList = new List<string>();
             var firstCell = content[0][0];
             if (string.Equals(firstCell, "Language"))
             {
                 // Single language file:
                 var language = content[0][1];
-                if (!m_textTable.HasLanguage(language)) m_textTable.AddLanguage(language);
-                for (int y = 1; y < content.Count; y++)
+                if (!string.IsNullOrEmpty(language))
                 {
-                    var field = content[y][0];
-                    if (!m_textTable.HasField(field)) m_textTable.AddField(field);
-                    for (int x = 1; x < content[y].Count; x++)
+                    if (!m_textTable.HasLanguage(language)) m_textTable.AddLanguage(language);
+                    for (int y = 1; y < content.Count; y++)
                     {
-                        m_textTable.SetFieldTextForLanguage(field, language, content[y][x]);
+                        var field = content[y][0];
+                        if (string.IsNullOrEmpty(field)) continue;
+                        fieldList.Add(field);
+                        if (!m_textTable.HasField(field)) m_textTable.AddField(field);
+                        for (int x = 1; x < content[y].Count; x++)
+                        {
+                            m_textTable.SetFieldTextForLanguage(field, language, content[y][x]);
+                        }
                     }
                 }
             }
@@ -846,15 +896,22 @@ namespace PixelCrushers
                 for (int x = 1; x < content[0].Count; x++)
                 {
                     var language = content[0][x];
+                    if (string.IsNullOrEmpty(language)) continue;
                     if (!m_textTable.HasLanguage(language)) m_textTable.AddLanguage(language);
                     for (int y = 1; y < content.Count; y++)
                     {
                         var field = content[y][0];
+                        if (string.IsNullOrEmpty(field)) continue;
+                        if (x == 1) fieldList.Add(field);
                         if (!m_textTable.HasField(field)) m_textTable.AddField(field);
-                        m_textTable.SetFieldTextForLanguage(field, language, content[y][x]);
+                        if ((0 <= y && y < content.Count) && (0 <= x && x < content[y].Count))
+                        {
+                            m_textTable.SetFieldTextForLanguage(field, language, content[y][x]);
+                        }
                     }
                 }
             }
+            m_textTable.ReorderFields(fieldList);
             m_textTable.OnBeforeSerialize();
             m_serializedObject.Update();
             RebuildFieldCache();

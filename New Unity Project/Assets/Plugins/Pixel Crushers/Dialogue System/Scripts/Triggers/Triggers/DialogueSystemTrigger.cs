@@ -494,12 +494,12 @@ namespace PixelCrushers.DialogueSystem
 
         public void OnCollisionEnter2D(Collision2D collision)
         {
-            if (enabled && (trigger == DialogueSystemTriggerEvent.OnTriggerEnter)) TryStart(collision.collider.transform);
+            if (enabled && (trigger == DialogueSystemTriggerEvent.OnCollisionEnter)) TryStart(collision.collider.transform);
         }
 
         public void OnCollisionExit2D(Collision2D collision)
         {
-            if (enabled && (trigger == DialogueSystemTriggerEvent.OnTriggerExit)) TryStart(collision.collider.transform);
+            if (enabled && (trigger == DialogueSystemTriggerEvent.OnCollisionExit)) TryStart(collision.collider.transform);
         }
 
 #endif

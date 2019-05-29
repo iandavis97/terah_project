@@ -67,9 +67,9 @@ namespace PixelCrushers.DialogueSystem
 
         protected List<UnityUIQuestTrackTemplate> instantiatedItems = new List<UnityUIQuestTrackTemplate>();
 
-        private List<UnityUIQuestTrackTemplate> unusedInstances = new List<UnityUIQuestTrackTemplate>();
+        protected List<UnityUIQuestTrackTemplate> unusedInstances = new List<UnityUIQuestTrackTemplate>();
 
-        private int siblingIndexCounter = 0;
+        protected int siblingIndexCounter = 0;
 
         protected bool isVisible = true;
 

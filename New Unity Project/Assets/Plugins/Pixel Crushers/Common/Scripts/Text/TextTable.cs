@@ -522,6 +522,21 @@ namespace PixelCrushers
         }
 
         /// <summary>
+        /// Inserts a field to the text table.
+        /// </summary>
+        public void InsertField(int index, string fieldName)
+        {
+            if (HasField(fieldName)) return;
+            OnBeforeSerialize();
+            var id = m_nextFieldID++;
+            m_fieldKeys.Insert(index, id);
+            var field = new TextTableField(fieldName);
+            field.texts.Add(0, string.Empty);
+            m_fieldValues.Insert(index, field);
+            OnAfterDeserialize();
+        }
+
+        /// <summary>
         /// Sort fields alphabetically.
         /// </summary>
         public void SortFields()
@@ -544,6 +559,28 @@ namespace PixelCrushers
                 m_fieldKeys.Add(list[i].key);
                 m_fieldValues.Add(list[i].value);
             }
+            OnAfterDeserialize();
+        }
+
+        public void ReorderFields(List<string> order)
+        {
+            if (order == null) return;
+            OnBeforeSerialize();
+            var newKeys = new List<int>();
+            var newValues = new List<TextTableField>();
+            for (int i = 0; i < order.Count; i++)
+            {
+                var index = m_fieldValues.FindIndex(x => string.Equals(x.fieldName, order[i]));
+                if (index == -1) continue;
+                newKeys.Add(m_fieldKeys[index]);
+                newValues.Add(m_fieldValues[index]);
+                m_fieldKeys.RemoveAt(index);
+                m_fieldValues.RemoveAt(index);
+            }
+            newKeys.AddRange(m_fieldKeys);
+            newValues.AddRange(m_fieldValues);
+            m_fieldKeys = newKeys;
+            m_fieldValues = newValues;
             OnAfterDeserialize();
         }
 

@@ -305,7 +305,18 @@ namespace PixelCrushers.DialogueSystem
             GetNextSourceLine(); // Global User Script heading
             database.globalUserScript = UnwrapValue(GetNextSourceLine());
             // Some CSV exports may cause malformed global user script:
-            if (string.Equals(database.globalUserScript, ",,,,,,,,,,,,,,,,,")) database.globalUserScript = string.Empty;
+            database.globalUserScript = RemoveTrailingCommas(database.globalUserScript);
+        }
+
+        private string RemoveTrailingCommas(string s)
+        {
+            int safeguard = 0;
+            while (!string.IsNullOrEmpty(s) && s.EndsWith(",") && safeguard < 10000)
+            {
+                safeguard++;
+                s = s.Remove(s.Length - 1);
+            }
+            return s;
         }
 
         /// <summary>

@@ -19,7 +19,7 @@ namespace PixelCrushers
         private List<string> m_keys;
         private ReorderableList m_list;
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             var storer = target as PlayerPrefsSavedGameDataStorer;
 
@@ -45,7 +45,12 @@ namespace PixelCrushers
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            m_list.DoLayoutList();
+            DrawSavedGameList();
+        }
+
+        protected virtual void DrawSavedGameList()
+        {
+            if (m_list != null) m_list.DoLayoutList();
             if (GUILayout.Button(new GUIContent("Clear Saved Games", "Delete all PlayerPrefs keys associated with saved games.")))
             {
                 if (EditorUtility.DisplayDialog("Clear Saved Games", "Delete all PlayerPrefs keys associated with saved games?", "OK", "Cancel"))

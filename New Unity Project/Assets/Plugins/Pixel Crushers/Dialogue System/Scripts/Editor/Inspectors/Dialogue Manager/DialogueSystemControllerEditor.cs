@@ -202,12 +202,29 @@ namespace PixelCrushers.DialogueSystem
                     EditorGUILayout.PropertyField(localizationSettings.FindPropertyRelative("language"), true);
                     EditorGUILayout.PropertyField(localizationSettings.FindPropertyRelative("useSystemLanguage"), true);
                     EditorGUILayout.PropertyField(localizationSettings.FindPropertyRelative("textTable"), true);
-                    //---Was: EditorGUILayout.PropertyField(localizationSettings.FindPropertyRelative("localizedText"), true);
+                    if (GUILayout.Button(new GUIContent("Reset Language PlayerPrefs", "Delete the language selection saved in PlayerPrefs.")))
+                    {
+                        ResetLanguagePlayerPrefs();
+                    }
+
                 }
                 finally
                 {
                     EditorWindowTools.EditorGUILayoutEndGroup();
                 }
+            }
+        }
+
+        private void ResetLanguagePlayerPrefs()
+        {
+            var uiLocalizationManager = dialogueSystemController.GetComponent<UILocalizationManager>();
+            if (uiLocalizationManager != null)
+            {
+                PlayerPrefs.DeleteKey(uiLocalizationManager.currentLanguagePlayerPrefsKey);
+            }
+            else
+            {
+                PlayerPrefs.DeleteKey("Language");
             }
         }
 

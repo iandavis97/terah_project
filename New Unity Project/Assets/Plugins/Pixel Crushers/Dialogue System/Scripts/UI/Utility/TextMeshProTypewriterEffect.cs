@@ -1,10 +1,10 @@
 ﻿#if TMP_PRESENT
 // Copyright (c) Pixel Crushers. All rights reserved.
 
-using UnityEngine;
-using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace PixelCrushers.DialogueSystem
 {
@@ -222,6 +222,8 @@ namespace PixelCrushers.DialogueSystem
             if ((textComponent != null) && (charactersPerSecond > 0))
             {
                 if (waitOneFrameBeforeStarting) yield return null;
+                var originalFromIndex = fromIndex;
+                fromIndex = Tools.StripRichTextCodes(textComponent.text.Substring(0, fromIndex)).Length;
                 ProcessRPGMakerCodes();
                 if (runtimeAudioSource != null) runtimeAudioSource.clip = audioClip;
                 onBegin.Invoke();
@@ -229,10 +231,10 @@ namespace PixelCrushers.DialogueSystem
                 float delay = 1 / charactersPerSecond;
                 float lastTime = DialogueTime.time;
                 float elapsed = fromIndex / charactersPerSecond;
-                textComponent.maxVisibleCharacters = 0;
+                textComponent.maxVisibleCharacters = fromIndex;
                 textComponent.ForceMeshUpdate();
                 yield return null;
-                textComponent.maxVisibleCharacters = 0;
+                textComponent.maxVisibleCharacters = fromIndex;
                 textComponent.ForceMeshUpdate();
                 TMPro.TMP_TextInfo textInfo = textComponent.textInfo;
                 int totalVisibleCharacters = textInfo.characterCount; // Get # of Visible Character in text object

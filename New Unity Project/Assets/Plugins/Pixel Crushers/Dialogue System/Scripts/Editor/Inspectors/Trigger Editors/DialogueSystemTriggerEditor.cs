@@ -1,9 +1,9 @@
 // Copyright (c) Pixel Crushers. All rights reserved.
 
-using UnityEngine;
+using System;
 using UnityEditor;
 using UnityEditorInternal;
-using System;
+using UnityEngine;
 
 namespace PixelCrushers.DialogueSystem
 {
@@ -511,6 +511,8 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        private DialogueEntryPicker entryPicker = null;
+
         protected virtual void DrawConversationAction()
         {
             foldouts.conversationFoldout = EditorWindowTools.EditorGUILayoutFoldout("Start Conversation", "Start a conversation.", foldouts.conversationFoldout, false);
@@ -535,13 +537,24 @@ namespace PixelCrushers.DialogueSystem
                         var specifyEntryID = EditorGUILayout.Toggle(new GUIContent("Specify Starting Entry", "Start conversation at a specific entry ID."), (entryIDProperty.intValue != -1));
                         if (specifyEntryID)
                         {
-                            entryIDProperty.intValue = Mathf.Max(0, EditorGUILayout.IntField(new GUIContent("Entry ID", "Start at this entry ID."), entryIDProperty.intValue));
+                            if (entryPicker == null)
+                            {
+                                entryPicker = new DialogueEntryPicker(conversationProperty.stringValue);
+                            }
+                            if (entryPicker.isValid)
+                            {
+                                entryIDProperty.intValue = Mathf.Max(0, entryPicker.DoLayout("Entry ID", entryIDProperty.intValue));
+                            }
+                            else
+                            {
+                                entryIDProperty.intValue = Mathf.Max(0, EditorGUILayout.IntField(new GUIContent("Entry ID", "Start at this entry ID."), entryIDProperty.intValue));
+                            }
                         }
                         else
                         {
                             entryIDProperty.intValue = -1;
                         }
-                        
+
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("exclusive"), true);
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("skipIfNoValidEntries"), true);
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("stopConversationOnTriggerExit"), true);

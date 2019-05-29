@@ -82,7 +82,7 @@ namespace PixelCrushers
 
         protected virtual void RecordDestruction()
         {
-            if (!m_ignoreOnDestroy)
+            if (!m_ignoreOnDestroy && SaveSystem.instance != null)
             {
                 m_data.destroyed = true;
                 m_data.position = transform.position;

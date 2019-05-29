@@ -30,9 +30,17 @@ namespace Language.Lua
 			for (int i = 0; i < args.Length; i++) {
 				objectArgs[i] = LuaInterpreterExtensions.LuaValueToObject(args[i]);
 			}
-			object result = Method.Invoke(Target, objectArgs);
-			return LuaInterpreterExtensions.ObjectToLuaValue(result);
-		}
+            try
+            {
+                object result = Method.Invoke(Target, objectArgs);
+                return LuaInterpreterExtensions.ObjectToLuaValue(result);
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogException(e);
+                throw e;
+            }
+        }
 
-	}
+    }
 }

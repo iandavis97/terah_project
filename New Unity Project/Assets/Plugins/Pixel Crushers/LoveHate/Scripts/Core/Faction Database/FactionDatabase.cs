@@ -6,6 +6,8 @@ using System.Collections.Generic;
 namespace PixelCrushers.LoveHate
 {
 
+    public delegate void PersonalityTraitChangedDelegate(int factionID, int traitID, float value);
+
     /// <summary>
     /// A faction database is a collection of traits, presets, and factions. The scope of a
     /// faction database is the definition of traits, presets, and factions, with no 
@@ -57,6 +59,8 @@ namespace PixelCrushers.LoveHate
         private Dictionary<int, Faction> m_factionIDLookup = new Dictionary<int, Faction>();
 
         private Dictionary<string, Faction> m_factionNameLookup = new Dictionary<string, Faction>();
+
+        public event PersonalityTraitChangedDelegate personalityTraitChanged = delegate { };
 
         public void Initialize()
         {
@@ -379,6 +383,7 @@ namespace PixelCrushers.LoveHate
             if (faction != null && (0 <= traitID && traitID < faction.traits.Length))
             {
                 faction.traits[traitID] = value;
+                personalityTraitChanged(factionID, traitID, value);
             }
         }
 

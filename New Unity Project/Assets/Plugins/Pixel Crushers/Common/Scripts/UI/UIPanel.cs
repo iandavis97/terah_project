@@ -238,7 +238,7 @@ namespace PixelCrushers
             }
             else
             {
-                m_lastSelected = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
+                m_lastSelected = (UnityEngine.EventSystems.EventSystem.current != null) ? UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject : null;
                 if (Time.realtimeSinceStartup >= m_timeNextCheck && focusCheckFrequency > 0 && topPanel == this && InputDeviceManager.autoFocus)
                 {
                     m_timeNextCheck = Time.realtimeSinceStartup + focusCheckFrequency;
