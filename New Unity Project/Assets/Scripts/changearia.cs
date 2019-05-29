@@ -39,7 +39,7 @@ public class changearia : MonoBehaviour
         audioSource.PlayOneShot(sfx,.5f);
         
         GameObject = GameObject.Find(name);
-        GameObject = GameObject.Find(actorname);
+        GameObject2 = GameObject.Find(actorname);
 
         switch (Emotion){
             case "Joy":
