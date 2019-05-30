@@ -5,7 +5,10 @@ using PixelCrushers.DialogueSystem;
 
 public class PitchChange : MonoBehaviour
 {
-    public float pitchMin, pitchMax, volumeMin, volumeMax;
+    public float pitchMin;
+    public float pitchMax;
+    public float volumeMin;
+    public float volumeMax;
 
     // Start is called before the first frame update
     void Start()
