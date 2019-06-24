@@ -47,7 +47,12 @@ public class changeariabutton : MonoBehaviour
 
     }
 
+    public void Unknown()
+    {
 
+        this.gameObject.GetComponent<OrkFactionMember>().pad.Modify(0, 0, 0, 0);
+
+    }
 
 
 
