@@ -15,10 +15,12 @@ public class lockplayer : MonoBehaviour {
         if (ORK.Control.InEvent || ORK.Control.InMenu || ORK.Control.Blocked)
         {
             m_input.lockInput = true;
+            ORK.InputKeys.Get(9).Blocked = true;//locking Tab key
         }
         else
         {
             m_input.lockInput = false;
+            ORK.InputKeys.Get(9).Blocked = false;//unlocking Tab key
         }  
 	}
 }
