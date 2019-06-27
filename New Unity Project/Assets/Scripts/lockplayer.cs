@@ -7,10 +7,13 @@ using Invector.vCharacterController;
 
 public class lockplayer : MonoBehaviour
 {
-        private vThirdPersonInput m_input = null;	// Use this for initialization
+        private vThirdPersonInput m_input = null;
+    private vThirdPersonController m_move = null;
+    // Use this for initialization
 	void Start ()
     {
             m_input = GetComponent<vThirdPersonInput>();
+            m_move = GetComponent<vThirdPersonController>();
     }
 	
 	// Update is called once per frame
