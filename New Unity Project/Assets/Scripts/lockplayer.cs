@@ -23,7 +23,7 @@ public class lockplayer : MonoBehaviour
         {
             m_input.lockInput = true;
         }
-        if(ORK.Game.Variables.Check("convoFlag", false))
+        else if(ORK.Game.Variables.Check("convoFlag", false))
             m_input.lockInput = false;
         else
         {
