@@ -25,14 +25,12 @@ namespace SmartCopier
 		private readonly SerializedPropertyRef _propertyRef;
 
 		public SerializedProperty SerializedProperty { get { return _propertyRef.GetProperty(); } }
-		//public SerializedProperty SerializedProperty { get; private set; }
 		public string Name { get; private set; }
 		public bool Checked { get; set; }
 
 		public PropertyWrapper(UnityEngine.Object unityObj, SerializedProperty property)
 		{
 			_propertyRef = new SerializedPropertyRef(unityObj, property);
-			//SerializedProperty = property;
 			Name = property.displayName;
 			Checked = true;
 		}

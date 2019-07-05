@@ -31,8 +31,14 @@ namespace PixelCrushers.DialogueSystem
 
         public RectTransform questSelectionContentContainer;
         public StandardUIFoldoutTemplate questGroupTemplate;
+        [Tooltip("Use this template for active quests.")]
         public StandardUIQuestTitleButtonTemplate activeQuestHeadingTemplate;
+        [Tooltip("Use this template for the currently-selected active quest.")]
+        public StandardUIQuestTitleButtonTemplate selectedActiveQuestHeadingTemplate;
+        [Tooltip("Use this template for completed quests.")]
         public StandardUIQuestTitleButtonTemplate completedQuestHeadingTemplate;
+        [Tooltip("Use this template for the currently-selected completed quest.")]
+        public StandardUIQuestTitleButtonTemplate selectedCompletedQuestHeadingTemplate;
         [Tooltip("If there are no quests to show, show the No Active/Completed Quests Text above.")]
         public bool showNoQuestsText = true;
         [Tooltip("Show details when quest button is selected (highlighted/hovered), not when clicked.")]
@@ -115,6 +121,8 @@ namespace PixelCrushers.DialogueSystem
             Tools.SetGameObjectActive(questGroupTemplate, false);
             Tools.SetGameObjectActive(activeQuestHeadingTemplate, false);
             Tools.SetGameObjectActive(completedQuestHeadingTemplate, false);
+            Tools.SetGameObjectActive(selectedActiveQuestHeadingTemplate, false);
+            Tools.SetGameObjectActive(selectedCompletedQuestHeadingTemplate, false);
             Tools.SetGameObjectActive(questHeadingTextTemplate, false);
             Tools.SetGameObjectActive(questDescriptionTextTemplate, false);
             Tools.SetGameObjectActive(questEntryActiveTextTemplate, false);
@@ -209,7 +217,12 @@ namespace PixelCrushers.DialogueSystem
             showingActiveQuestsHeading.SetActive(isShowingActiveQuests);
             showingCompletedQuestHeading.SetActive(!isShowingActiveQuests);
             selectionPanelContentManager.Clear();
-            var questTitleTemplate = isShowingActiveQuests ? activeQuestHeadingTemplate : completedQuestHeadingTemplate;
+            var questTitleTemplate = isShowingActiveQuests ? 
+                activeQuestHeadingTemplate 
+                : completedQuestHeadingTemplate;
+            var selectedQuestTitleTemplate = isShowingActiveQuests ?
+                (selectedActiveQuestHeadingTemplate ?? activeQuestHeadingTemplate)
+                : (selectedCompletedQuestHeadingTemplate ?? completedQuestHeadingTemplate);
 
             // Get group names, and draw selected quest in its panel while we're at it:
             var groupNames = new List<string>();
@@ -252,8 +265,9 @@ namespace PixelCrushers.DialogueSystem
                 foreach (var quest in quests)
                 {
                     if (string.Equals(quest.Group, groupName))
-                    {                        
-                        var questTitle = selectionPanelContentManager.Instantiate<StandardUIQuestTitleButtonTemplate>(questTitleTemplate);
+                    {
+                        var template = IsSelectedQuest(quest) ? selectedQuestTitleTemplate : questTitleTemplate;
+                        var questTitle = selectionPanelContentManager.Instantiate<StandardUIQuestTitleButtonTemplate>(template);
                         questTitle.Assign(quest.Title, quest.Heading.text, OnToggleTracking);
                         selectionPanelContentManager.Add(questTitle, groupFoldout.interiorPanel);
                         var target = quest.Title;
@@ -272,7 +286,8 @@ namespace PixelCrushers.DialogueSystem
             foreach (var quest in quests)
             {
                 if (!string.IsNullOrEmpty(quest.Group)) continue;
-                var questTitle = selectionPanelContentManager.Instantiate<StandardUIQuestTitleButtonTemplate>(questTitleTemplate);
+                var template = IsSelectedQuest(quest) ? selectedQuestTitleTemplate : questTitleTemplate;
+                var questTitle = selectionPanelContentManager.Instantiate<StandardUIQuestTitleButtonTemplate>(template);
                 questTitle.Assign(quest.Title, quest.Heading.text, OnToggleTracking);
                 selectionPanelContentManager.Add(questTitle, questSelectionContentContainer);
                 var target = quest.Title;

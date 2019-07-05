@@ -73,11 +73,16 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
-        /// Sets the portrait texture to use in the subtitle if the named actor is the speaker.
+        /// Sets the portrait sprite to use in the subtitle if the named actor is the speaker.
         /// </summary>
         /// <param name="actorName">Actor name in database.</param>
-        /// <param name="portraitTexture">Portrait texture.</param>
-        public virtual void SetActorPortraitTexture(string actorName, Texture2D portraitTexture)
+        /// <param name="sprite">Portrait sprite.</param>
+        public virtual void SetActorPortraitSprite(string actorName, Sprite sprite)
+        {
+        }
+
+        [System.Obsolete("Use SetActorPortraitSprite instead.")]
+        public virtual void SetActorPortraitTexture(string actorName, Texture2D texture)
         {
         }
 

@@ -37,7 +37,7 @@ namespace SmartCopier
 		}
 
 		[MenuItem("GameObject/Smart Copy Components", false, -1)]
-		private static void FindReferencesToGameObject(MenuCommand menuCommand)
+		private static void CopyFromGameObject(MenuCommand menuCommand)
 		{
 			InitializeWindow((GameObject) menuCommand.context);
 		}
@@ -79,9 +79,7 @@ namespace SmartCopier
 			DrawComponents(_context.Components);
 
 			// Get target GameObjects
-			IEnumerable<GameObject> selectedObjects = Selection.gameObjects;
-			IEnumerable<GameObject> objectsToPasteTo = selectedObjects.Where(go => go != _context.ObjectToCopyFrom).ToList();
-			_context.ObjectsToPasteTo = objectsToPasteTo;
+			IEnumerable<GameObject> objectsToPasteTo = GetTargetGameObjects();
 
 			// END SCROLL
 			GUILayout.EndScrollView();
@@ -95,7 +93,12 @@ namespace SmartCopier
 				DrawPasteButtons(objectsToPasteTo);
 			}
 			GUILayout.EndVertical();
+		}
 
+		private IEnumerable<GameObject> GetTargetGameObjects()
+		{
+			IEnumerable<GameObject> selectedObjects = Selection.gameObjects;
+			return selectedObjects.Where(go => go != _context.ObjectToCopyFrom).ToList();
 		}
 
 		private void DrawComponents(IEnumerable<ComponentWrapper> components)
@@ -113,10 +116,9 @@ namespace SmartCopier
 
 			// Header row
 			GUILayout.BeginVertical(ComponentRowStyle);
-			string componentName = componentType.Name;
 			Texture icon = EditorGUIUtility.ObjectContent(component, componentType).image;
-			GUIContent content = new GUIContent(icon);
-			content.text = componentName;
+			string componentName = ObjectNames.NicifyVariableName(componentType.Name);
+			GUIContent content = new GUIContent(componentName, icon);
 
 			// Checkbox
 			wrapper.Checked = EditorGUILayout.ToggleLeft(content, wrapper.Checked, wrapper.Checked ? ComponentLabelStyle : GUI.skin.label);

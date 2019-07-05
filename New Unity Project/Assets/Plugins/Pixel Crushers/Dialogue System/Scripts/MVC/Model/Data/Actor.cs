@@ -19,9 +19,19 @@ namespace PixelCrushers.DialogueSystem
         public Texture2D portrait = null;
 
         /// <summary>
+        /// Sprite portrait. Allows you to assign a Sprite instead of a full Texture.
+        /// </summary>
+        public Sprite spritePortrait = null;
+
+        /// <summary>
         /// The alternate portrait images. Corresponds to <c>[pic=2]+</c> tags.
         /// </summary>
         public List<Texture2D> alternatePortraits = new List<Texture2D>();
+
+        /// <summary>
+        /// Alternate portrait sprites. Allows you to assign Sprites instead of full Textures.
+        /// </summary>
+        public List<Sprite> spritePortraits = new List<Sprite>();
 
         /// <summary>
         /// Gets or sets a value indicating whether this actor is a player character or an NPC.
@@ -65,6 +75,8 @@ namespace PixelCrushers.DialogueSystem
         {
             this.portrait = sourceActor.portrait;
             this.alternatePortraits = new List<Texture2D>(sourceActor.alternatePortraits);
+            this.spritePortrait = sourceActor.spritePortrait;
+            this.spritePortraits = new List<Sprite>(sourceActor.spritePortraits);
         }
 
         /// <summary>
@@ -90,22 +102,30 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
-        /// Gets the portrait texture at a specific index, where <c>1</c> is the default
-        /// portrait and <c>2</c>+ are the alternate portraits.
+        /// Gets the portrait sprite at a specific index, where <c>1</c> is the default
+        /// portrait and <c>2</c>+ are the alternate portraits. Checks the actor's
+        /// textures and sprites.
         /// </summary>
-        /// <returns>The portrait texture.</returns>
-        /// <param name="i">The index number of the portrait texture.</param>
-        public Texture2D GetPortraitTexture(int i)
+        /// <returns>The portrait image.</returns>
+        /// <param name="i">The index number of the portrait image.</param>
+        public Sprite GetPortraitSprite(int i)
         {
             if (i == 1)
             {
-                return portrait;
+                return UITools.GetSprite(portrait, spritePortrait);
             }
             else
             {
                 int index = i - 2;
-                return (0 <= index && index < alternatePortraits.Count) ? alternatePortraits[index] : null;
+                return UITools.GetSprite(
+                    (0 <= index && index < alternatePortraits.Count) ? alternatePortraits[index] : null,
+                    (0 <= index && index < spritePortraits.Count) ? spritePortraits[index] : null);
             }
+        }
+
+        public Sprite GetPortraitSprite()
+        {
+            return UITools.GetSprite(portrait, spritePortrait);
         }
 
         private string LookupTextureName()
@@ -128,5 +148,4 @@ namespace PixelCrushers.DialogueSystem
         }
 
     }
-
 }

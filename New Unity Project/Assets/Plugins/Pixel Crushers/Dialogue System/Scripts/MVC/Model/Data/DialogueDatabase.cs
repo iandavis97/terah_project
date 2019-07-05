@@ -558,10 +558,10 @@ namespace PixelCrushers.DialogueSystem
             {
                 var asset = assetsToRemove[i];
                 var key = useTitle ? (asset as Conversation).Title : asset.Name;
-                if (!cache.ContainsKey(key))
+                if (cache.ContainsKey(key))
                 {
-                    cache.Remove(key);
                     myAssets.Remove(cache[key]);
+                    cache.Remove(key);
                 }
             }
         }
@@ -574,10 +574,10 @@ namespace PixelCrushers.DialogueSystem
                 var asset = assetsToRemove[i];
                 if (Contains(keep, asset)) continue;
                 var key = useTitle ? (asset as Conversation).Title : asset.Name;
-                if (!cache.ContainsKey(key))
+                if (cache.ContainsKey(key))
                 {
-                    cache.Remove(key);
                     myAssets.Remove(cache[key]);
+                    cache.Remove(key);
                 }
             }
         }

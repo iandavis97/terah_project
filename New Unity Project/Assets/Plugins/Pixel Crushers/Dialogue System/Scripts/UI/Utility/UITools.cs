@@ -27,19 +27,26 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        /// <summary>
+        /// Returns the hash for an animator state.
+        /// </summary>
         public static int GetAnimatorNameHash(AnimatorStateInfo animatorStateInfo)
         {
 			return animatorStateInfo.fullPathHash;
         }
 
         /// <summary>
-        /// Dialogue databases use Texture2D for actor portraits. Unity UI uses sprites.
-        /// UnityUIDialogueUI converts textures to sprites. This dictionary contains
-        /// converted sprites so we don't need to reconvert them every single time we
-        /// want to show an actor's portrait.
+        /// Dialogue databases may use Texture2Ds or Sprites for actor portraits. Unity UI uses sprites.
+        /// The CreateSprite method converts textures to sprites. This dictionary contains
+        /// converted sprites so we don't need to reconvert them every time we want to show 
+        /// an actor's portrait.
         /// </summary>
         public static Dictionary<Texture2D, Sprite> spriteCache = new Dictionary<Texture2D, Sprite>();
 
+        /// <summary>
+        /// Clears the sprite cache, forcing all textures to be converted to sprites
+        /// the first time they're used.
+        /// </summary>
         public static void ClearSpriteCache()
         {
             spriteCache.Clear();
@@ -60,6 +67,22 @@ namespace PixelCrushers.DialogueSystem
             return sprite;
         }
 
+        /// <summary>
+        /// Given a Texture2D and/or Sprite, returns whichever one is not null.
+        /// Gives preference to the Texture2D.
+        public static Sprite GetSprite(Texture2D texture, Sprite sprite)
+        {
+            return (texture != null) ? UITools.CreateSprite(texture) : sprite;
+        }
+
+        public static Texture2D GetTexture2D(Sprite sprite)
+        {
+            return (sprite != null) ? sprite.texture : null;
+        }
+
+        /// <summary>
+        /// Returns the text inside a FormattedText object.
+        /// </summary>
         public static string GetUIFormattedText(FormattedText formattedText)
         {
             if (formattedText == null)

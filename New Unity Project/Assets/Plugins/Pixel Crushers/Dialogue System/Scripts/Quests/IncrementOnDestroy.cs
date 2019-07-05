@@ -15,7 +15,7 @@ namespace PixelCrushers.DialogueSystem
     public class IncrementOnDestroy : MonoBehaviour
     {
 
-        public enum IncrementOn { Destroy, Disable }
+        public enum IncrementOn { Destroy, Disable, Manually }
 
         [Tooltip("Increment on Destroy or Disable.")]
         public IncrementOn incrementOn = IncrementOn.Destroy;

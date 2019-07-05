@@ -18,6 +18,34 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private const float AutoStartX = 20f;
         private const float AutoStartY = 20f;
 
+        private float canvasRectWidth { get { return canvasRectWidthMultiplier * DialogueEntry.CanvasRectWidth; } }
+        private float canvasRectHeight { get { return DialogueEntry.CanvasRectHeight; } }
+
+        [SerializeField]
+        private int canvasRectWidthMultiplier = 1;
+
+        private void CheckNodeWidths()
+        {
+            if (startEntry == null) return;
+            if (!Mathf.Approximately(startEntry.canvasRect.width, canvasRectWidth))
+            {
+                foreach (var entry in currentConversation.dialogueEntries)
+                {
+                    var rect = entry.canvasRect;
+                    var midX = rect.x + (rect.width / 2);
+                    entry.canvasRect = new Rect(midX - (canvasRectWidth / 2), rect.y, canvasRectWidth, rect.height);
+                }
+            }
+        }
+
+        private void SetNodeWidthMultiplier(object data)
+        {
+            canvasRectWidthMultiplier = (int)data;
+            CheckNodeWidths();
+            ResetDialogueTreeSection();
+            ResetConversationNodeSection();
+        }
+
         private void CheckNodeArrangement()
         {
             if (startEntry == null) return;
@@ -75,7 +103,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             for (int i = 0; i < tree.Count; i++)
             {
                 var level = tree[i];
-                float levelWidth = level.Count * (DialogueEntry.CanvasRectWidth + AutoWidthBetweenNodes);
+                float levelWidth = level.Count * (canvasRectWidth + AutoWidthBetweenNodes);
                 maxWidth = Mathf.Max(maxWidth, levelWidth);
             }
             return maxWidth;
@@ -87,7 +115,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             for (int i = 0; i < tree.Count; i++)
             {
                 var level = tree[i];
-                float levelHeight = level.Count * (DialogueEntry.CanvasRectHeight + AutoHeightBetweenNodes);
+                float levelHeight = level.Count * (canvasRectHeight + AutoHeightBetweenNodes);
                 maxHeight = Mathf.Max(maxHeight, levelHeight);
             }
             return maxHeight;
@@ -99,24 +127,24 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             {
                 float treeWidth = GetTreeWidth(tree);
                 float x = AutoStartX;
-                if (orphans.Count > 0) x += DialogueEntry.CanvasRectWidth + AutoWidthBetweenNodes;
+                if (orphans.Count > 0) x += canvasRectWidth + AutoWidthBetweenNodes;
                 float y = AutoStartY;
                 for (int level = 0; level < tree.Count; level++)
                 {
                     ArrangeLevel(tree[level], x, y, treeWidth, 0, vertically);
-                    y += DialogueEntry.CanvasRectHeight + AutoHeightBetweenNodes;
+                    y += canvasRectHeight + AutoHeightBetweenNodes;
                 }
             }
             else
             {
                 float treeHeight = GetTreeHeight(tree);
                 float y = AutoStartY;
-                if (orphans.Count > 0) y += DialogueEntry.CanvasRectHeight + AutoHeightBetweenNodes;
+                if (orphans.Count > 0) y += canvasRectHeight + AutoHeightBetweenNodes;
                 float x = AutoStartX;
                 for (int level = 0; level < tree.Count; level++)
                 {
                     ArrangeLevel(tree[level], x, y, 0, treeHeight, vertically);
-                    x += DialogueEntry.CanvasRectWidth + AutoWidthBetweenNodes;
+                    x += canvasRectWidth + AutoWidthBetweenNodes;
                 }
             }
         }
@@ -127,21 +155,21 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             if (vertically)
             {
                 float nodeCanvasWidth = treeWidth / nodes.Count;
-                float nodeCanvasOffset = (nodeCanvasWidth - DialogueEntry.CanvasRectWidth) / 2;
+                float nodeCanvasOffset = (nodeCanvasWidth - canvasRectWidth) / 2;
                 for (int i = 0; i < nodes.Count; i++)
                 {
                     float nodeX = x + (i * nodeCanvasWidth) + nodeCanvasOffset;
-                    nodes[i].canvasRect = new Rect(nodeX, y, DialogueEntry.CanvasRectWidth, DialogueEntry.CanvasRectHeight);
+                    nodes[i].canvasRect = new Rect(nodeX, y, canvasRectWidth, canvasRectHeight);
                 }
             }
             else
             {
                 float nodeCanvasHeight = treeHeight / nodes.Count;
-                float nodeCanvasOffset = (nodeCanvasHeight - DialogueEntry.CanvasRectHeight) / 2;
+                float nodeCanvasOffset = (nodeCanvasHeight - canvasRectHeight) / 2;
                 for (int i = 0; i < nodes.Count; i++)
                 {
                     float nodeY = y + (i * nodeCanvasHeight) + nodeCanvasOffset;
-                    nodes[i].canvasRect = new Rect(x, nodeY, DialogueEntry.CanvasRectWidth, DialogueEntry.CanvasRectHeight);
+                    nodes[i].canvasRect = new Rect(x, nodeY, canvasRectWidth, canvasRectHeight);
                 }
             }
         }

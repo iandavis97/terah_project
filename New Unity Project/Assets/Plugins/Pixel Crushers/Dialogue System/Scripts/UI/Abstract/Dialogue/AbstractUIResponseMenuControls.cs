@@ -86,20 +86,29 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
-        /// Sets the PC portrait name and texture to use in the response menu.
+        /// Sets the PC portrait name and sprite to use in the response menu.
         /// </summary>
-        /// <param name="portraitTexture">Portrait texture.</param>
+        /// <param name="sprite">Portrait sprite.</param>
         /// <param name="portraitName">Portrait name.</param>
-        public virtual void SetPCPortrait(Texture2D portraitTexture, string portraitName)
+        public virtual void SetPCPortrait(Sprite sprite, string portraitName)
         {
         }
 
+        [System.Obsolete("Use SetPCPortrait(Sprite,string) instead.")]
+        public virtual void SetPCPortrait(Texture2D texture, string portraitName)
+        {
+        }
         /// <summary>
-        /// Sets the portrait texture to use in the response menu if the named actor is the player.
+        /// Sets the portrait sprite to use in the response menu if the named actor is the player.
         /// </summary>
         /// <param name="actorName">Actor name in database.</param>
-        /// <param name="portraitTexture">Portrait texture.</param>
-        public virtual void SetActorPortraitTexture(string actorName, Texture2D portraitTexture)
+        /// <param name="sprite">Portrait sprite.</param>
+        public virtual void SetActorPortraitSprite(string actorName, Sprite sprite)
+        {
+        }
+
+        [System.Obsolete("Use SetActorPortraitSprite instead.")]
+        public virtual void SetActorPortraitTexture(string actorName, Texture2D texture)
         {
         }
 

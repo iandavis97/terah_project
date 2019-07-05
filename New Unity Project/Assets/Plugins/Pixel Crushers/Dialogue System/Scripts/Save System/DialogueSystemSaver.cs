@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
-using UnityEngine;
 using System;
+using UnityEngine;
 
 namespace PixelCrushers.DialogueSystem
 {
@@ -23,6 +23,14 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Save using raw data dump. If your database is extremely large, this method is faster but generates larger saved game data. If you use this option, use BinaryDataSerializer instead of JsonDataSerializer or data will be ridiculously large.")]
         public bool saveRawData = false;
 
+        private bool m_changingScenes = false;
+
+        public override void Reset()
+        {
+            base.Reset();
+            saveAcrossSceneChanges = true;
+        }
+
         public override string RecordData()
         {
             if (saveRawData)
@@ -35,6 +43,19 @@ namespace PixelCrushers.DialogueSystem
             {
                 return PersistentDataManager.GetSaveData();
             }
+        }
+
+        public override void ApplyDataImmediate()
+        {
+            if (!m_changingScenes)
+            {
+                // If loading a saved game, immediately restore Lua in case other scripts'
+                // Start() methods need to read values from it.
+                var data = SaveSystem.currentSavedGameData.GetData(key);
+                if (string.IsNullOrEmpty(data)) return;
+                Lua.Run(data, DialogueDebug.logInfo, false);
+            }
+            m_changingScenes = false;
         }
 
         public override void ApplyData(string data)
@@ -53,6 +74,12 @@ namespace PixelCrushers.DialogueSystem
         public override void OnBeforeSceneChange()
         {
             PersistentDataManager.LevelWillBeUnloaded();
+            m_changingScenes = true;
+        }
+
+        public override void OnRestartGame()
+        {
+            DialogueManager.ResetDatabase();
         }
 
     }

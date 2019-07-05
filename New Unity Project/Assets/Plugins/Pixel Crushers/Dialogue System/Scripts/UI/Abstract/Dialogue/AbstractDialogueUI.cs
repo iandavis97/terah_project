@@ -367,36 +367,56 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
-        /// Sets the PC portrait name and texture.
+        /// Sets the PC portrait name and sprite.
         /// </summary>
-        /// <param name="portraitTexture">Portrait texture.</param>
+        /// <param name="portraitSprite">Portrait sprite.</param>
         /// <param name="portraitName">Portrait name.</param>
+        public virtual void SetPCPortrait(Sprite portraitSprite, string portraitName)
+        {
+            dialogueControls.responseMenuControls.SetPCPortrait(portraitSprite, portraitName);
+        }
+
+        [System.Obsolete("Use SetPCPortrait(Sprite,string) instead.")]
         public virtual void SetPCPortrait(Texture2D portraitTexture, string portraitName)
         {
-            dialogueControls.responseMenuControls.SetPCPortrait(portraitTexture, portraitName);
+            dialogueControls.responseMenuControls.SetPCPortrait(UITools.CreateSprite(portraitTexture), portraitName);
         }
 
         /// <summary>
-        /// Sets the portrait texture for an actor.
+        /// Sets the portrait sprite for an actor.
         /// This is used to immediately update the GUI control if the SetPortrait() sequencer 
-        /// command changes the portrait texture.
+        /// command changes the portrait sprite.
         /// </summary>
         /// <param name="actorName">Actor name in database.</param>
-        /// <param name="portraitTexture">Portrait texture.</param>
-        public virtual void SetActorPortraitTexture(string actorName, Texture2D portraitTexture)
+        /// <param name="portraitSprite">Portrait sprite.</param>
+        public virtual void SetActorPortraitSprite(string actorName, Sprite portraitSprite)
         {
-            dialogueControls.npcSubtitleControls.SetActorPortraitTexture(actorName, portraitTexture);
-            dialogueControls.pcSubtitleControls.SetActorPortraitTexture(actorName, portraitTexture);
-            dialogueControls.responseMenuControls.SetActorPortraitTexture(actorName, portraitTexture);
+            dialogueControls.npcSubtitleControls.SetActorPortraitSprite(actorName, portraitSprite);
+            dialogueControls.pcSubtitleControls.SetActorPortraitSprite(actorName, portraitSprite);
+            dialogueControls.responseMenuControls.SetActorPortraitSprite(actorName, portraitSprite);
         }
 
         /// <summary>
-        /// Gets a valid portrait texture. If the provided portraitTexture is null, grabs the default
-        /// textures from the database.
+        /// Gets a valid portrait sprite. If the provided portraitSprite is null, grabs the default
+        /// sprites from the database.
         /// </summary>
-        /// <returns>The valid portrait texture.</returns>
+        /// <returns>The valid portrait sprite.</returns>
         /// <param name="actorName">Actor name.</param>
-        /// <param name="portraitTexture">Portrait texture.</param>
+        /// <param name="portraitSprite">Portrait sprite.</param>
+        public static Sprite GetValidPortraitSprite(string actorName, Sprite portraitSprite)
+        {
+            if (portraitSprite != null)
+            {
+                return portraitSprite;
+            }
+            else
+            {
+                var actor = DialogueManager.masterDatabase.GetActor(actorName);
+                return (actor != null) ? actor.GetPortraitSprite() : null;
+            }
+        }
+
+        [System.Obsolete("Use GetValidPortraitSprite instead.")]
         public static Texture2D GetValidPortraitTexture(string actorName, Texture2D portraitTexture)
         {
             if (portraitTexture != null)

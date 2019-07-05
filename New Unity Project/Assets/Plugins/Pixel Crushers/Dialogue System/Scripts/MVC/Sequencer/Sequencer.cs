@@ -416,11 +416,17 @@ namespace PixelCrushers.DialogueSystem
             }
             else
             {
-                m_sequencerCamera.transform.position = m_originalCameraPosition;
-                m_sequencerCamera.transform.rotation = m_originalCameraRotation;
-                m_sequencerCamera.orthographicSize = m_originalOrthographicSize;
-                m_sequencerCamera.gameObject.SetActive(false);
-                m_originalCamera.gameObject.SetActive(true);
+                if (m_sequencerCamera != null) // May have disappeared if changed scene during conversation.
+                {
+                    m_sequencerCamera.transform.position = m_originalCameraPosition;
+                    m_sequencerCamera.transform.rotation = m_originalCameraRotation;
+                    m_sequencerCamera.orthographicSize = m_originalOrthographicSize;
+                    m_sequencerCamera.gameObject.SetActive(false);
+                }
+                if (m_originalCamera != null)
+                {
+                    m_originalCamera.gameObject.SetActive(true);
+                }
             }
         }
 
@@ -693,42 +699,56 @@ namespace PixelCrushers.DialogueSystem
             }
             else
             {
-                var componentType = FindSequencerCommandType(commandName, "DialogueSystem");
-                if (componentType == null)
-                {
-                    componentType = FindSequencerCommandType(commandName, "Assembly-CSharp");
-                    if (componentType == null)
-                    {
-                        componentType = FindSequencerCommandType(commandName, "Assembly-CSharp-firstpass");
-                    }
-                }
-                if (componentType != null)
-                {
-                    m_cachedComponentTypes.Add(commandName, componentType);
-                }
-                return componentType;
+                var component = GetTypeFromName("SequencerCommand" + commandName);
+                m_cachedComponentTypes[commandName] = component;
+                return component;
             }
         }
 
-        private System.Type FindSequencerCommandType(string commandName, string assemblyName)
+        public System.Type GetTypeFromName(string typeName)
         {
-            System.Type componentType = FindSequencerCommandType("PixelCrushers.DialogueSystem.SequencerCommands.", commandName, assemblyName);
-            if (componentType != null) return componentType;
-            componentType = FindSequencerCommandType("PixelCrushers.DialogueSystem.", commandName, assemblyName);
-            if (componentType != null) return componentType;
-            componentType = FindSequencerCommandType(string.Empty, commandName, assemblyName);
-            return componentType;
+            var assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
+            for (int i = 0; i < assemblies.Length; i++)
+            {
+                var assembly = assemblies[i];
+                try
+                {
+                    var types = assembly.GetTypes();
+                    for (int j = 0; j < types.Length; j++)
+                    {
+                        var type = types[j];
+                        if (string.Equals(type.Name, typeName)) return type;
+                    }
+                }
+                catch (Exception)
+                {
+                    // Ignore exceptions.
+                }
+            }
+            return null;
         }
 
-        private System.Type FindSequencerCommandType(string namespacePrefix, string commandName, string assemblyName)
-        {
-            string fullPath = string.Format("{0}SequencerCommand{1},{2}", new System.Object[] { namespacePrefix, commandName, assemblyName });
-            return Type.GetType(fullPath, false);
-        }
+        // Previous method that only looked in specific assemblies:
+
+        //private System.Type FindSequencerCommandType(string commandName, string assemblyName)
+        //{
+        //    System.Type componentType = FindSequencerCommandType("PixelCrushers.DialogueSystem.SequencerCommands.", commandName, assemblyName);
+        //    if (componentType != null) return componentType;
+        //    componentType = FindSequencerCommandType("PixelCrushers.DialogueSystem.", commandName, assemblyName);
+        //    if (componentType != null) return componentType;
+        //    componentType = FindSequencerCommandType(string.Empty, commandName, assemblyName);
+        //    return componentType;
+        //}
+
+        //private System.Type FindSequencerCommandType(string namespacePrefix, string commandName, string assemblyName)
+        //{
+        //    string fullPath = string.Format("{0}SequencerCommand{1},{2}", new System.Object[] { namespacePrefix, commandName, assemblyName });
+        //    return Type.GetType(fullPath, false);
+        //}
 
         private IEnumerator SendTimedSequencerMessage(string endMessage, float delay)
         {
-            yield return StartCoroutine(DialogueTime.WaitForSeconds(delay)); // new WaitForSeconds(delay);
+            yield return StartCoroutine(DialogueTime.WaitForSeconds(delay));
             Sequencer.Message(endMessage);
         }
 
@@ -812,11 +832,16 @@ namespace PixelCrushers.DialogueSystem
 
         public void StopQueued()
         {
-            foreach (var queuedCommand in m_queuedCommands)
-            {
-                if (queuedCommand.required) ActivateCommand(queuedCommand.command, queuedCommand.endMessage, queuedCommand.speaker, queuedCommand.listener, queuedCommand.parameters);
-            }
+            if (m_queuedCommands.Count == 0) return;
+            // Put the remaining commands in a new list so we can clear m_queuedCommands
+            // in case one of the required commands causes another invocation of StopQueued(),
+            // such as "required Continue()@Message(X)".
+            var commandsToProcess = new List<QueuedSequencerCommand>(m_queuedCommands);
             m_queuedCommands.Clear();
+            foreach (var queuedCommand in commandsToProcess)
+            {
+                if (queuedCommand.required) ActivateCommand(queuedCommand.command, string.Empty, queuedCommand.speaker, queuedCommand.listener, queuedCommand.parameters);
+            }
         }
 
         public void StopActive()
@@ -1601,7 +1626,7 @@ namespace PixelCrushers.DialogueSystem
                 return true;
             }
 
-            GameObject subject = SequencerTools.FindSpecifier(specifier);
+            var subject = SequencerTools.GetSubject(specifier, speaker, listener); //---Was: SequencerTools.FindSpecifier(specifier);
             if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: SetActive({1}, {2})", new System.Object[] { DialogueDebug.Prefix, subject, arg }));
             if (subject == null)
             {
@@ -1617,9 +1642,9 @@ namespace PixelCrushers.DialogueSystem
                 if (!string.IsNullOrEmpty(arg))
                 {
                     if (string.Equals(arg.ToLower(), "false")) newValue = false;
-                    else if (string.Equals(arg.ToLower(), "flip")) newValue = !subject.activeSelf;
+                    else if (string.Equals(arg.ToLower(), "flip")) newValue = !subject.gameObject.activeSelf;
                 }
-                subject.SetActive(newValue);
+                subject.gameObject.SetActive(newValue);
             }
             return true;
         }
@@ -1736,6 +1761,7 @@ namespace PixelCrushers.DialogueSystem
                 return true;
             }
             var show = string.Equals(arg, "true", StringComparison.OrdinalIgnoreCase);
+            var immediate = string.Equals(SequencerTools.GetParameter(args, 1), "immediate", StringComparison.OrdinalIgnoreCase);
             if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: SetDialoguePanel({1})", new System.Object[] { DialogueDebug.Prefix, show }));
             var dialogueUI = DialogueManager.dialogueUI as AbstractDialogueUI;
             if (dialogueUI != null)
@@ -1784,6 +1810,7 @@ namespace PixelCrushers.DialogueSystem
                             if (standardDialogueUI.conversationUIElements.menuPanels[i] == null) continue;
                             if (standardDialogueUI.conversationUIElements.menuPanels[i].isOpen) m_setDialoguePanelPreviouslyOpenMenuPanels.Add(i);
                         }
+                        if (immediate) standardDialogueUI.conversationUIElements.HideImmediate();
                     }
 
                     // Then hide dialogue panel:
@@ -1894,10 +1921,10 @@ namespace PixelCrushers.DialogueSystem
             }
             bool isDefault = string.Equals(textureName, "default");
             bool isPicTag = (textureName != null) && textureName.StartsWith("pic=");
-            Texture2D texture = null;
+            Sprite sprite = null;
             if (isDefault)
             {
-                texture = null;
+                sprite = null;
             }
             else if (isPicTag)
             {
@@ -1914,11 +1941,11 @@ namespace PixelCrushers.DialogueSystem
                         Debug.LogWarning(string.Format("{0}: Sequencer: SetPortrait() command: pic variable '{1}' not found.", new System.Object[] { DialogueDebug.Prefix, picValue }));
                     }
                 }
-                texture = (actor != null) ? actor.GetPortraitTexture(picNumber) : null;
+                sprite = (actor != null) ? actor.GetPortraitSprite(picNumber) : null;
             }
             else
             {
-                texture = DialogueManager.LoadAsset(textureName) as Texture2D;
+                sprite = UITools.CreateSprite(DialogueManager.LoadAsset(textureName) as Texture2D);
             }
             //---Was:
             //Texture2D texture = isDefault ? null 
@@ -1928,7 +1955,7 @@ namespace PixelCrushers.DialogueSystem
             if (DialogueDebug.logWarnings)
             {
                 if (actor == null) Debug.LogWarning(string.Format("{0}: Sequencer: SetPortrait() command: actor '{1}' not found.", new System.Object[] { DialogueDebug.Prefix, actorName }));
-                if ((texture == null) && !isDefault) Debug.LogWarning(string.Format("{0}: Sequencer: SetPortrait() command: texture '{1}' not found.", new System.Object[] { DialogueDebug.Prefix, textureName }));
+                if ((sprite == null) && !isDefault) Debug.LogWarning(string.Format("{0}: Sequencer: SetPortrait() command: texture '{1}' not found.", new System.Object[] { DialogueDebug.Prefix, textureName }));
             }
             if (actor != null)
             {
@@ -1938,9 +1965,9 @@ namespace PixelCrushers.DialogueSystem
                 }
                 else
                 {
-                    if (texture != null) DialogueLua.SetActorField(actorName, DialogueSystemFields.CurrentPortrait, textureName);
+                    if (sprite != null) DialogueLua.SetActorField(actorName, DialogueSystemFields.CurrentPortrait, textureName);
                 }
-                DialogueManager.instance.SetActorPortraitTexture(actorName, texture);
+                DialogueManager.instance.SetActorPortraitSprite(actorName, sprite);
             }
             return true;
         }

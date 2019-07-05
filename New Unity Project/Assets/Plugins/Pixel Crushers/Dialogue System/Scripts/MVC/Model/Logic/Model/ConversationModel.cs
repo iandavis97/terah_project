@@ -79,7 +79,7 @@ namespace PixelCrushers.DialogueSystem
         private EmTag m_emTagForInvalidResponses = EmTag.None;
         private bool m_includeInvalidEntries = false;
         private string pcPortraitName = null;
-        private Texture2D pcPortraitTexture = null;
+        private Sprite pcPortraitSprite = null;
         private DialogueEntry forceLinkEntry = null;
 
         /// <summary>
@@ -510,12 +510,12 @@ namespace PixelCrushers.DialogueSystem
             if (m_actorInfo.isPlayer)
             {
                 pcPortraitName = m_actorInfo.Name;
-                pcPortraitTexture = m_actorInfo.portrait;
+                pcPortraitSprite = m_actorInfo.portrait;
             } 
             else if (m_conversantInfo.isPlayer)
             {
                 pcPortraitName = m_conversantInfo.Name;
-                pcPortraitTexture = m_conversantInfo.portrait;
+                pcPortraitSprite = m_conversantInfo.portrait;
             }
             else
             {
@@ -526,7 +526,7 @@ namespace PixelCrushers.DialogueSystem
                     if (entryActor != null && entryActor.IsPlayer)
                     {
                         pcPortraitName = entryActor.Name;
-                        pcPortraitTexture = entryActor.portrait;
+                        pcPortraitSprite = entryActor.GetPortraitSprite();
                         break;
                     }
                 }
@@ -590,9 +590,9 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private Texture2D GetPortrait(Transform character, Actor actor)
+        private Sprite GetPortrait(Transform character, Actor actor)
         {
-            Texture2D portrait = null;
+            Sprite portrait = null;
             if (character != null)
             {
                 portrait = GetPortraitByActorName(DialogueActor.GetActorName(character), actor);
@@ -600,23 +600,23 @@ namespace PixelCrushers.DialogueSystem
             if ((portrait == null) && (actor != null))
             {
                 portrait = GetPortraitByActorName(actor.Name, actor);
-                if (portrait == null) portrait = actor.portrait;
+                if (portrait == null) portrait = actor.GetPortraitSprite();
             }
             return portrait;
         }
 
-        private Texture2D GetPortraitByActorName(string actorName, Actor actor)
+        private Sprite GetPortraitByActorName(string actorName, Actor actor)
         {
             // Also suppress logging for Lua return Actor[].Current_Portrait.
             var originalDebugLevel = DialogueDebug.level;
             DialogueDebug.level = DialogueDebug.DebugLevel.Warning;
-            string textureName = DialogueLua.GetActorField(actorName, DialogueSystemFields.CurrentPortrait).asString;
+            string imageName = DialogueLua.GetActorField(actorName, DialogueSystemFields.CurrentPortrait).asString;
             DialogueDebug.level = originalDebugLevel;
-            if (string.IsNullOrEmpty(textureName))
+            if (string.IsNullOrEmpty(imageName))
             {
-                return (actor != null) ? actor.portrait : null;
+                return (actor != null) ? actor.GetPortraitSprite(): null;
             }
-            else if (textureName.StartsWith("pic="))
+            else if (imageName.StartsWith("pic="))
             {
                 if (actor == null)
                 {
@@ -624,27 +624,27 @@ namespace PixelCrushers.DialogueSystem
                 }
                 else
                 {
-                    return actor.GetPortraitTexture(Tools.StringToInt(textureName.Substring("pic=".Length)));
+                    return actor.GetPortraitSprite(Tools.StringToInt(imageName.Substring("pic=".Length)));
                 }
             }
             else
             {
-                return DialogueManager.LoadAsset(textureName) as Texture2D;
+                return UITools.CreateSprite(DialogueManager.LoadAsset(imageName) as Texture2D);
             }
         }
 
         /// <summary>
-        /// Updates the actor portrait texture for any cached character info.
+        /// Updates the actor portrait sprite for any cached character info.
         /// </summary>
         /// <param name="actorName">Actor name.</param>
-        /// <param name="portraitTexture">Portrait texture.</param>
-        public void SetActorPortraitTexture(string actorName, Texture2D portraitTexture)
+        /// <param name="sprite">Portrait sprite.</param>
+        public void SetActorPortraitSprite(string actorName, Sprite sprite)
         {
             foreach (CharacterInfo characterInfo in m_characterInfoCache.Values)
             {
                 if (string.Equals(characterInfo.Name, actorName) || string.Equals(characterInfo.nameInDatabase, actorName))
                 {
-                    characterInfo.portrait = portraitTexture;
+                    characterInfo.portrait = sprite;
                 }
             }
         }
@@ -670,10 +670,10 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
-        /// Returns the portrait texture of the PC in this conversation.
+        /// Returns the portrait sprite of the PC in this conversation.
         /// </summary>
-        /// <returns>The PC texture, or <c>null</c> if both are NPCs.</returns>
-        public Texture2D GetPCTexture()
+        /// <returns>The PC sprite, or <c>null</c> if both are NPCs.</returns>
+        public Sprite GetPCSprite()
         {
             if (m_database.IsPlayerID(m_actorInfo.id))
             {
@@ -685,7 +685,7 @@ namespace PixelCrushers.DialogueSystem
             }
             else
             {
-                return pcPortraitTexture;
+                return pcPortraitSprite;
             }
         }
 

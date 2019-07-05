@@ -55,28 +55,28 @@ namespace PixelCrushers.DialogueSystem.UnityGUI
         private string pcPortraitName = null;
 
         /// <summary>
-        /// Sets the PC portrait name and texture to use in the response menu.
+        /// Sets the PC portrait name and sprite to use in the response menu.
         /// </summary>
-        /// <param name="portraitTexture">Portrait texture.</param>
+        /// <param name="portraitSprite">Portrait sprite.</param>
         /// <param name="portraitName">Portrait name.</param>
-        public override void SetPCPortrait(Texture2D portraitTexture, string portraitName)
+        public override void SetPCPortrait(Sprite portraitSprite, string portraitName)
         {
-            pcPortraitTexture = portraitTexture;
+            pcPortraitTexture = UITools.GetTexture2D(portraitSprite);
             pcPortraitName = portraitName;
         }
 
         /// <summary>
-        /// Sets the portrait texture to use in the response menu if the named actor is the player.
+        /// Sets the portrait sprite to use in the response menu if the named actor is the player.
         /// This is used to immediately update the GUI control if the SetPortrait() sequencer 
-        /// command changes the portrait texture.
+        /// command changes the portrait sprite.
         /// </summary>
         /// <param name="actorName">Actor name in database.</param>
-        /// <param name="portraitTexture">Portrait texture.</param>
-        public override void SetActorPortraitTexture(string actorName, Texture2D portraitTexture)
+        /// <param name="portraitSprite">Portrait sprite.</param>
+        public override void SetActorPortraitSprite(string actorName, Sprite portraitSprite)
         {
             if (string.Equals(actorName, pcPortraitName))
             {
-                Texture2D actorPortraitTexture = AbstractDialogueUI.GetValidPortraitTexture(actorName, portraitTexture);
+                var actorPortraitTexture = UITools.GetTexture2D(AbstractDialogueUI.GetValidPortraitSprite(actorName, portraitSprite));
                 pcPortraitTexture = actorPortraitTexture;
                 if ((pcImage != null) && (DialogueManager.masterDatabase.IsPlayer(actorName)))
                 {

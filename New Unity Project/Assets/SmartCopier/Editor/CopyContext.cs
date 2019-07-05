@@ -10,13 +10,12 @@ namespace SmartCopier
 	{
 		public GameObject ObjectToCopyFrom { get; set; }
 		public ComponentProvider ComponentProvider { get; private set; }
-		public IEnumerable<GameObject> ObjectsToPasteTo { get; set; }
 		public IEnumerable<ComponentWrapper> Components { get; private set; }
 
 		public CopyContext(GameObject objectToCopyFrom)
 		{
 			ObjectToCopyFrom = objectToCopyFrom;
-			ComponentProvider = new ComponentProvider(objectToCopyFrom);
+			ComponentProvider = new ComponentProvider();
 			// EXAMPLE: If you want to disable copying an object's Transform component by default, uncomment the line below
 			// ComponentProvider.AddFilteredComponentType<Transform>(); // This works for any type of component.
 			RefreshComponents();
@@ -25,30 +24,28 @@ namespace SmartCopier
 		/// Refresh the components each time the ComponentProvider has changed.
 		public void RefreshComponents()
 		{
-			Components = ComponentProvider.GetFilteredComponents();
+			Components = ComponentProvider.GetFilteredComponents(ObjectToCopyFrom);
 		}
 
 		/// Paste all components and their checked properties into the target GameObject.
 		public void PasteComponents(GameObject targetGameObject, CopyMode copyMode)
 		{
-			foreach (var wrapper in Components.Where(c => c.Checked))
+			var orderedComponents = SortByRequiredFirst(Components.Where(c => c.Checked));
+			foreach (var wrapper in orderedComponents)
 			{
 				Type componentType = wrapper.Component.GetType();
 				if (copyMode == CopyMode.PasteAsNew)
 				{
 					var newComponent = Undo.AddComponent(targetGameObject, componentType);
 					// Might return null if component already exists.
-					// Still need to copy stuff either way.
 					if (newComponent != null)
 					{
-						Undo.RecordObject(newComponent, "Copy component properties");
-						CopyComponent(wrapper, newComponent);
-						Undo.FlushUndoRecordObjects();
+						CopyComponentWithUndo(wrapper, newComponent);
 					}
 				}
 				else
 				{
-					Component otherComponent = targetGameObject.GetComponent(componentType);
+					var otherComponent = targetGameObject.GetComponent(componentType);
 					if (otherComponent == null)
 					{
 						otherComponent = Undo.AddComponent(targetGameObject, componentType);
@@ -57,12 +54,17 @@ namespace SmartCopier
 					// otherComponent can still be null if adding the component failed for any reason.
 					if (otherComponent != null)
 					{
-						Undo.RecordObject(otherComponent, "Copy component properties");
-						CopyComponent(wrapper, otherComponent);
-						Undo.FlushUndoRecordObjects();
+						CopyComponentWithUndo(wrapper, otherComponent);
 					}
 				}
 			}
+		}
+
+		private void CopyComponentWithUndo(ComponentWrapper source, Component target)
+		{
+			Undo.RecordObject(target, "Copy component properties");
+			CopyComponent(source, target);
+			Undo.FlushUndoRecordObjects();
 		}
 
 		private void CopyComponent(ComponentWrapper source, Component target)
@@ -78,6 +80,32 @@ namespace SmartCopier
 				targetSerializedObject.CopyFromSerializedProperty(property.SerializedProperty);
 			}
 			targetSerializedObject.ApplyModifiedProperties();
+		}
+
+		/// Puts Components that are required by other Components (using RequireComponent) at the top of the list when copying.
+		/// This avoid Unity automatically adding an instance of the required component when copying both the Component + its required Component.
+		/// NOTE: This only goes one level deep (chains of required components should be avoided) - this is not a full topological sort.
+		private class ComponentDependencyComparer : IComparer<ComponentWrapper>
+		{
+			public int Compare(ComponentWrapper c1, ComponentWrapper c2)
+			{
+				var c1RequiredTypes = c1.GetRequiredComponentTypes();
+				if (c1RequiredTypes.Contains(c2.Component.GetType()))
+				{
+					return 1;
+				}
+				var c2RequiredTypes = c2.GetRequiredComponentTypes();
+				if (c2RequiredTypes.Contains(c1.Component.GetType()))
+				{
+					return -1;
+				}
+				return 0;
+			}
+		}
+
+		private IEnumerable<ComponentWrapper> SortByRequiredFirst(IEnumerable<ComponentWrapper> components)
+		{
+			return components.OrderBy(component => component, new ComponentDependencyComparer());
 		}
 	}
 }

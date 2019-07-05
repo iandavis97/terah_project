@@ -26,12 +26,12 @@ namespace PixelCrushers.DialogueSystem
 
         #region Private Fields
 
-        private List<StandardUIMenuPanel> m_builtinPanels = new List<StandardUIMenuPanel>();
-        private StandardUIMenuPanel m_defaultPanel = null;
-        private Dictionary<Transform, StandardUIMenuPanel> m_actorPanelCache = new Dictionary<Transform, StandardUIMenuPanel>();
-        private StandardUIMenuPanel m_currentPanel = null;
-        private Texture2D m_pcPortraitTexture = null;
-        private string m_pcPortraitName = null;
+        protected List<StandardUIMenuPanel> m_builtinPanels = new List<StandardUIMenuPanel>();
+        protected StandardUIMenuPanel m_defaultPanel = null;
+        protected Dictionary<Transform, StandardUIMenuPanel> m_actorPanelCache = new Dictionary<Transform, StandardUIMenuPanel>();
+        protected StandardUIMenuPanel m_currentPanel = null;
+        protected Sprite m_pcPortraitSprite = null;
+        protected string m_pcPortraitName = null;
 
         #endregion
 
@@ -46,7 +46,7 @@ namespace PixelCrushers.DialogueSystem
             if (timeoutHandler == null) timeoutHandler = DefaultTimeoutHandler;
         }
 
-        private void ClearCache()
+        protected void ClearCache()
         {
             m_actorPanelCache.Clear();
         }
@@ -70,10 +70,21 @@ namespace PixelCrushers.DialogueSystem
             m_actorPanelCache[actorTransform] = GetPanelFromNumber(menuPanelNumber, customPanel);
         }
 
-        private StandardUIMenuPanel GetPanel(Subtitle lastSubtitle)
+        protected Transform GetActorTransformFromID(int actorID)
+        {
+            var actor = DialogueManager.masterDatabase.GetActor(actorID);
+            return (actor != null) ? CharacterInfo.GetRegisteredActorTransform(actor.Name) : DialogueManager.currentActor;
+        }
+
+        protected virtual StandardUIMenuPanel GetPanel(Subtitle lastSubtitle, Response[] responses)
         {
             // Find player's DialogueActor:
-            var playerTransform = (lastSubtitle != null && lastSubtitle.speakerInfo.isPlayer) ? lastSubtitle.speakerInfo.transform : DialogueManager.currentActor;
+            var playerTransform = (lastSubtitle != null && lastSubtitle.speakerInfo.isPlayer) ? lastSubtitle.speakerInfo.transform
+                : (responses != null && responses.Length > 0) ? GetActorTransformFromID(responses[0].destinationEntry.ActorID)
+                : DialogueManager.currentActor;
+
+            //var playerTransform = (lastSubtitle != null && lastSubtitle.speakerInfo.isPlayer) ? lastSubtitle.speakerInfo.transform : DialogueManager.currentActor;
+
             if (playerTransform == null) return m_defaultPanel;
             if (m_actorPanelCache.ContainsKey(playerTransform)) return m_actorPanelCache[playerTransform];
             var dialogueActor = DialogueActor.GetDialogueActorComponent(playerTransform);
@@ -99,13 +110,13 @@ namespace PixelCrushers.DialogueSystem
             return panel;
         }
 
-        private StandardUIMenuPanel GetDialogueActorPanel(DialogueActor dialogueActor)
+        protected StandardUIMenuPanel GetDialogueActorPanel(DialogueActor dialogueActor)
         {
             if (dialogueActor == null) return null;
             return GetPanelFromNumber(dialogueActor.standardDialogueUISettings.menuPanelNumber, dialogueActor.standardDialogueUISettings.customMenuPanel);
         }
 
-        private StandardUIMenuPanel GetPanelFromNumber(MenuPanelNumber menuPanelNumber, StandardUIMenuPanel customMenuPanel)
+        protected StandardUIMenuPanel GetPanelFromNumber(MenuPanelNumber menuPanelNumber, StandardUIMenuPanel customMenuPanel)
         { 
             switch (menuPanelNumber)
             {
@@ -124,32 +135,32 @@ namespace PixelCrushers.DialogueSystem
         #region Portraits
 
         /// <summary>
-        /// Sets the PC portrait name and texture to use in the response menu.
+        /// Sets the PC portrait name and sprite to use in the response menu.
         /// </summary>
-        /// <param name="portraitTexture">Portrait texture.</param>
+        /// <param name="portraitSprite">Portrait sprite.</param>
         /// <param name="portraitName">Portrait name.</param>
-        public override void SetPCPortrait(Texture2D portraitTexture, string portraitName)
+        public override void SetPCPortrait(Sprite portraitSprite, string portraitName)
         {
-            m_pcPortraitTexture = portraitTexture;
+            m_pcPortraitSprite = portraitSprite;
             m_pcPortraitName = portraitName;
         }
 
         /// <summary>
-        /// Sets the portrait texture to use in the response menu if the named actor is the player.
+        /// Sets the portrait sprite to use in the response menu if the named actor is the player.
         /// This is used to immediately update the GUI control if the SetPortrait() sequencer 
-        /// command changes the portrait texture.
+        /// command changes the portrait sprite.
         /// </summary>
         /// <param name="actorName">Actor name in database.</param>
-        /// <param name="portraitTexture">Portrait texture.</param>
-        public override void SetActorPortraitTexture(string actorName, Texture2D portraitTexture)
+        /// <param name="portraitSprite">Portrait sprite.</param>
+        public override void SetActorPortraitSprite(string actorName, Sprite portraitSprite)
         {
             if (string.Equals(actorName, m_pcPortraitName))
             {
-                Texture2D actorPortraitTexture = AbstractDialogueUI.GetValidPortraitTexture(actorName, portraitTexture);
-                m_pcPortraitTexture = actorPortraitTexture;
+                var actorPortraitSprite = AbstractDialogueUI.GetValidPortraitSprite(actorName, portraitSprite);
+                m_pcPortraitSprite = portraitSprite;
                 if (m_currentPanel != null && m_currentPanel.pcImage != null && DialogueManager.masterDatabase.IsPlayer(actorName))
                 {
-                    m_currentPanel.pcImage.sprite = UITools.CreateSprite(actorPortraitTexture);
+                    m_currentPanel.pcImage.sprite = actorPortraitSprite;
                 }
             }
         }
@@ -175,7 +186,7 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="target">Send OnClick events to this GameObject (the dialogue UI).</param>
         public override void ShowResponses(Subtitle lastSubtitle, Response[] responses, Transform target)
         {
-            var panel = GetPanel(lastSubtitle);
+            var panel = GetPanel(lastSubtitle, responses);
             if (panel == null)
             {
                 if (DialogueDebug.logWarnings) Debug.LogWarning("Dialogue System: Can't find menu panel.");
@@ -183,7 +194,7 @@ namespace PixelCrushers.DialogueSystem
             else
             {
                 m_currentPanel = panel;
-                panel.SetPCPortrait(m_pcPortraitTexture, m_pcPortraitName);
+                panel.SetPCPortrait(m_pcPortraitSprite, m_pcPortraitName);
                 panel.ShowResponses(lastSubtitle, responses, target);
             }
         }

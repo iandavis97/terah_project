@@ -126,6 +126,11 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public static SetQuestEntryStateDelegate SetQuestEntryStateOverride = null;
 
+        /// <summary>
+        /// Set true to allow only one quest to be tracked at a time.
+        /// </summary>
+        public static bool trackOneQuestAtATime = false;
+
         public static void RegisterQuestLogFunctions()
         {
             // Unity 2017.3 bug IL2CPP can't do lambdas:
@@ -836,12 +841,32 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="value">If set to <c>true</c>, tracking is enabled.</param>
         public static void SetQuestTracking(string questName, bool value)
         {
-            if (value == true && !IsQuestTrackingAvailable(questName))
+            if (value == true)
             {
-                SetQuestTrackingAvailable(questName, true);
+                // If only one quest can be tracked at time, untrack all others:
+                if (trackOneQuestAtATime)
+                {
+                    var quests = GetAllQuests();
+                    foreach (var otherQuestName in quests)
+                    {
+                        if (string.Equals(otherQuestName, questName)) continue;
+                        if (IsQuestTrackingEnabled(otherQuestName))
+                        {
+                            DialogueLua.SetQuestField(otherQuestName, "Track", false);
+                            DialogueManager.instance.BroadcastMessage(DialogueSystemMessages.OnQuestTrackingDisabled, otherQuestName, SendMessageOptions.DontRequireReceiver);
+                        }
+                    }
+                }
+                // Make sure tracking is set to be available for this quest:
+                if (!IsQuestTrackingAvailable(questName))
+                {
+                    SetQuestTrackingAvailable(questName, true);
+                }
             }
+            // Track this quest:
             DialogueLua.SetQuestField(questName, "Track", value);
             SendUpdateTracker();
+            DialogueManager.instance.BroadcastMessage(value ? DialogueSystemMessages.OnQuestTrackingEnabled : DialogueSystemMessages.OnQuestTrackingDisabled, questName, SendMessageOptions.DontRequireReceiver);
         }
 
         /// <summary>

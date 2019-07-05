@@ -183,6 +183,80 @@ http://docs.unity3d.com/Manual/TroubleShootingIPhone.html
 ORK Version Changelog
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 2.25.2:
+- new: Event System: Add Loot: 'Add Loot' settings available. Optionally use loot settings (defined in 'Combatants > Loot') to add loot to the battle. The player's level will be used to select the loot table.
+- change: GUI Layouts: Circle: The 'Anchor' setting now controls where the center of the circle is placed instead of taking the radius into account.
+- fix: Legacy GUI: Input: Slider, Horizontal Buttons: Fixed an issue where the value text wasn't displayed.
+- fix: Event System: Change Position: Fixed an issue where moving a game object over time in multiple running events at the same time could lead to some events not progressing any further.
+- fix: GUI Boxes: Choices: Fixed an issue where using icon size didn't adjust the size of choice button icons.
+- fix: Status Previews: 'Normal' type status values using 'Combined Value' had a wrong preview value if a (non-combined) status value used in the calculation had a higher ID than the combined value.
+
+
+Version 2.25.1:
+- new: GUI Layouts: Circle: 'Circle' layout type available. Arranges content in a circle (like the 'Circle' choice mode).
+- new: Abilities, Items: Affect Range: 'From User' setting available. Optionally base the affect range on the user instead of the targets.
+- new: Grid Battles: Examine Grid: Attack Range Display: 'Use Counter Attack' setting available. Optionally use the combatant's counter attack instead of the current base attack when showing the attack range during grid examine.
+- new: HUDs: Information: 'Update By Inventory' and 'Update By Variables' settings available. Optionally update the HUD's content when the player's inventory or global game variables changed.
+- new: HUDs: Combatant: 'UI Blocks Cursor' setting available for 'Individual' type HUDs using 'Cursor Over'. Optionally recognize the cursor being over the any GUI box as cursor not over combatant. Using 'Cursor Over HUD' will allow cursor over the HUD's own GUI box.
+- new: Menu Screens: Information: 'Update By Inventory' and 'Update By Variables' settings available. Optionally update the HUD's content when the player's inventory or global game variables changed.
+- new: Shop Layouts: Info Box: 'Update By Inventory' and 'Update By Variables' settings available. Optionally update the HUD's content when the player's inventory or global game variables changed.
+- change: Legacy GUI: Performance improvements when using the 'Legacy GUI' GUI system. Depending on the use case, this can improve performance up to 50%.
+- fix: Active Time Battles: Fixed a potential issue where blocking/unblocking active time progress (e.g. using a 'Block Active Time' node) could lead to the battle being blocked forever under certain conditions.
+- fix: Item Collectors: Fixed an issue where using 'Key Press' start type didn't work.
+- fix: Abilities, Items: Target Settings: Fixed an issue where using 'None' target range could lead to issues when using an ability/item.
+- fix: Menu Screens: Equipment: Fixed an issue where dragging something already equipped on an equipment part on another combatant would duplicate the equipment, equipping it on the other combatant while still having it equipped on the menu user.
+- fix: Status Previews: 'Normal' type status values using 'Combined Value' where not previewed for some sources (e.g. in 'Status Value Distribution' menu screens).
+
+
+Version 2.25.0:
+- new: GUI Layouts: 'GUI Layouts' sub-section available in 'Menus' section. GUI layouts can be used to place GUI boxes (e.g. in HUDs) on a defined layout, ignoring the position and anchor of the GUI boxes. GUI layouts can als be used to align content from different sources (e.g. different HUDs).
+- new: Content Layouts: '%uc' text code available to add use costs specifically. E.g. for displaying item action costs in addition to the quantity ('%q').
+- new: Content Layouts: 'Remove Empty Lines' setting available when using 'Custom' content/info type. Optionally removes all empty lines (also lines only containing spaces) from the text. E.g. use this to remove lines that contain text codes that where replaced by empty text.
+- new: Game Settings: Asset Settings: 'Default Load Type' setting available. Define how asset bundles will be loaded, either using 'Load From File' (default) or 'Load From Memory'. Assets overriding the asset bundle path will also define a different load type.
+- new: Camera Controls: Top Down Border: 'Use Height Input' and 'Use Distance Input' settings available in the 'Zoom Settings'. Optionally use separate input keys to change the height and distance individually instead of changing both via the zoom input.
+- new: Input Keys: ORK Input Key: 'Negate Input' setting available for added input keys. Optionally negate the checked input when considering if an input happened for the combined input of all keys. E.g. use this to allow input if 'Shift' isn't held instead of held down.
+- new: Inventory Settings: Quantity Texts: 'Use Quantity 0 Text' settings available. Optionally use a different text when displaying quantities of 0.
+- new: Currencies, Items, Weapons, Armors, Crafting Recipes, AI Behaviours, AI Rulesets: Conditional Prefabs: 'Conditional Prefab' settings available. Optionally use a different prefab for an item/currency/etc. based on variable conditions. Variable conditions can also check item/equipment variables.
+- new: Move AIs: Follow Leader: 'Next In Line' setting available. Optionally follows the combatant next in line instead of the actual leader. Use this to prevent everyone from following the leader and move in a line instead.
+- new: Move AIs: Hunting, Caution: 'Use Target Change' setting available in 'Hunting Settings' and 'Caution Settings'. Optionally allow the combatant to change to another detected target that's nearer than the current target.
+- new: Battle Settings: Auto Start Battles: 'Auto Start Battles' settings available. Define the default auto start battle settings for all combatants. Combatants can optionally override the default settings.
+- new: Battle Camera: Toggle Key: 'Only Player Choosing' setting available. Optionally only allow using the toggle key while a player combatant is choosing actions.
+- new: Battle End: 'Loot Dialogue Type' settings available. Defines which battle end dialogue is used to display the battle's loot, experience and status value gains. Defaults to 'Simple', the previously only available series of dialogues.
+- new: Battle End: Loot Dialogue: 'Layout Screen' dialogue type available. Displays the battle's loot in individual GUI boxes at the same time, the combatant gains/level up GUI boxes will also be displayed at the same time. The GUI boxes can be arranged using GUI layouts.
+- new: Battle Grids, Grid Cell Types: Deployment: 'Combatant' deployment type available. Deploys a defined combatant on the cell.
+- new: Battle AI: Attack, Ability, Class Ability, Item, Defend, Escape, Change Member, Shortcut Slot: 'Can Use Check Only' setting available. Optionally only check if the action is useable instead of using the action.
+- new: Menu Settings: 'Focus Left Click', 'Focus Middle Click' and 'Focus Right Click' settings available. Defines if left/middle/right mouse button clicks can be used to change focus to a GUI box. Using the left mouse button is by default enabled.
+- new: Menu Settings: Drag/Drop Settings: 'Use Choice Layout' setting available. Optionally use the same layout/look of the dragged choice.
+- new: HUDs: 'Click To Foreground' setting available. Optionally bring a HUD's GUI box to the foreground of its GUI layer when clicking on it. If the currently focused GUI box is on the same layer it'll still be in front of the HUD.
+- new: HUDs: Combatant, Turn Order: 'Multi-Box Layout' setting available. Replaces the previous offset settings (which are still available) and adds support for the new GUI layouts.
+- new: HUDs: Combatant: 'Cursor Over HUD' setting available for 'Individual' type HUDs using 'Cursor Over'. Optionally recognize the cursor being over the HUD's GUI box as cursor over combatant as well.
+- new: HUDs: Tooltip: 'Portrait' HUD element type available. Optionally displays a portrait of the tooltip content.
+- new: HUDs: Tooltip: 'Has Equip Durability' setting available in the HUD element's 'Display Requirements' settings. Optionally only display a HUD element only if the tooltip is an equipment using durability (or not).
+- new: HUDs: Quest: Task Settings: 'Advanced Layout' settings available for task requirements. Optionally add multiple labels to add text and value bars for quest tasks, creating more complex visuals for task requirements.
+- new: HUDs: Console, Control, Information, Interaction, Latest Turn, Navigation, Quest, Timebar, Tooltip: 'GUI Layout' settings available. Optionally use a GUI layout to place the HUD's GUI box.
+- new: Menu Screens: Ability, Equipment, Inventory: Sub Menu: 'Show Empty Menu' setting available. Optionally allow showing an empty sub-menu (without any added buttons), e.g. to display an item's description.
+- new: Menu Screens: Quest: Info Box: 'Accept Closes Info' setting available when not using a back button or activation choice. Optionally close the info box when using the 'Ok' button or 'Accept' key.
+- new: Menu Screens: Quest: Info Box: 'Show Ok Button' and 'Show Cancel Button' settings available when not using a back button or activation choice. Showing the 'Ok' and 'Cancel' buttons of the used GUI box is now optional.
+- new: Menu Screens: Status Value Distribution: 'Enable Tooltip' setting available. Optionally show a tooltip of the status value changed by an input.
+- new: Text Display Settings: Use Cost Display: 'Action Cost Text' settings available. Defines how action costs are displayed in use cost texts. Action costs refer to actions per turn in 'Turn Based' and 'Phase' battles, and to timebar cost in 'Active Time' battles. The action cost in 'Real Time' battles are always 0.
+- new: Game Events: Actors: 'Found Objects', 'Global Objects' and 'Selected Data' actor types available. Optionally use game objects (or combatants) stored in found/global objects or selected data as an actor. The game object/combatant is selected whenever the actor is used in a node, i.e. changing the found/global object or selected data will also change the actor for the following nodes.
+- new: Game Events: Unequip Selected Data: 'Unequip Selected Data' node available in 'Combatant > Equipment' nodes. Unequips weapons and armors stored in selected data from a combatant.
+- new: Game Events: Close Battle Gains: 'Close Battle Gains' node available in 'Battle > Gains' nodes. Closes a currently opened battle gains/loot dialogue.
+- new: Game Events: Spawn Combatant: 'Use Selected Data' settings available. Optionally spawn combatants stored in selected data.
+- new: Game Events: Toggle Battle Camera: 'Toggle Battle Camera' node available in 'Battle > Battle' nodes. Toggles the battle camera on or off.
+- change: Battle Components: You can now set up 'Battle' components without any defined combatant and rely only on deployed combatants from battle grids or auto joining.
+- change: HUDs: Tooltip: 'Use Bar' and 'Bar Type' settings have been replaced by the 'Type' setting to select 'Information' (text), 'Level Points', 'Durability' or the new 'Portrait' element type.
+- change: Combatants: Auto Start Battles: The 'Auto Start Battles Settings' are now moved to the battle override settings, as the default settings for all combatants are now defined in 'Battle System > Battle Settings'. Previous settings will automatically be updated to use the override settings.
+- change: Battle Grid Settings: Examine Grid: Using the 'Cancel' key will now close all combatant info boxes that where called using an input key at once.
+- change: Grid Highlights: Combatant selection highlights now take priority over other highlights.
+- change: Weapons, Armors: Override Prefabs: Overriding item collector and equipment viewer prefabs/materials in an equipment's level is no longer separate. If you've previously only overridden one of them, make sure to also set up the other after this update.
+- fix: Menu Screens: Quest: Fixed an issue where settings where hidden in the editor when certain quest states where not enabled to be shown.
+- fix: Save Games: Fixed an issue where saving scene data for scenes with a name containing ' - ' lead to errors when loading the save game.
+- fix: Abilities, Items: 'None' target range actions of AI controlled combatants no longer use targets/cells out of use range.
+- fix: Grid Battles: Orientation: Fixed an issue where using 'Turn End Orientation' caused the orientation selection's UI to still be present after the battle ended.
+- fix: Status Development: Fixed an issue where using 'Formula' type development for 'Experience' status values using 'None' experience and 'Earn on Level Up' caused adding wrong values to the status value on level up.
+
+
 Version 2.24.1:
 - new Unity 2019: ORK Framework now supports Unity 2019 (use ORK for Unity 2018).
 - new: Combatants: Portraits: 'Portrait Sets' settings available. Portraits are now arranged in sets - the combatant randomly selects a set when being initialized in the game. This can be used to have different portraits for individual combatant instancess of the same combatant.

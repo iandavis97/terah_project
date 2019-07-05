@@ -140,17 +140,24 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Shows the panel at the start of the conversation; called if it's configured to be visible at the start.
         /// </summary>
-        /// <param name="portraitImage">The image of the first actor who will use this panel.</param>
+        /// <param name="portraitSprite">The image of the first actor who will use this panel.</param>
         /// <param name="portraitName">The name of the first actor who will use this panel.</param>
         /// <param name="dialogueActor">The actor's DialogueActor component, or null if none.</param>
-        public virtual void OpenOnStartConversation(Texture2D portraitImage, string portraitName, DialogueActor dialogueActor)
+        public virtual void OpenOnStartConversation(Sprite portraitSprite, string portraitName, DialogueActor dialogueActor)
         {
             Open();
             SetUIElementsActive(true);
-            if (this.portraitImage != null) this.portraitImage.sprite = UITools.CreateSprite(portraitImage);
+            Tools.SetGameObjectActive(this.portraitImage, portraitSprite != null);
+            if (this.portraitImage != null) this.portraitImage.sprite = portraitSprite;
             if (this.portraitName != null) this.portraitName.text = portraitName;
             if (subtitleText.text != null) subtitleText.text = string.Empty;
             CheckDialogueActorAnimator(dialogueActor);
+        }
+
+        [System.Obsolete("Use OpenOnStartConversation(Sprite,string,DialogueActor) instead.")]
+        public virtual void OpenOnStartConversation(Texture2D portraitTexture, string portraitName, DialogueActor dialogueActor)
+        {
+            OpenOnStartConversation(UITools.CreateSprite(portraitTexture), portraitName, dialogueActor);
         }
 
         public void OnConversationStart(Transform actor)
@@ -312,8 +319,13 @@ namespace PixelCrushers.DialogueSystem
             if (subtitle == null) return;
             currentSubtitle = subtitle;
             if (!onlyShowNPCPortraits || subtitle.speakerInfo.isNPC)
-            {
-                if (portraitImage != null) portraitImage.sprite = UITools.CreateSprite(subtitle.GetSpeakerPortrait());
+            {                
+                if (portraitImage != null)
+                {
+                    var sprite = subtitle.GetSpeakerPortrait();
+                    portraitImage.sprite = sprite;
+                    Tools.SetGameObjectActive(portraitImage, sprite != null);
+                }
                 portraitName.text = subtitle.speakerInfo.Name;
                 UITools.SendTextChangeMessage(portraitName);
             }
@@ -336,10 +348,12 @@ namespace PixelCrushers.DialogueSystem
             textField.color = (formattedText.emphases != null && formattedText.emphases.Length > 0) ? formattedText.emphases[0].color : originalColor;
         }
 
-        public virtual void SetActorPortraitTexture(string actorName, Texture2D portraitTexture)
+        public virtual void SetActorPortraitSprite(string actorName, Sprite portraitSprite)
         {
             if (portraitImage == null) return;
-            portraitImage.sprite = UITools.CreateSprite(AbstractDialogueUI.GetValidPortraitTexture(actorName, portraitTexture));
+            var sprite = AbstractDialogueUI.GetValidPortraitSprite(actorName, portraitSprite);
+            portraitImage.sprite = sprite;
+            Tools.SetGameObjectActive(portraitImage, sprite != null);
         }
 
         public void CheckSubtitleAnimator(Subtitle subtitle)

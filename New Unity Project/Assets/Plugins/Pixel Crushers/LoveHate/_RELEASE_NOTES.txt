@@ -4,6 +4,26 @@ Copyright © Pixel Crushers
 RELEASE NOTES
 -------------
 
+Version 1.9.11:
+[July 1, 2019]
+- Text Tables: Improved performance in very large tables; added PlayMaker actions; GetFieldText() replaces "\n" with newlines.
+- Save System: DiskSavedGameDataStorer inspector now has button to delete saved games; SaveSystemTestMenu is now reskinnable.
+- Game Creator: Added support.
+
+
+Version 1.9.10:
+[June 8, 2019]
+- Fixed: Input Device Manager System.IndexOutOfRangeException when first importing asset if project's Input Manager is not ready.
+- Save System:
+	- Improved: Added SaveSystem methods LoadAdditiveScene, UnloadAdditiveScene.
+	- Improved: Savers can now implement optional ApplyDataImmediate and OnRestartGame methods.
+	- Fixed: Moved DiskSavedGameDataStorer initialization code from Start to Awake so other scripts can check for saved games in their own Start methods.
+	- Dialogue System Saver: Save Across Scene Changes is now ticked by default; SaveSystem.RestartGame() automatically resets dialogue database.
+- Dialogue System:
+	- Name provided to functions such as ReportDeed() can also refer to actor's name in dialogue database or faction name assigned to faction member.
+	- In ReportDeed(), name can now optionally be "faction=FactionName".
+
+
 Version 1.9.9:
 [May 17, 2019]
 - Added: FactionDatabase.personalityTraitChanged event.

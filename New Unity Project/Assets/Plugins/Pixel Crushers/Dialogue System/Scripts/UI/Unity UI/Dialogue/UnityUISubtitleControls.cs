@@ -106,7 +106,7 @@ namespace PixelCrushers.DialogueSystem
             if (characterInfo != null)
             {
                 if (portraitName != null && string.IsNullOrEmpty(portraitName.text)) portraitName.text = characterInfo.Name;
-                if (portraitImage != null && portraitImage.sprite == null) portraitImage.sprite = UITools.CreateSprite(characterInfo.portrait);
+                if (portraitImage != null && portraitImage.sprite == null) portraitImage.sprite = characterInfo.portrait;
             }
         }
 
@@ -185,7 +185,7 @@ namespace PixelCrushers.DialogueSystem
         {
             if ((subtitle != null) && !string.IsNullOrEmpty(subtitle.formattedText.text))
             {
-                if (portraitImage != null) portraitImage.sprite = UITools.CreateSprite(subtitle.GetSpeakerPortrait());
+                if (portraitImage != null) portraitImage.sprite = subtitle.GetSpeakerPortrait();
                 if (portraitName != null)
                 {
                     portraitName.text = subtitle.speakerInfo.Name;
@@ -251,17 +251,17 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
-        /// Sets the portrait texture to use in the subtitle if the named actor is the speaker.
+        /// Sets the portrait sprite to use in the subtitle if the named actor is the speaker.
         /// This is used to immediately update the GUI control if the SetPortrait() sequencer 
-        /// command changes the portrait texture.
+        /// command changes the portrait sprite.
         /// </summary>
         /// <param name="actorName">Actor name in database.</param>
-        /// <param name="portraitTexture">Portrait texture.</param>
-        public override void SetActorPortraitTexture(string actorName, Texture2D portraitTexture)
+        /// <param name="portraitSprite">Portrait sprite.</param>
+        public override void SetActorPortraitSprite(string actorName, Sprite portraitSprite)
         {
             if ((currentSubtitle != null) && string.Equals(currentSubtitle.speakerInfo.nameInDatabase, actorName))
             {
-                if (portraitImage != null) portraitImage.sprite = UITools.CreateSprite(AbstractDialogueUI.GetValidPortraitTexture(actorName, portraitTexture));
+                if (portraitImage != null) portraitImage.sprite = AbstractDialogueUI.GetValidPortraitSprite(actorName, portraitSprite);
             }
         }
 

@@ -115,7 +115,7 @@ namespace PixelCrushers.DialogueSystem
         /// it could be overrided by [pic*] tags in the formatted text.
         /// </summary>
         /// <returns>The speaker portrait.</returns>
-        public Texture2D GetSpeakerPortrait()
+        public Sprite GetSpeakerPortrait()
         {
             if (speakerInfo == null) return null;
             if (formattedText == null) return speakerInfo.portrait;

@@ -31,8 +31,11 @@ namespace PixelCrushers.DialogueSystem
         [UnityEngine.Serialization.FormerlySerializedAs("internalName")]        
         public string persistentDataName;
 
-        [Tooltip("Optional portrait. If unassigned, will use portrait of actor in database.")]
+        [Tooltip("Optional portrait. If unassigned, will use portrait of actor in database. This field allows you to assign a Texture.")]
         public Texture2D portrait;
+
+        [Tooltip("Optional portrait. If unassigned, will use portrait of actor in database. This field allows you to assign a Sprite.")]
+        public Sprite spritePortrait;
 
         [Serializable]
         public class BarkUISettings
@@ -88,6 +91,11 @@ namespace PixelCrushers.DialogueSystem
         {
             SetupBarkUI();
             SetupDialoguePanels();
+        }
+
+        public Sprite GetPortraitSprite()
+        {
+            return UITools.GetSprite(portrait, spritePortrait);
         }
 
         private void SetupBarkUI()

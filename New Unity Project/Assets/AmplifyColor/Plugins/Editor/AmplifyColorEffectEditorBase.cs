@@ -68,9 +68,16 @@ public class AmplifyColorEffectEditorBase : Editor
 
 	bool FindClone( AmplifyColorBase effect )
 	{
+	#if UNITY_2018_1_OR_NEWER
+		GameObject effectPrefab = PrefabUtility.GetCorrespondingObjectFromSource( effect.gameObject ) as GameObject;
+		PrefabAssetType effectPrefabType = PrefabUtility.GetPrefabAssetType( effect.gameObject );
+		PrefabInstanceStatus effectPrefabInstanceStatus = PrefabUtility.GetPrefabInstanceStatus( effect.gameObject );
+		bool effectIsPrefab = ( effectPrefabType != PrefabAssetType.NotAPrefab && effectPrefabInstanceStatus == PrefabInstanceStatus.NotAPrefab );
+	#else
 		GameObject effectPrefab = PrefabUtility.GetPrefabParent( effect.gameObject ) as GameObject;
 		PrefabType effectPrefabType = PrefabUtility.GetPrefabType( effect.gameObject );
 		bool effectIsPrefab = ( effectPrefabType != PrefabType.None && effectPrefabType != PrefabType.PrefabInstance );
+	#endif
 		bool effectHasPrefab = ( effectPrefab != null );
 
 		AmplifyColorBase[] all = Resources.FindObjectsOfTypeAll( typeof( AmplifyColorBase ) ) as AmplifyColorBase[];
@@ -84,9 +91,16 @@ public class AmplifyColorEffectEditorBase : Editor
 				continue;
 			}
 
+		#if UNITY_2018_1_OR_NEWER
+			GameObject otherPrefab = PrefabUtility.GetCorrespondingObjectFromSource( other.gameObject ) as GameObject;
+			PrefabAssetType otherPrefabType = PrefabUtility.GetPrefabAssetType( other.gameObject );
+			PrefabInstanceStatus otherPrefabInstanceStatus = PrefabUtility.GetPrefabInstanceStatus( other.gameObject );
+			bool otherIsPrefab = ( otherPrefabType != PrefabAssetType.NotAPrefab && otherPrefabInstanceStatus == PrefabInstanceStatus.NotAPrefab );
+		#else
 			GameObject otherPrefab = PrefabUtility.GetPrefabParent( other.gameObject ) as GameObject;
 			PrefabType otherPrefabType = PrefabUtility.GetPrefabType( other.gameObject );
 			bool otherIsPrefab = ( otherPrefabType != PrefabType.None && otherPrefabType != PrefabType.PrefabInstance );
+		#endif
 			bool otherHasPrefab = ( otherPrefab != null );
 
 			if ( otherIsPrefab && effectHasPrefab && effectPrefab == other.gameObject )

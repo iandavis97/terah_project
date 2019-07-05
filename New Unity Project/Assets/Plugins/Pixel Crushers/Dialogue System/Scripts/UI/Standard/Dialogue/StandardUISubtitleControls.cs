@@ -349,13 +349,13 @@ namespace PixelCrushers.DialogueSystem
         public override void ClearSubtitle() { } // Unused. Work is done by StandardUISubtitlePanel.
 
         /// <summary>
-        /// Sets the portrait texture to use in the subtitle if the named actor is the speaker.
+        /// Sets the portrait sprite to use in the subtitle if the named actor is the speaker.
         /// This is used to immediately update the GUI control if the SetPortrait() sequencer 
-        /// command changes the portrait texture.
+        /// command changes the portrait sprite.
         /// </summary>
         /// <param name="actorName">Actor name in database.</param>
-        /// <param name="portraitTexture">Portrait texture.</param>
-        public override void SetActorPortraitTexture(string actorName, Texture2D portraitTexture)
+        /// <param name="portraitSprite">Portrait sprite.</param>
+        public override void SetActorPortraitSprite(string actorName, Sprite portraitSprite)
         {
             if (string.IsNullOrEmpty(actorName)) return;
             for (int i = 0; i < m_builtinPanels.Count; i++)
@@ -363,7 +363,7 @@ namespace PixelCrushers.DialogueSystem
                 var panel = m_builtinPanels[i];
                 if (panel != null && panel.currentSubtitle != null && string.Equals(panel.currentSubtitle.speakerInfo.nameInDatabase, actorName))
                 {
-                    panel.SetActorPortraitTexture(actorName, portraitTexture);
+                    panel.SetActorPortraitSprite(actorName, portraitSprite);
                     return;
                 }
             }
@@ -371,7 +371,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 if (panel != null && panel.currentSubtitle != null && string.Equals(panel.currentSubtitle.speakerInfo.nameInDatabase, actorName))
                 {
-                    panel.SetActorPortraitTexture(actorName, portraitTexture);
+                    panel.SetActorPortraitSprite(actorName, portraitSprite);
                     return;
                 }
             }
@@ -425,7 +425,7 @@ namespace PixelCrushers.DialogueSystem
             checkedPanels.Add(panel);
             if (panel.visibility == UIVisibility.AlwaysFromStart)
             {
-                var actorPortrait = (dialogueActor != null && dialogueActor.portrait != null) ? dialogueActor.portrait : actor.portrait;
+                var actorPortrait = (dialogueActor != null && dialogueActor.GetPortraitSprite() != null) ? dialogueActor.GetPortraitSprite() : actor.GetPortraitSprite();
                 var actorName = CharacterInfo.GetLocalizedDisplayNameInDatabase(actor.Name);
                 panel.OpenOnStartConversation(actorPortrait, actorName, dialogueActor);
 

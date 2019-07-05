@@ -150,7 +150,12 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 menu.AddItem(new GUIContent("Show/Show Full Text On Hover"), showFullTextOnHover, ToggleShowFullTextOnHover);
                 menu.AddItem(new GUIContent("Show/Show End Node Markers"), showEndNodeMarkers, ToggleShowEndNodeMarkers);
                 menu.AddItem(new GUIContent("Show/Show Node IDs"), showNodeIDs, ToggleShowNodeIDs);
+                menu.AddItem(new GUIContent("Show/Show Titles Instead of Text"), showTitlesInsteadOfText, ToggleShowTitlesBeforeText);
                 menu.AddItem(new GUIContent("Show/Show Primary Actors in Lower Right"), showParticipantNames, ToggleShowParticipantNames);
+                menu.AddItem(new GUIContent("Show/Node Width/1x"), canvasRectWidthMultiplier == 1, SetNodeWidthMultiplier, (int)1);
+                menu.AddItem(new GUIContent("Show/Node Width/2x"), canvasRectWidthMultiplier == 2, SetNodeWidthMultiplier, (int)2);
+                menu.AddItem(new GUIContent("Show/Node Width/3x"), canvasRectWidthMultiplier == 3, SetNodeWidthMultiplier, (int)3);
+                menu.AddItem(new GUIContent("Show/Node Width/4x"), canvasRectWidthMultiplier == 4, SetNodeWidthMultiplier, (int)4);
                 menu.AddItem(new GUIContent("Grid/No Snap"), snapToGridAmount < MinorGridLineWidth, SetSnapToGrid, 0f);
                 menu.AddItem(new GUIContent("Grid/12 pixels"), Mathf.Approximately(12f, snapToGridAmount), SetSnapToGrid, 12f);
                 menu.AddItem(new GUIContent("Grid/24 pixels"), Mathf.Approximately(24f, snapToGridAmount), SetSnapToGrid, 24f);
@@ -159,6 +164,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 menu.AddItem(new GUIContent("Grid/Snap All Nodes To Grid"), false, SnapAllNodesToGrid);
                 menu.AddItem(new GUIContent("Search/Search Bar"), isSearchBarOpen, ToggleDialogueTreeSearchBar);
                 menu.AddItem(new GUIContent("Search/Global Search and Replace..."), false, OpenGlobalSearchAndReplace);
+                menu.AddItem(new GUIContent("Settings/Auto Arrange After Adding Node"), autoArrangeOnCreate, ToggleAutoArrangeOnCreate);
                 menu.AddItem(new GUIContent("Settings/Add New Nodes to Right"), addNewNodesToRight, ToggleAddNewNodesToRight);
                 menu.AddItem(new GUIContent("Settings/Confirm Node and Link Deletion"), confirmDelete, ToggleConfirmDelete);
                 menu.AddItem(new GUIContent("Outline Mode"), false, ActivateOutlineMode);
@@ -212,9 +218,20 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             dialogueEntryNodeText.Clear();
         }
 
+        private void ToggleShowTitlesBeforeText()
+        {
+            showTitlesInsteadOfText = !showTitlesInsteadOfText;
+            dialogueEntryNodeText.Clear();
+        }
+
         private void ToggleAddNewNodesToRight()
         {
-            addNewNodesToRight = !addNewNodesToRight;
+           addNewNodesToRight = !addNewNodesToRight;
+        }
+
+        private void ToggleAutoArrangeOnCreate()
+        {
+            autoArrangeOnCreate = !autoArrangeOnCreate;
         }
 
         private void ToggleConfirmDelete()

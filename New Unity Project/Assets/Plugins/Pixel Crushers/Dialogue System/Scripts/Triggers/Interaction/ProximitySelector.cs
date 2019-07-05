@@ -350,6 +350,19 @@ namespace PixelCrushers.DialogueSystem
             Usable usable = other.GetComponent<Usable>();
             if (usable != null && usable.enabled)
             {
+                RemoveUsableFromDetectedList(usable);
+            }
+        }
+
+        public virtual void RemoveGameObjectFromDetectedList(GameObject other)
+        {
+            if (other != null) RemoveUsableFromDetectedList(other.GetComponent<Usable>());
+        }
+
+        public virtual void RemoveUsableFromDetectedList(Usable usable)
+        {
+            if (usable != null)
+            {
                 if (usablesInRange.Contains(usable)) usablesInRange.Remove(usable);
                 if (currentUsable == usable)
                 {

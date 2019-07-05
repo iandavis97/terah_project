@@ -153,7 +153,7 @@ namespace PixelCrushers.DialogueSystem
                     m_currentConversationID = newConversationID;
                     m_model.InformParticipants(DialogueSystemMessages.OnLinkedConversationStart, true);
                     m_model.UpdateParticipantsOnLinkedConversation(newConversationID);
-                    m_view.SetPCPortrait(m_model.GetPCTexture(), m_model.GetPCName());
+                    m_view.SetPCPortrait(m_model.GetPCSprite(), m_model.GetPCName());
                     SetConversationOverride(state);
                 }
                 // Use view to show current state:
@@ -334,15 +334,15 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
-        /// Sets the portrait texture to use in the UI for an actor.
+        /// Sets the portrait sprite to use in the UI for an actor.
         /// This is used when the SetPortrait() sequencer command changes an actor's image.
         /// </summary>
         /// <param name="actorName">Actor name.</param>
-        /// <param name="portraitTexture">Portrait texture.</param>
-        public void SetActorPortraitTexture(string actorName, Texture2D portraitTexture)
+        /// <param name="sprite">Portrait sprite.</param>
+        public void SetActorPortraitSprite(string actorName, Sprite sprite)
         {
-            m_model.SetActorPortraitTexture(actorName, portraitTexture);
-            m_view.SetActorPortraitTexture(actorName, portraitTexture);
+            m_model.SetActorPortraitSprite(actorName, sprite);
+            m_view.SetActorPortraitSprite(actorName, sprite);
         }
 
     }

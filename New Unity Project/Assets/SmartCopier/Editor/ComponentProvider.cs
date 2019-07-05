@@ -8,11 +8,9 @@ namespace SmartCopier
 	public class ComponentProvider
 	{
 		private readonly HashSet<Type> _filteredComponentTypes = new HashSet<Type>();
-		private readonly GameObject _gameObject;
 
-		public ComponentProvider(GameObject gameObject)
+		public ComponentProvider()
 		{
-			_gameObject = gameObject;
 		}
 
 		/// Filter Components of type T.
@@ -27,9 +25,9 @@ namespace SmartCopier
 			return _filteredComponentTypes.Remove(typeof(T));
 		}
 
-		public IEnumerable<ComponentWrapper> GetFilteredComponents()
+		public IEnumerable<ComponentWrapper> GetFilteredComponents(GameObject gameObject)
 		{
-			Component[] allComponents = _gameObject.GetComponents<Component>();
+			IEnumerable<Component> allComponents = gameObject.GetComponents<Component>();
 			return allComponents
 				.Where(c => !_filteredComponentTypes.Contains(c.GetType()))
 				.Select(c => new ComponentWrapper(c))

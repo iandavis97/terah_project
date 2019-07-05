@@ -377,6 +377,14 @@ namespace PixelCrushers.DialogueSystem
                     var changed = EditorGUI.EndChangeCheck();
                     serializedObject.Update();
                     if (changed) serializedObject.FindProperty("luaCode").stringValue = newLuaCode;
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.FlexibleSpace();
+                    if (GUILayout.Button("x", GUILayout.Width(18), GUILayout.Height(14)))
+                    {
+                        serializedObject.FindProperty("luaCode").stringValue = string.Empty;
+                        showRunLuaCodeAction = false;
+                    }
+                    EditorGUILayout.EndHorizontal();
                 }
                 finally
                 {

@@ -80,9 +80,14 @@ namespace PixelCrushers
         private SerializedObject m_serializedObject = null;
         private GUIStyle textAreaStyle = null;
         private bool isTextAreaStyleInitialized = false;
-        
+
         private const string EncodingTypeEditorPrefsKey = "PixelCrushers.EncodingType";
         private const string ToolbarSelectionPrefsKey = "PixelCrushers.TextTableEditor.Toolbar";
+        private const double TimeBetweenUpdates = 10;
+
+        private bool m_needToUpdateSO;
+        private bool m_needToApplyBeforeUpdateSO;
+        private System.DateTime m_lastApply;
 
         #endregion
 
@@ -90,6 +95,9 @@ namespace PixelCrushers
 
         private void OnEnable()
         {
+            m_needToUpdateSO = true;
+            m_needToApplyBeforeUpdateSO = false;
+            m_lastApply = System.DateTime.Now;
             s_instance = this;
             titleContent.text = "Text Table";
             m_needRefreshLists = true;
@@ -101,6 +109,7 @@ namespace PixelCrushers
 
         private void OnDisable()
         {
+            if (m_serializedObject != null) m_serializedObject.ApplyModifiedProperties();
             s_instance = null;
             Undo.undoRedoPerformed -= Repaint;
             EditorPrefs.SetInt(ToolbarSelectionPrefsKey, m_toolbarSelection);
@@ -126,6 +135,8 @@ namespace PixelCrushers
             ResetLanguagesTab();
             ResetFieldsTab();
             m_needRefreshLists = true;
+            m_needToUpdateSO = true;
+            m_needToApplyBeforeUpdateSO = false;
             m_serializedObject = (newTable != null) ? new SerializedObject(newTable) : null;
             if (m_textTable != null && m_textTable.languages.Count == 0) m_textTable.AddLanguage("Default");
             m_textTableInstanceID = (newTable != null) ? newTable.GetInstanceID() : 0;
@@ -141,7 +152,20 @@ namespace PixelCrushers
         {
             DrawTextTableField();
             if (m_textTable == null || m_serializedObject == null) return;
-            m_serializedObject.Update();
+            var now = System.DateTime.Now;
+            var elapsed = (now - m_lastApply).TotalSeconds;
+            if (m_needToUpdateSO)
+            {
+                if (m_needToApplyBeforeUpdateSO)
+                {
+                    //Debug.Log("ApplyBeforeUpdate at " + now);
+                    m_serializedObject.ApplyModifiedProperties();
+                    m_needToApplyBeforeUpdateSO = false;
+                }
+                m_needToUpdateSO = false;
+                //Debug.Log("Update at " + now);
+                m_serializedObject.Update();
+            }
             var newToolbarSelection = GUILayout.Toolbar(m_toolbarSelection, ToolbarLabels);
             if (newToolbarSelection != m_toolbarSelection)
             {
@@ -156,7 +180,14 @@ namespace PixelCrushers
             {
                 DrawFieldsTab();
             }
-            m_serializedObject.ApplyModifiedProperties();
+            if (GUI.changed) m_needToApplyBeforeUpdateSO = true;
+            if (elapsed > TimeBetweenUpdates)
+            {
+                m_lastApply = now;
+                //Debug.Log("Apply at " + now);
+                m_serializedObject.ApplyModifiedProperties();
+                m_needToApplyBeforeUpdateSO = false;
+            }
         }
 
         private void DrawTextTableField()
@@ -317,8 +348,8 @@ namespace PixelCrushers
             if (m_textTable == null) return;
             try
             {
-                var entryBoxHeight = IsAnyFieldSelected() ? (6 * EditorGUIUtility.singleLineHeight) 
-                    : m_isSearchPanelOpen ? (5 * EditorGUIUtility.singleLineHeight) :  0;
+                var entryBoxHeight = IsAnyFieldSelected() ? (6 * EditorGUIUtility.singleLineHeight)
+                    : m_isSearchPanelOpen ? (5 * EditorGUIUtility.singleLineHeight) : 0;
                 GUILayout.BeginArea(new Rect(0, 2 * (EditorGUIUtility.singleLineHeight + 4), position.width,
                     position.height - (2 * (EditorGUIUtility.singleLineHeight + 4) + 4) - entryBoxHeight));
                 m_fieldListScrollPosition = GUILayout.BeginScrollView(m_fieldListScrollPosition, false, false);

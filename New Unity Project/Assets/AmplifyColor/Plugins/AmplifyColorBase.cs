@@ -165,16 +165,18 @@ public class AmplifyColorBase : MonoBehaviour
 
 	bool CheckSupport()
 	{
-		// Disable if we don't support image effect or render textures
-	#if UNITY_5_6_OR_NEWER
-		if ( !SystemInfo.supportsImageEffects )
-	#else
-		if ( !SystemInfo.supportsImageEffects || !SystemInfo.supportsRenderTextures )
+	#if !UNITY_2019_1_OR_NEWER
+			// Disable if we don't support image effect or render textures
+		#if UNITY_5_6_OR_NEWER
+			if ( !SystemInfo.supportsImageEffects )
+		#else
+			if ( !SystemInfo.supportsImageEffects || !SystemInfo.supportsRenderTextures )
+		#endif
+			{
+				ReportNotSupported();
+				return false;
+			}
 	#endif
-		{
-			ReportNotSupported();
-			return false;
-		}
 		return true;
 	}
 

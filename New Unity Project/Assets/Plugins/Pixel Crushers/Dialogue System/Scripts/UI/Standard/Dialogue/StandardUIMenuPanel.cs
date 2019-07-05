@@ -117,10 +117,20 @@ namespace PixelCrushers.DialogueSystem
 
         #region Show & Hide
 
+        public virtual void SetPCPortrait(Sprite portraitSprite, string portraitName)
+        {
+            if (pcImage != null)
+            {
+                pcImage.sprite = portraitSprite;
+                Tools.SetGameObjectActive(pcImage, portraitSprite != null);
+            }
+            pcName.text = portraitName;
+        }
+
+        [System.Obsolete("Use SetPCPortrait(Sprite,string) instead.")]
         public virtual void SetPCPortrait(Texture2D portraitTexture, string portraitName)
         {
-            if (pcImage != null) pcImage.sprite = UITools.CreateSprite(portraitTexture);
-            pcName.text = portraitName;
+            SetPCPortrait(UITools.CreateSprite(portraitTexture), portraitName);
         }
 
         public virtual void ShowResponses(Subtitle subtitle, Response[] responses, Transform target)

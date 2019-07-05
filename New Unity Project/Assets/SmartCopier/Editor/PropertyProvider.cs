@@ -1,57 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEditor;
 
 namespace SmartCopier
 {
 	public class PropertyProvider
 	{
-		private readonly HashSet<Type> _filteredAttributes = new HashSet<Type>();
 		private readonly SerializedObject _serializedObject;
+		private readonly PropertyFilter _propertyFilter;
 
-		public PropertyProvider(UnityEngine.Object obj)
+		public PropertyProvider(UnityEngine.Object obj, PropertyFilter propertyFilter)
 		{
 			_serializedObject = new SerializedObject(obj);
+			_propertyFilter = propertyFilter;
 		}
 
-		/// Filter properties that have an attribute of type T.
-		public void AddFilteredAttribute<T>() where T : Attribute
-		{
-			_filteredAttributes.Add(typeof(T));
-		}
-
-		/// Remove a filtered attribute of type T.
-		public bool RemoveFilteredAttribute<T>() where T : Attribute
-		{
-			return _filteredAttributes.Remove(typeof(T));
-		}
-
-		/// Get a collection of all serialized properties, filtered by given attributes.
-		public IEnumerable<SerializedProperty> GetFilteredProperties()
+		public IEnumerable<SerializedProperty> GetValidProperties()
 		{
 			Type objectType = _serializedObject.targetObject.GetType();
 			var allProperties = GetAllSerializedProperties();
-			var filteredProperties = new List<SerializedProperty>();
-			foreach (SerializedProperty property in allProperties)
-			{
-				FieldInfo field = objectType.GetField(property.propertyPath);
-				// For some types native to Unity, field will be null.
-				if (field != null)
-				{
-					bool filterByAttribute = _filteredAttributes.Any(att => field.GetCustomAttributes(att, false).Length > 0);
-					if (!filterByAttribute)
-					{
-						filteredProperties.Add(property);
-					}
-				}
-				else
-				{
-					filteredProperties.Add(property);
-				}
-			}
-			return filteredProperties;
+			return allProperties.Where(property => IsPropertyNotFiltered(property, objectType));
+		}
+
+		private bool IsPropertyNotFiltered(SerializedProperty property, Type targetObjectType)
+		{
+			return !_propertyFilter.IsPropertyFiltered(property, targetObjectType);
 		}
 
 		private IEnumerable<SerializedProperty> GetAllSerializedProperties()

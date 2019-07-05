@@ -52,9 +52,9 @@ namespace PixelCrushers.DialogueSystem
         public Transform transform;
 
         /// <summary>
-        /// The portrait texture of the character.
+        /// The portrait image of the character.
         /// </summary>
-        public Texture2D portrait;
+        public Sprite portrait;
 
         /// <summary>
         /// Gets the character's name.
@@ -89,7 +89,7 @@ namespace PixelCrushers.DialogueSystem
         /// <param name='portrait'>
         /// Portrait.
         /// </param>
-        public CharacterInfo(int id, string nameInDatabase, Transform transform, CharacterType characterType, Texture2D portrait)
+        public CharacterInfo(int id, string nameInDatabase, Transform transform, CharacterType characterType, Sprite portrait)
         {
             this.id = id;
             this.nameInDatabase = nameInDatabase;
@@ -112,11 +112,11 @@ namespace PixelCrushers.DialogueSystem
                 var actor = DialogueManager.masterDatabase.GetActor(dialogueActor.actor);
                 if (dialogueActor.portrait != null)
                 {
-                    this.portrait = dialogueActor.portrait;
+                    this.portrait = dialogueActor.GetPortraitSprite();
                 }
                 else if (actor != null)
                 {
-                    if (portrait == null) this.portrait = actor.portrait;
+                    if (portrait == null) this.portrait = actor.GetPortraitSprite();
                 }
             }
         }
@@ -142,13 +142,14 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         /// <returns>The pic override portrait.</returns>
         /// <param name="picNum">Pic number.</param>
-        public Texture2D GetPicOverride(int picNum)
+        public Sprite GetPicOverride(int picNum)
         {
             if (picNum < 2) return portrait;
             int alternatePortraitIndex = picNum - 2;
             Actor actor = DialogueManager.masterDatabase.GetActor(id);
             return ((actor != null) && (alternatePortraitIndex < actor.alternatePortraits.Count))
-                ? actor.alternatePortraits[alternatePortraitIndex]
+                ? UITools.CreateSprite(actor.alternatePortraits[alternatePortraitIndex])
+                : ((actor != null) && (alternatePortraitIndex < actor.spritePortraits.Count)) ? actor.spritePortraits[alternatePortraitIndex]
                 : portrait;
         }
 

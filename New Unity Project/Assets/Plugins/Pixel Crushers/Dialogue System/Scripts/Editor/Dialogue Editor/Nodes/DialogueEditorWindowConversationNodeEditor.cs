@@ -22,6 +22,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private bool showNodeIDs = false;
 
         [SerializeField]
+        private bool showTitlesInsteadOfText = false;
+
+        [SerializeField]
         private bool showAllActorNames = false;
 
         [SerializeField]
@@ -41,6 +44,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         [SerializeField]
         private bool addNewNodesToRight = false;
+
+        [SerializeField]
+        private bool autoArrangeOnCreate = false;
 
         private Dictionary<int, Texture2D> actorPortraitCache = null;
 
@@ -98,6 +104,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private Rect lassoRect = new Rect(0, 0, 0, 0);
 
         private Rect nodeEditorVisibleRect;
+
+        private bool wasShiftDown = false;
 
         private void DrawConversationSectionNodeStyle()
         {
@@ -242,6 +250,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 var link = entry.outgoingLinks[i];
                 if (link.destinationConversationID == currentConversation.id)
                 {
+                    // Fix any links whose originDialogueID doesn't match the origin entry's ID:
+                    if (link.originDialogueID != entry.id) link.originDialogueID = entry.id;
+
                     // Only show connection if within same conversation:
                     DialogueEntry destination = currentConversation.dialogueEntries.Find(e => e.id == link.destinationDialogueID);
                     if (destination != null)
@@ -453,7 +464,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     var guiStyle = GUI.skin.textField;
                     var size = guiStyle.CalcSize(new GUIContent(currentHoverGUIContent));
                     var canvasRect = currentHoveredEntry.canvasRect;
-                    currentHoverRect = new Rect(canvasRect.x + (canvasRect.width / 2) - (size.x / 2), canvasRect.y + canvasRect.height, size.x, size.y);
+                    currentHoverRect = new Rect(canvasRect.x + (canvasRect.width / 2) - (size.x / 2), canvasRect.y + canvasRect.height, size.x + 1, size.y);
                 }
             }
             if (Event.current.type == EventType.Repaint && currentHoverGUIContent != null)
@@ -491,15 +502,17 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             var guicolor_backup = GUI.backgroundColor;
             GUI.backgroundColor = nodeColor;
 
+            var boxRect = entry.canvasRect;
+
             if (isSelected)
             {
                 GUI.backgroundColor = Color.white;
-                var bigRect = new Rect(entry.canvasRect.x - 1, entry.canvasRect.y - 4, entry.canvasRect.width + 6, entry.canvasRect.height + 8);
+                var bigRect = new Rect(boxRect.x - 1, boxRect.y - 4, boxRect.width + 6, boxRect.height + 8);
                 GUI.Box(bigRect, string.Empty, Styles.GetNodeStyle("node", (nodeColor == EditorTools.NodeColor_Blue) ? Styles.Color.Blue : Styles.Color.Gray, isSelected));
                 GUI.backgroundColor = nodeColor;
             }
 
-            GUI.Box(new Rect(entry.canvasRect.x, entry.canvasRect.y, entry.canvasRect.width + 4, entry.canvasRect.height + 4),
+            GUI.Box(new Rect(boxRect.x, boxRect.y, boxRect.width + 4, boxRect.height + 4),
                 nodeLabel, nodeStyle);
 
             GUI.backgroundColor = guicolor_backup;
@@ -509,7 +522,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 var portrait = GetActorPortrait(entry.ActorID);
                 if (portrait != null)
                 {
-                    GUI.DrawTexture(new Rect(entry.canvasRect.x - 30, entry.canvasRect.y, 30, 30), portrait);
+                    GUI.DrawTexture(new Rect(boxRect.x - 30, boxRect.y, 30, 30), portrait);
                 }
             }
         }
@@ -650,6 +663,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 }
                 else if (Event.current.keyCode == KeyCode.N && (Event.current.command || Event.current.control) && Event.current.alt)
                 {
+                    wasShiftDown = Event.current.shift;
                     // Ctrl/Cmd+Alt+N (New) key:
                     if (currentEntry != null)
                     {
@@ -1008,6 +1022,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private void ShowEmptyCanvasContextMenu()
         {
             EditorZoomArea.End();
+            wasShiftDown = Event.current.shift;
 
             GenericMenu contextMenu = new GenericMenu();
             contextMenu.AddItem(new GUIContent("Create Node"), false, AddChildCallback, null);
@@ -1051,6 +1066,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private void ShowNodeContextMenu(DialogueEntry entry)
         {
             EditorZoomArea.End();
+            wasShiftDown = Event.current.shift;
 
             GenericMenu contextMenu = new GenericMenu();
             contextMenu.AddItem(new GUIContent("Create Child Node"), false, AddChildCallback, entry);
@@ -1127,7 +1143,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         {
             DialogueEntry parentEntry = o as DialogueEntry;
             if (parentEntry == null) parentEntry = startEntry;
-            LinkToNewEntry(parentEntry);
+            LinkToNewEntry(parentEntry, wasShiftDown);
+            wasShiftDown = false;
             InitializeDialogueTree();
             if (addNewNodesToRight)
             {
@@ -1142,6 +1159,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             SetCurrentEntry(currentEntry);
             inspectorSelection = currentEntry;
             ResetDialogueEntryText();
+            if (autoArrangeOnCreate) AutoArrangeNodes(!addNewNodesToRight);
             Repaint();
         }
 

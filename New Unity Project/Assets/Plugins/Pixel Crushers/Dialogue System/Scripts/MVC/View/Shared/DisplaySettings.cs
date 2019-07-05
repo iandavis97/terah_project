@@ -522,7 +522,12 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Auto-select the last menu choice.
         /// </summary>
-        ChooseLastResponse
+        ChooseLastResponse,
+
+        /// <summary>
+        /// Use a custom handler.
+        /// </summary>
+        Custom
     };
 
     public enum EmTag

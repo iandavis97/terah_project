@@ -8,6 +8,8 @@ namespace PixelCrushers.DialogueSystem
 
     public delegate void DialogueEntrySpokenDelegate(Subtitle subtitle);
 
+    public delegate float GetDefaultSubtitleDurationDelegate(string text);
+
     /// <summary>
     /// Handles the user interaction part of a conversation. The ConversationController 
     /// provides the content. ConversationView processes UI events and hands control to 
@@ -15,6 +17,12 @@ namespace PixelCrushers.DialogueSystem
     /// </summary>
     public class ConversationView : MonoBehaviour
     {
+
+        /// <summary>
+        /// You can assign a function here to override the method used to 
+        /// determine the default subtitle duration -- that is, the value of {{end}}.
+        /// </summary>
+        public static GetDefaultSubtitleDurationDelegate overrideGetDefaultSubtitleDuration = null;
 
         /// <summary>
         /// Called when a subtitle is finished displaying (including text delay and cutscene
@@ -165,7 +173,7 @@ namespace PixelCrushers.DialogueSystem
             }
             IsCancelKeyDown = IsSubtitleCancelKeyDown;
             CancelledHandler = OnCancelSubtitle;
-            _lastModeWasResponseMenu = false;
+            if (!string.IsNullOrEmpty(subtitle.formattedText.text)) _lastModeWasResponseMenu = false;
         }
 
         private Subtitle _subtitle = null;
@@ -442,7 +450,8 @@ namespace PixelCrushers.DialogueSystem
 
         private void OnCancelResponseMenu()
         {
-            BroadcastMessage(DialogueSystemMessages.OnConversationCancelled, sequencer.speaker, SendMessageOptions.DontRequireReceiver);
+            NotifyParticipantsOnConversationCancelled();
+            //---Was: BroadcastMessage(DialogueSystemMessages.OnConversationCancelled, sequencer.speaker, SendMessageOptions.DontRequireReceiver);
             SelectResponse(new SelectedResponseEventArgs(null));
         }
 
@@ -496,6 +505,7 @@ namespace PixelCrushers.DialogueSystem
         /// <returns>A duration based on the text length and the Dialogue Manager's Subtitle Settings > Min Subtitle Seconds and Subtitle Chars Per Second.</returns>
         public float GetDefaultSubtitleDuration(string text)
         {
+            if (overrideGetDefaultSubtitleDuration != null) return overrideGetDefaultSubtitleDuration(text);
             int numCharacters = string.IsNullOrEmpty(text) ? 0 : Tools.StripRichTextCodes(text).Length;
             return Mathf.Max(settings.GetMinSubtitleSeconds(), numCharacters / Mathf.Max(1, settings.GetSubtitleCharsPerSecond()));
         }
@@ -536,8 +546,29 @@ namespace PixelCrushers.DialogueSystem
         {
             if (responses != null)
             {
+                if (lastSubtitle != null)
+                {
+                    bool validSpeakerTransform = CharacterInfoHasValidTransform(lastSubtitle.speakerInfo);
+                    bool validListenerTransform = CharacterInfoHasValidTransform(lastSubtitle.listenerInfo);
+                    bool speakerIsListener = validSpeakerTransform && validListenerTransform && (lastSubtitle.speakerInfo.transform == lastSubtitle.listenerInfo.transform);
+                    if (validSpeakerTransform) lastSubtitle.speakerInfo.transform.BroadcastMessage(DialogueSystemMessages.OnConversationResponseMenu, responses, SendMessageOptions.DontRequireReceiver);
+                    if (validListenerTransform && !speakerIsListener) lastSubtitle.listenerInfo.transform.BroadcastMessage(DialogueSystemMessages.OnConversationResponseMenu, responses, SendMessageOptions.DontRequireReceiver);
+                }
                 DialogueManager.instance.BroadcastMessage(DialogueSystemMessages.OnConversationResponseMenu, responses, SendMessageOptions.DontRequireReceiver);
             }
+        }
+
+        private void NotifyParticipantsOnConversationCancelled()
+        {
+            if (lastSubtitle != null)
+            {
+                bool validSpeakerTransform = CharacterInfoHasValidTransform(lastSubtitle.speakerInfo);
+                bool validListenerTransform = CharacterInfoHasValidTransform(lastSubtitle.listenerInfo);
+                bool speakerIsListener = validSpeakerTransform && validListenerTransform && (lastSubtitle.speakerInfo.transform == lastSubtitle.listenerInfo.transform);
+                if (validSpeakerTransform) lastSubtitle.speakerInfo.transform.BroadcastMessage(DialogueSystemMessages.OnConversationCancelled, sequencer.listener, SendMessageOptions.DontRequireReceiver);
+                if (validListenerTransform && !speakerIsListener) lastSubtitle.listenerInfo.transform.BroadcastMessage(DialogueSystemMessages.OnConversationCancelled, sequencer.speaker, SendMessageOptions.DontRequireReceiver);
+            }
+            DialogueManager.instance.BroadcastMessage(DialogueSystemMessages.OnConversationCancelled, sequencer.speaker, SendMessageOptions.DontRequireReceiver);
         }
 
         private bool CharacterInfoHasValidTransform(CharacterInfo characterInfo)
@@ -548,26 +579,26 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Sets the PC portrait to use for the response menu.
         /// </summary>
-        /// <param name="pcTexture">PC texture.</param>
+        /// <param name="pcSprite">PC sprite.</param>
         /// <param name="pcName">PC name.</param>
-        public void SetPCPortrait(Texture2D pcTexture, string pcName)
+        public void SetPCPortrait(Sprite pcSprite, string pcName)
         {
             var ui = DialogueManager.dialogueUI as AbstractDialogueUI;
             if (ui == null) return;
-            ui.SetPCPortrait(pcTexture, pcName);
+            ui.SetPCPortrait(pcSprite, pcName);
         }
 
         /// <summary>
-        /// Sets the portrait texture to use in the UI for an actor.
+        /// Sets the portrait sprite to use in the UI for an actor.
         /// This is used when the SetPortrait() sequencer command changes an actor's image.
         /// </summary>
         /// <param name="actorName">Actor name.</param>
-        /// <param name="portraitTexture">Portrait texture.</param>
-        public void SetActorPortraitTexture(string actorName, Texture2D portraitTexture)
+        /// <param name="sprite">Portrait sprite.</param>
+        public void SetActorPortraitSprite(string actorName, Sprite sprite)
         {
             var ui = DialogueManager.dialogueUI as AbstractDialogueUI;
             if (ui == null) return;
-            ui.SetActorPortraitTexture(actorName, portraitTexture);
+            ui.SetActorPortraitSprite(actorName, sprite);
         }
 
     }

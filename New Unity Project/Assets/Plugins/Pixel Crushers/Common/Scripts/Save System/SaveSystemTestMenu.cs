@@ -12,9 +12,14 @@ namespace PixelCrushers
     [AddComponentMenu("")] // Use wrapper.
     public class SaveSystemTestMenu : MonoBehaviour
     {
-
         [Tooltip("Unity input button that toggles menu open/closed.")]
         public string menuInputButton = "Cancel";
+
+        [Tooltip("Optional GUI Skin to provide custom Label, Button, and Box styles.")]
+        public GUISkin guiSkin;
+
+        [Tooltip("Size of menu buttons.")]
+        public Vector2 buttonSize = new Vector2(200, 30);
 
         [Tooltip("Slot that menu saves game in.")]
         public int saveSlot = 1;
@@ -84,6 +89,9 @@ namespace PixelCrushers
 
         void OnGUI()
         {
+            var originalSkin = GUI.skin;
+            if (guiSkin != null) GUI.skin = guiSkin;
+
             // Draw instructions if within the timeframe to do so:
             if (Time.time < m_instructionsDoneTime)
             {
@@ -92,26 +100,26 @@ namespace PixelCrushers
 
             // Draw menu if visible:
             if (!m_isVisible) return;
-            const int ButtonWidth = 200;
-            const int ButtonHeight = 30;
-            GUILayout.BeginArea(new Rect((Screen.width - ButtonWidth) / 2, (Screen.height - 4 * ButtonHeight) / 2, ButtonWidth, 4 * (ButtonHeight + 10)));
-            if (GUILayout.Button("Resume", GUILayout.Height(ButtonHeight)))
+            var buttonWidth = buttonSize.x;
+            var buttonHeight = buttonSize.y;
+            GUILayout.BeginArea(new Rect((Screen.width - buttonWidth) / 2, (Screen.height - 4 * buttonHeight) / 2, buttonWidth, 4 * (buttonHeight + 10)));
+            if (GUILayout.Button("Resume", GUILayout.Height(buttonHeight)))
             {
                 ToggleMenu();
             }
-            if (GUILayout.Button("Save", GUILayout.Height(ButtonHeight)))
+            if (GUILayout.Button("Save", GUILayout.Height(buttonHeight)))
             {
                 ToggleMenu();
                 Debug.Log("Saving game to slot " + saveSlot);
                 SaveSystem.SaveToSlot(saveSlot);
             }
-            if (GUILayout.Button("Load", GUILayout.Height(ButtonHeight)))
+            if (GUILayout.Button("Load", GUILayout.Height(buttonHeight)))
             {
                 ToggleMenu();
                 Debug.Log("Loading game from slot " + saveSlot);
                 SaveSystem.LoadFromSlot(saveSlot);
             }
-            if (GUILayout.Button("Quit", GUILayout.Height(ButtonHeight)))
+            if (GUILayout.Button("Quit", GUILayout.Height(buttonHeight)))
             {
                 ToggleMenu();
                 Debug.Log("Quitting");
@@ -121,6 +129,7 @@ namespace PixelCrushers
 #endif
             }
             GUILayout.EndArea();
+            if (guiSkin != null) GUI.skin = originalSkin;
         }
     }
 }

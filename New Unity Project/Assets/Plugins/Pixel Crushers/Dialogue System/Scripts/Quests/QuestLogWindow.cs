@@ -57,6 +57,7 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// The state to assign abandoned quests.
         /// </summary>
+        [Tooltip("State to assign to quests when player abandons then.")]
         [QuestState]
         public QuestState abandonQuestState = QuestState.Unassigned;
 
@@ -74,7 +75,11 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// If <c>true</c>, organize the quests by group.
         /// </summary>
+        [Tooltip("Organize quests by the values of their Group fields.")]
         public bool useGroups = false;
+
+        [Tooltip("Allow only one quest to be tracked at a time.")]
+        public bool trackOneQuestAtATime = false;
 
         [Serializable]
         public class QuestInfo
@@ -225,6 +230,7 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public virtual void Open()
         {
+            QuestLog.trackOneQuestAtATime = trackOneQuestAtATime;
             PauseGameplay();
             OpenWindow(OnOpenedWindow);
         }
@@ -441,7 +447,6 @@ namespace PixelCrushers.DialogueSystem
             if (string.IsNullOrEmpty(selectedQuest)) return;
             bool track = !QuestLog.IsQuestTrackingEnabled(selectedQuest);
             QuestLog.SetQuestTracking(selectedQuest, track);
-            DialogueManager.instance.BroadcastMessage(track ? DialogueSystemMessages.OnQuestTrackingEnabled : DialogueSystemMessages.OnQuestTrackingDisabled, selectedQuest, SendMessageOptions.DontRequireReceiver);
         }
 
         private bool IsString(object data)

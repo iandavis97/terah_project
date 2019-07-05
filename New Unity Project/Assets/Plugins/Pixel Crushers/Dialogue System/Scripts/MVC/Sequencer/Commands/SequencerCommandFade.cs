@@ -25,6 +25,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
         private Color color;
         private bool fadeIn;
         private bool stay;
+        private bool unstay;
         float startTime;
         float endTime;
 
@@ -39,7 +40,15 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
             color = Tools.WebColor(GetParameter(2, "#000000"));
             if (DialogueDebug.logInfo) Debug.Log(string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}: Sequencer: Fade({1}, {2}, {3})", new System.Object[] { DialogueDebug.Prefix, direction, duration, color }));
 
-            if (duration > SmoothMoveCutoff)
+            stay = string.Equals(direction, "stay", System.StringComparison.OrdinalIgnoreCase);
+            unstay = string.Equals(direction, "unstay", System.StringComparison.OrdinalIgnoreCase);
+            fadeIn = unstay || string.Equals(direction, "in", System.StringComparison.OrdinalIgnoreCase);
+
+            if (unstay && faderImage != null && Mathf.Approximately(0, faderImage.color.a))
+            {
+                Stop(); // Image is already invisible, so no need to fade in.
+            }
+            else if (duration > SmoothMoveCutoff)
             {
 
                 // Create fader canvas and image:
@@ -65,13 +74,12 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                 startTime = DialogueTime.time;
                 endTime = startTime + duration;
 
-                fadeIn = string.Equals(direction, "in", System.StringComparison.OrdinalIgnoreCase);
-                stay = string.Equals(direction, "stay", System.StringComparison.OrdinalIgnoreCase);
-
                 faderImage.color = new Color(color.r, color.g, color.b, fadeIn ? 1 : 0);
+
             }
             else
             {
+
                 Stop();
             }
         }
