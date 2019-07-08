@@ -22,10 +22,12 @@ public class lockplayer : MonoBehaviour
         if (ORK.Control.InEvent || ORK.Control.InMenu || ORK.Control.Blocked )//|| ORK.Game.Variables.Check("convoFlag", true)
         {
             m_input.lockInput = true;
+            ORK.Game.Variables.Set("convoFlag", true);
         }
         else
         {
             m_input.lockInput = false;
+            ORK.Game.Variables.Set("convoFlag", false);
         }
         //if (ORK.Game.Variables.Check("convoFlag", false))
            // m_input.lockInput = false;
