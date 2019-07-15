@@ -1,0 +1,152 @@
+fileFormatVersion: 2
+guid: 98cc0974315a2e54fa62a1fa12749077
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Merged_aaron12
+    100004: Merged_aaron18
+    100006: Merged_aaron19
+    100008: Merged_aaron20
+    400000: //RootNode
+    400002: Merged_aaron12
+    400004: Merged_aaron18
+    400006: Merged_aaron19
+    400008: Merged_aaron20
+    2100000: Merged_aaron20
+    2100002: Merged_aaron19
+    2100004: Merged_aaron18
+    2100006: Merged_aaron12
+    2300000: Merged_aaron12
+    2300002: Merged_aaron18
+    2300004: Merged_aaron19
+    2300006: Merged_aaron20
+    3300000: Merged_aaron12
+    3300002: Merged_aaron18
+    3300004: Merged_aaron19
+    3300006: Merged_aaron20
+    4300000: Merged_aaron20
+    4300002: Merged_aaron19
+    4300004: Merged_aaron18
+    4300006: Merged_aaron12
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Merged_aaron12
+    second: {fileID: 2100000, guid: 4d2febf095bea8249bcc0fb9dbb9f7f3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Merged_aaron18
+    second: {fileID: 2100000, guid: 0895ba4d1fd44fb46882306009d1e67f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Merged_aaron19
+    second: {fileID: 2100000, guid: 3a3339c732c6f7144b63f366ef1ed388, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Merged_aaron20
+    second: {fileID: 2100000, guid: 9d2732f3b2ce5054884702df42d65417, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Merged_aaron12_TXTR
+    second: {fileID: 2800000, guid: c0a473d9031ad29459ba8528d0f3ac20, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Merged_aaron19_TXTR
+    second: {fileID: 2800000, guid: f504476541333954788959f29feb07cf, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Merged_aaron20_TXTR
+    second: {fileID: 2800000, guid: 82d8f70b47af24f49911202170d85ad7, type: 3}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 6
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
