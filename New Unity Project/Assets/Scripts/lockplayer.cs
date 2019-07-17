@@ -19,7 +19,7 @@ public class lockplayer : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if (ORK.Control.InEvent || ORK.Control.InMenu || ORK.Control.Blocked )//|| ORK.Game.Variables.Check("convoFlag", true)
+        if (ORK.Control.InEvent || ORK.Control.InMenu || ORK.Control.Blocked || ORK.Game.Variables.Check("specialFlag", true))
         {
             m_input.lockInput = true;
             ORK.Game.Variables.Set("convoFlag", true);
@@ -29,8 +29,8 @@ public class lockplayer : MonoBehaviour
             m_input.lockInput = false;
             ORK.Game.Variables.Set("convoFlag", false);
         }
-        //if (ORK.Game.Variables.Check("convoFlag", false))
-           // m_input.lockInput = false;
+        if (ORK.Game.Variables.Check("specialFlag", false))
+            m_input.lockInput = false;
         
 	}
 }
